@@ -45,6 +45,8 @@ INTRA_CALL_BACK_URL = config('INTRA_CALL_BACK_URL')
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -74,6 +76,8 @@ INSTALLED_APPS = [
     'oauth2.apps.Oauth2Config',
     'friends.apps.FriendsConfig',
     'twoFactorAuth.apps.TwofactorauthConfig',
+
+    'chat.apps.ChatConfig',
 ]
 
 SITE_ID = 1
@@ -85,6 +89,12 @@ REST_FRAMEWORK = {
 }
 
 ASGI_APPLICATION = "api.asgi.application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
