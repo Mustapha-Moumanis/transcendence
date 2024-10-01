@@ -1,0 +1,46 @@
+services:
+    db:
+        container_name: postgres
+        hostname: postgres
+        image: postgres
+        env_file:
+            - .env
+        networks:
+            - transcendence-network
+        # volumes:
+        #     - ./data/db:/var/lib/postgresql/data
+    
+    ngnix:
+        depends_on:
+            - web
+        container_name : ngnix
+        build : ./frontend/
+        image : ngnix
+        ports:
+            - 8080:80
+        restart: on-failure
+        env_file: .env
+        networks:
+            - transcendence-network
+        volumes:
+            - media:/var/www/html/static
+
+    web:
+        container_name: backend
+        build: ./backend/
+        image: backend
+        ports:
+            - 8000:8000
+        env_file:
+            - .env
+        networks:
+            - transcendence-network
+        volumes:
+            - media:/code/static
+
+networks:
+    transcendence-network:
+        name: transcendence-network
+
+volumes:
+    media:

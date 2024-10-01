@@ -1,0 +1,39 @@
+{% load account %}
+{% load i18n %}
+
+{% block content %}
+{% autoescape off %}
+{% user_display user as user_display %}
+<table border="0" cellpadding="0" cellspacing="0" width="100%" style="font-family: Arial, sans-serif; color: #565a5c; background-color: #f7f7f7;">
+    <tr>
+        <td align="center">
+            <table border="0" cellpadding="0" cellspacing="0" width="600" style="max-width: 600px; width: 100%; margin: 20px auto; padding: 20px; background-color: #ffffff; box-shadow: 0px 0px 10px rgba(0,0,0,0.1);">
+                <tr>
+                    <td style="padding: 20px;">
+                        <h2 style="color: #000;">Hello {{ user_display }},</h2>
+                        <p style="font-size: 16px;">
+                            {% blocktrans with site_name=current_site.name site_domain=current_site.domain %}
+                            You're receiving this email because user {{ user_display }} has given your email address to register an account on {{ site_name }}.
+                            {% endblocktrans %}
+                        </p>
+                        <p style="font-size: 18px; margin: 10px 0;">
+                            <strong>Your PIN is:</strong>
+                        </p>
+                        <p style="font-size: 36px; font-weight: bold; color: #000; margin-bottom: 10px; text-align: center;">
+                            {{ key }}
+                        </p>
+                        <p style="font-size: 16px; margin-bottom: 20px;">
+                            If you did not initiate this request, please ignore this email.
+                        </p>
+                        <p style="font-size: 16px;">
+                            Best regards,<br>
+                            The {{ current_site.name }} Team
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{% endautoescape %}
+{% endblock content %}
