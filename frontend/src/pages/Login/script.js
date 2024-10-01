@@ -1,6 +1,7 @@
 import { login } from '../../utils/auth.js'
 import { displayFieldError, displaySuccess, displayError, authActions} from '../../utils/auth.js'
 import TwoFactorAuth from '../TwoFactorAuth/TwoFactorAuth.js'
+import { startSocket, sendToBackend, startChat } from '../chat/js/socket.js'
 
 function handleLoginFormSubmission() {
     document.getElementById('form_login').addEventListener('submit', function(e) {
@@ -50,6 +51,7 @@ function handleLoginFormSubmission() {
                     login(JSON.stringify(data))
                     // setCookie('my-token', data.access, 30);
                     // setCookie('my-refresh-token', data.refresh, 30);
+                    startSocket();
                     setTimeout(() => {
                         Router("/");
                     }, 1000);
