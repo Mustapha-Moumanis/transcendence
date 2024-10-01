@@ -264,3 +264,6 @@ SOCIALACCOUNT_PROVIDERS = {
 AUTH_USER_MODEL = "users.User"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+OTP_TOTP_IMAGE = config('OTP_TOTP_IMAGE')
+OTP_TOTP_ISSUER = config('OTP_TOTP_ISSUER')

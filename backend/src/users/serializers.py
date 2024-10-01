@@ -20,6 +20,7 @@ class CustomLoginSerializer(LoginSerializer):
 from allauth.account.adapter import get_adapter
 from allauth.account import app_settings as allauth_account_settings
 from django.utils.translation import gettext_lazy as _
+from chat.models import ChatRoom
 import re
 
 class CustomRegisterSerializer(RegisterSerializer):
@@ -57,7 +58,7 @@ class CustomRegisterSerializer(RegisterSerializer):
         base_username = username
         counter = 1
         while User.objects.filter(username=username).exists():
-            username = f"{base_username}{counter}"
+            username = f"{base_username}_{counter}"
             counter += 1
         return username
 
@@ -72,6 +73,12 @@ class CustomRegisterSerializer(RegisterSerializer):
             'password1': self.validated_data.get('password1', ''),
             'email': self.validated_data.get('email', ''),
         }
+    
+    def save(self, request):
+        user = super().save(request)
+        name ="room_{}".format(user.username)
+        ChatRoom.objects.get_or_create(name=name, creator=user)
+        return user
     
     class Meta:
         model = User
