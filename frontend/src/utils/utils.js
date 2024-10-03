@@ -1,3 +1,4 @@
+import { logout, displaySuccess, displayError } from './auth.js'
 export async function loadHTML(url) {
   try {
     const response = await fetch(url);
@@ -78,4 +79,57 @@ export function getCookie(name) {
   }
 
   return null;
+}
+
+export function handleLogoutBtn() {
+	document.getElementById('logout').addEventListener('click', function(e) {
+
+		fetch('api/logout/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+        .then(response => {
+            if (!response.ok) {
+                console.log(response)
+                return response.json().then(errorData => {
+                    if (errorData.non_field_errors) {
+                        throw new Error(errorData.non_field_errors[0]);
+                    }
+                    throw new Error('Handled HTTP error');
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            displaySuccess('Logout successful!');
+            logout();
+            setTimeout(() => { window.location.hash = '#login'; }, 1000);
+        })
+        .catch(error => {
+            displayError(error.message);
+            logout();
+            setTimeout(() => { window.location.hash = '#login'; }, 1000);
+        });
+	});
+};
+
+export async function HomeEffects() {
+  const root = document.getElementById('root');
+  if (root.querySelector('.nav') == null) {
+    console.log("Home Effect")
+    const nav = await loadHTML('../components/navBar.html');
+    var content = document.createElement("div");
+    content.id = "content";
+    
+    root.innerHTML = nav + content.outerHTML;
+
+    // loadCSS('./utils/bootstrap.min.css');
+    loadCSS('./pages/Home/home.css');
+    loadCSS('./style.css');
+
+    handleLogoutBtn();
+    // hideLoading();
+  }
 }

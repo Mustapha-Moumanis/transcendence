@@ -8,7 +8,7 @@ async function Login() {
   root.innerHTML = html;
   
 
-  loadCSS('./utils/bootstrap.min.css');
+  // loadCSS('./utils/bootstrap.min.css');
   loadCSS('./style.css');
 
   loginActions();

@@ -91,23 +91,23 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .dark-scheme {
-  color: var(--dark-body-font-color);
 }
 
-body.dark-scheme {
+body {
+    color: var(--dark-body-font-color);
   background: var(--bg-dark-1);
 }
 
 #content {
     width: 100%;
-    background: #ffffff;
+    /* background: #ffffff; */
+    background: var(--bg-dark-1);
     padding: 90px 0 90px 0;
     z-index: 100;
 }
 
-.dark-scheme #content {
-    background: var(--bg-dark-1);
-}
+/* .dark-scheme #content {
+} */
 
 .bg-img {
     background-image: url("../images/background/4.webp") !important;
@@ -137,9 +137,6 @@ section{
 .main-content {
     padding: 40px;
     border-radius: 10px;
-}
-
-.dark-scheme .main-content {
     background: var(--bg-dark-1);
     box-shadow: 2px 2px 20px 0px rgba(var(--secondary-color-rgb), 0.5);
 }

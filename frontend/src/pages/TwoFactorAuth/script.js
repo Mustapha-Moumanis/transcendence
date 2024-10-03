@@ -1,4 +1,3 @@
-import Router from '../../router.js';
 import {
 	displayFieldError,
 	displaySuccess,
@@ -6,7 +5,6 @@ import {
 	authActions,
 	login
 } from '../../utils/auth.js'
-import {passResetActions} from '../../utils/passReset.js'
 
 function numbersInputsEffect(inputs) {
 
@@ -105,7 +103,7 @@ function handleConfirmTwoFactorFormSubmission(userData, inputs) {
 		.then(data => {
 			displaySuccess('Login successful!');
 			login(JSON.stringify(userData));
-			setTimeout(() => { Router("/"); }, 1000);
+			setTimeout(() => { window.location.hash = '#home' }, 1000);
 		})
 		.catch(error => {
 			displayError(error.message);

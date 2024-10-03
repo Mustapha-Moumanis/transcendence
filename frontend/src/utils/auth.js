@@ -1,3 +1,5 @@
+import { showLoading, hideLoading, HomeEffects } from './utils.js';
+
 function isAuthenticated() {
     return !!localStorage.getItem('authTokens');
 }
@@ -67,14 +69,6 @@ function removeFieldError(input) {
     }
 }
 
-function showBgEffect() {
-    document.querySelector("#home").removeAttribute('class');
-}
-
-function hideBgEffect() {
-    document.querySelector("#home").classList.add('d-none');
-}
-
 function attachInputFocusListeners() {
     var inputs = document.querySelectorAll(".form-control");
     inputs.forEach(input => {
@@ -93,15 +87,16 @@ function attachRouterListeners() {
         });
     }
 }
-
+// import { showLoading, hideLoading } from './utils/utils.js';
 function authActions() {
-    showBgEffect();
+    // showLoading();
     attachInputFocusListeners();
     attachRouterListeners();
+    // hideLoading();
 }
 
-function mainActions() {
-    hideBgEffect();
+async function mainActions() {
+    await HomeEffects();
 }
 
 export {

@@ -53,7 +53,8 @@ function handleLoginFormSubmission() {
                     // setCookie('my-refresh-token', data.refresh, 30);
                     startSocket();
                     setTimeout(() => {
-                        Router("/");
+                        // Router("home");
+                        window.location.hash = '#home';
                     }, 1000);
                 }
             })
