@@ -6,7 +6,7 @@ async function ResetPassword() {
   const root = document.getElementById('root');
 
   root.innerHTML = html;
-  loadCSS('./utils/bootstrap.min.css');
+  // loadCSS('./utils/bootstrap.min.css');
   loadCSS('./style.css');
 
   ResetPasswordActions();
