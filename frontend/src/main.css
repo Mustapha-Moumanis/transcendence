@@ -1,0 +1,77 @@
+:root {
+    --secondary-color: #6B7730;
+    --secondary-color-rgb: 141, 149, 96;
+    --tertiary-color: #449F93;
+    --tertiary-color-rgb: 68, 159, 147;
+    --gradient-color: #E51284;
+    --gradient-color-rgb: 229, 18, 132;
+
+    /* Dark Mode */
+    --primary-color--dark: #c4f000;
+    --primary-color-rgb--dark: 196, 240, 0;
+
+    --base--dark: #070707;
+    --base-rgb--dark: 7, 7, 7;
+    --base-shade--dark: #1C1C1C;
+    --base-shade-rgb--dark: 28, 28, 28;
+    --base-tint--dark: #252629; /* still not */ 
+    --base-tint-rgb--dark: 37, 38, 41; /* still not */ 
+
+    --title-color--dark: #E8E8E8;
+    --title-color-rgb--dark: 232, 232, 232;
+
+    --sub-color--dark: #919484;
+    --sub-color-rgb--dark: 145, 148, 132;
+    /* Light Mode */
+    --primary-color--light: #5B8E00;
+    --primary-color-rgb--light: 91, 142, 0;
+
+    --base--light: #E8E8E8;
+    --base-rgb--light: 232, 232, 232;
+    --base-tint--light: #F5F5F5;
+    --base-tint-rgb--light: 208, 208, 208;
+    --base-shade--light: #D0D0D0; /* still not */ 
+    --base-shade-rgb--light: 208, 208, 208; /* still not */ 
+
+    --title-color--light: #070707;
+    --title-color-rgb--light: 7, 7, 7;
+    --sub-color--light: #84867C;
+    --sub-color-rgb--light: 132, 134, 124;
+
+}
+
+[color-scheme=light] {
+    --base: var(--base--light);
+    --base-rgb: var(--base-rgb--light);
+    --base-tint: var(--base-tint--light);
+    --base-tint-rgb: var(--base-tint-rgb--light);
+    --base-shade: var(--base-shade--light);
+    --base-shade-rgb: var(--base-shade-rgb--light);
+
+    --primary-color: var(--primary-color--light);
+    --primary-color-rgb: var(--primary-color-rgb--light);
+
+    --title-color: var(--title-color--light);
+    --title-color-rgb: var(--title-color-rgb--light);
+
+    --sub-color: var(--sub-color--light);
+    --sub-color-rgb: var(--sub-color-rgb--light);
+}
+  
+[color-scheme=dark] {
+    --base: var(--base--dark);
+    --base-rgb: var(--base-rgb--dark);
+    --base-tint: var(--base-tint--dark);
+    --base-tint-rgb: var(--base-tint-rgb--dark);
+    --base-shade: var(--base-shade--dark);
+    --base-shade-rgb: var(--base-shade-rgb--dark);
+
+    --primary-color: var(--primary-color--dark);
+    --primary-color-rgb: var(--primary-color-rgb--dark);
+
+    --title-color: var(--title-color--dark);
+    --title-color-rgb: var(--title-color-rgb--dark);
+
+    --sub-color: var(--sub-color--dark);
+    --sub-color-rgb: var(--sub-color-rgb--dark);
+}

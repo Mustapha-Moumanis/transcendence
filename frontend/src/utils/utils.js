@@ -122,6 +122,7 @@ export async function HomeEffects() {
     const nav = await loadHTML('../components/navBar.html');
     var content = document.createElement("div");
     content.id = "content";
+    content.classList.add("container")
     
     root.innerHTML = nav + content.outerHTML;
 
