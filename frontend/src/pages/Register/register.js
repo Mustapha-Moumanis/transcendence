@@ -1,4 +1,4 @@
-import { loadHTML, loadCSS, loadJS, removeAllCSS, removeAllJS } from '../../utils/utils.js';
+import { loadHTML, loadCSS, loadJS, removeAllCSS, removeAllJS } from '../../utils/js/utils.js';
 import { registerActions } from './script.js'
 
 async function Register() {
@@ -7,7 +7,7 @@ async function Register() {
 
   root.innerHTML = html;
   // loadCSS('./utils/bootstrap.min.css');
-  loadCSS('./style.css');
+  loadCSS('./utils/css/style.css');
 
   registerActions();
 }

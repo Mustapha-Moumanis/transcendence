@@ -1,4 +1,4 @@
-import { displayFieldError, displaySuccess, displayError, authActions} from '../../utils/auth.js'
+import { displayFieldError, displaySuccess, displayError, authActions} from '../../utils/js/auth.js'
 
 function handleRegisterFormSubmission() {
     document.getElementById('form_register').addEventListener('submit', function(e) {

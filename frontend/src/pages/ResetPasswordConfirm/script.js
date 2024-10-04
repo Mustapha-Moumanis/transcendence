@@ -4,7 +4,7 @@ import {
 	displaySuccess,
 	displayError,
 	authActions
-} from '../../utils/auth.js'
+} from '../../utils/js/auth.js'
 
 function passResetActions(email) {
 	const inputs = document.querySelectorAll(".numbers-field > input");

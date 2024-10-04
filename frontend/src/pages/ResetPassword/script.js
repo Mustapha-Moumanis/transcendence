@@ -1,10 +1,10 @@
-import { hideLoading, showLoading } from '../../utils/utils.js';
+import { hideLoading, showLoading } from '../../utils/js/utils.js';
 import {
 	displayFieldError,
 	displaySuccess,
 	displayError,
 	authActions
-} from '../../utils/auth.js'
+} from '../../utils/js/auth.js'
 
 import ResetPasswordConfirm from '../ResetPasswordConfirm/ResetPasswordConfirm.js'
 

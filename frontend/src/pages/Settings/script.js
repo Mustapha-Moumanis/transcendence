@@ -1,5 +1,5 @@
-import { logout } from '../../utils/auth.js'
-import { displayFieldError, displaySuccess, displayError, authActions} from '../../utils/auth.js'
+import { logout } from '../../utils/js/auth.js'
+import { displayFieldError, displaySuccess, displayError, authActions} from '../../utils/js/auth.js'
 
 function close2fa() {
 	document.querySelector(".close2fa").addEventListener("click", () => {

@@ -1,5 +1,5 @@
-import { login } from '../../utils/auth.js'
-import { displayFieldError, displaySuccess, displayError, authActions} from '../../utils/auth.js'
+import { login } from '../../utils/js/auth.js'
+import { displayFieldError, displaySuccess, displayError, authActions} from '../../utils/js/auth.js'
 import TwoFactorAuth from '../TwoFactorAuth/TwoFactorAuth.js'
 import { startSocket, sendToBackend, startChat } from '../chat/js/socket.js'
 

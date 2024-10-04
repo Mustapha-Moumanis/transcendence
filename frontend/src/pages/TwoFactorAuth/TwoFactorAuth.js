@@ -1,4 +1,4 @@
-import { loadHTML } from '../../utils/utils.js';
+import { loadHTML } from '../../utils/js/utils.js';
 import { TwoFactorAuthConfirmActions } from './script.js'
 
 async function TwoFactorAuth(userData) {
@@ -7,7 +7,7 @@ async function TwoFactorAuth(userData) {
 
   root.innerHTML = html;
   // loadCSS('./utils/bootstrap.min.css');
-  // loadCSS('./style.css');
+  // loadCSS('./utils/css/style.css');
 
   TwoFactorAuthConfirmActions(userData);
 }

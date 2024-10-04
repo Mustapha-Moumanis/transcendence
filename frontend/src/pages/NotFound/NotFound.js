@@ -1,4 +1,4 @@
-import { loadHTML, loadCSS } from '../../utils/utils.js';
+import { loadHTML, loadCSS } from '../../utils/js/utils.js';
 
 async function NotFound() {
   const html = await loadHTML('./pages/NotFound/NotFound.html');

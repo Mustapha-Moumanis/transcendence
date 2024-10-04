@@ -1,4 +1,4 @@
-import { loadHTML, loadCSS, HomeEffects } from '../../utils/utils.js';
+import { loadHTML, loadCSS, HomeEffects } from '../../utils/js/utils.js';
 import { settingsActions } from './script.js'
 import Home from '../Home/home.js'
 
@@ -6,11 +6,11 @@ async function Settings() {
   const html = await loadHTML('./pages/Settings/settings.html');
   await HomeEffects();
 
-  document.getElementById('content').innerHTML = html;
+  document.getElementById('home-content').innerHTML = html;
   
 
   // loadCSS('./utils/bootstrap.min.css');
-  // loadCSS('./style.css');
+  // loadCSS('./utils/css/style.css');
 
   settingsActions();
 }
