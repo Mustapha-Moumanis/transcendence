@@ -1,4 +1,4 @@
-import { loadHTML, loadCSS } from '../../utils/utils.js';
+import { loadHTML, loadCSS } from '../../utils/js/utils.js';
 import { loginActions } from './script.js'
 
 
@@ -9,7 +9,7 @@ async function Login() {
   
 
   // loadCSS('./utils/bootstrap.min.css');
-  loadCSS('./style.css');
+  loadCSS('./utils/css/style.css');
 
   loginActions();
 }

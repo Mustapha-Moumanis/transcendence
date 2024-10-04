@@ -1,4 +1,6 @@
 import { logout, displaySuccess, displayError } from './auth.js'
+import { themeAction } from './theme.js'
+
 export async function loadHTML(url) {
   try {
     const response = await fetch(url);
@@ -119,18 +121,28 @@ export async function HomeEffects() {
   const root = document.getElementById('root');
   if (root.querySelector('.nav') == null) {
     console.log("Home Effect")
-    const nav = await loadHTML('../components/navBar.html');
+    const nav = await loadHTML('../components/nav/navBar.html');
+    const sidebar = await loadHTML('../components/sidebar/sidebar.html');
+
     var content = document.createElement("div");
-    content.id = "content";
-    content.classList.add("container")
+    content.classList.add("content");
+    
+    var mainContent = document.createElement("div");
+    mainContent.id = "home-content";
+    mainContent.classList.add("home-content");
+
+    content.innerHTML = sidebar;
+    content.appendChild(mainContent);
     
     root.innerHTML = nav + content.outerHTML;
 
     // loadCSS('./utils/bootstrap.min.css');
     loadCSS('./pages/Home/home.css');
-    loadCSS('./style.css');
+    loadCSS('./utils/css/style.css');
+    loadCSS('./utils/css/bars.css');
 
-    handleLogoutBtn();
+    // handleLogoutBtn();
+    themeAction();
     // hideLoading();
   }
 }

@@ -1,16 +1,14 @@
 import {
     logout,
-    mainActions
-} from '../../utils/auth.js';
-import {
+    mainActions,
     displayFieldError,
     displaySuccess,
     displayError,
     authActions
-} from '../../utils/auth.js';
+} from '../../utils/js/auth.js';
 import {
     getCookie
-} from '../../utils/utils.js';
+} from '../../utils/js/utils.js';
 
 // Handle logout
 function handleLogoutBtn() {

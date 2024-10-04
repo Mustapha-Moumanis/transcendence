@@ -20,10 +20,10 @@ html {
 
 body {
     font-family: var(--body-font);
+    color: var(--title-color);
     font-size: 16px;
     font-weight: 500;
     line-height: 1.5;
-    color: var(--body-font-color);
     padding: 0;
     word-spacing: 0px;
     letter-spacing: -0.2px;
@@ -37,10 +37,22 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: bold;
 }
 
-body {
-    color: var(--title-color);
-    background: var(--base);
+/* ---------- home ---------- */
+
+.home-content {
+    width: 100%;
+    padding: 0 20px 20px 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
 }
+
+.home-content::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+}
+
+/* ---------- auth ---------- */
 
 #content {
     width: 100%;

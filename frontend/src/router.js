@@ -5,8 +5,8 @@ import NotFound from './pages/NotFound/NotFound.js';
 import ResetPassword from './pages/ResetPassword/ResetPassword.js';
 import Settings from './pages/Settings/settings.js';
 import Chat from './pages/Chat/chat.js';
-import { isAuthenticated } from './utils/auth.js';
-import { showLoading, hideLoading} from './utils/utils.js';
+import { isAuthenticated } from './utils/js/auth.js';
+import { showLoading, hideLoading} from './utils/js/utils.js';
 
 const routes = {
   'home': Home,

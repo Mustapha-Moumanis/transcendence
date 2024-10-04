@@ -4,7 +4,7 @@ import {
 	displayError,
 	authActions,
 	login
-} from '../../utils/auth.js'
+} from '../../utils/js/auth.js'
 
 function numbersInputsEffect(inputs) {
 

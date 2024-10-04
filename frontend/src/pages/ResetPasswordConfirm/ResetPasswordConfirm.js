@@ -1,4 +1,4 @@
-import { loadHTML, loadCSS, loadJS, removeAllCSS, removeAllJS } from '../../utils/utils.js';
+import { loadHTML, loadCSS, loadJS, removeAllCSS, removeAllJS } from '../../utils/js/utils.js';
 import { ResetPasswordConfirmActions } from './script.js'
 
 async function ResetPasswordConfirm(email) {
@@ -7,7 +7,7 @@ async function ResetPasswordConfirm(email) {
 
   root.innerHTML = html;
   // loadCSS('./utils/bootstrap.min.css');
-  loadCSS('./style.css');
+  loadCSS('./utils/css/style.css');
 
   ResetPasswordConfirmActions(email);
 }

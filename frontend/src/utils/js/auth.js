@@ -87,9 +87,10 @@ function attachRouterListeners() {
         });
     }
 }
-// import { showLoading, hideLoading } from './utils/utils.js';
+// import { themeAction, } from './theme.js';
 function authActions() {
     // showLoading();
+    // themeAction();
     attachInputFocusListeners();
     attachRouterListeners();
     // hideLoading();

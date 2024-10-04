@@ -1,0 +1,209 @@
+
+.nav-bar {
+    color: var(--title-color);
+    background-color: var(--base);
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+    padding: 20px 36px;
+}
+
+.welcome {
+    display: flex;
+    align-items: center;
+}
+
+.welcome h5 {
+    font-weight: bold;
+}
+
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    grid-gap: 10px;
+}
+
+.nav-elements {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 50px;
+    padding: 8px;
+}
+
+.nav-elements img {
+    padding: 8px;
+}
+
+.nav-elements svg{
+    fill: var(--sub-color);
+}
+
+.nav-elements svg:hover {
+    fill: var(--primary-color);
+}
+
+.content {
+    background: var(--base);
+    display: flex;
+    height: calc(100vh - 80px);
+}
+
+.sidebar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 110px;
+    height: 100%;
+    padding: 0 20px 20px;
+    overflow: hidden;
+}
+
+.sidebar-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--base-shade);
+    height: 100%;
+    border-radius: 15px;
+    padding-bottom: 50%;
+}
+
+.sidebar-content svg{
+    fill : var(--sub-color);
+}
+
+.sidebar-content svg:hover{
+    fill : var(--primary-color);
+}
+
+.menu {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    height: 50%;
+}
+
+.menu hr {
+    color: var(--title-color);
+    width: 100%;
+}
+
+.menu .active-btn > svg{
+    fill : var(--primary-color);
+}
+
+.side-btns {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-around;
+}
+
+.nav-active { 
+    position: absolute;
+    display: flex;
+    align-items: center;
+    height: 25%;
+    left: -65%;
+    width: 6px;
+    transition: top 0.4s ease;
+}
+
+.nav-active > span {
+    display: block;
+    height: 70%;
+    width: 100%;
+    background-color: var(--primary-color);
+    border-radius: 8px;
+}
+
+.home.active-btn ~ .nav-active {
+    top: 0%; 
+}
+
+.game.active-btn ~ .nav-active {
+    top: 25%; 
+}
+
+.chat.active-btn ~ .nav-active {
+    top: 50%;
+}
+
+.settings.active-btn ~ .nav-active {
+    top: 75%;
+}
+
+
+.online {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    grid-gap: 16px;
+    flex-wrap: nowrap;
+    padding: 10px;
+    height: 30%;
+}
+
+.online > p {
+    font-size: small;
+    font-weight: bold;
+    color: var(--title-color);
+    margin: 0;
+}
+
+.online .online-users {
+    display: grid;
+    gap: 10px;
+    max-height: 160px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.online-users::-webkit-scrollbar{
+    display: none;
+}
+
+.online-users .user {
+    border-radius: 100%;
+    background: var(--base);
+    padding: 10px;
+    height: 35px;
+    width: 35px;
+}
+
+
+
+@media only screen and (max-width: 720px){
+    .nav-bar {
+        padding: 20px 20px;
+    }
+
+    .nav-buttons{
+        grid-gap: 3px;
+    }
+
+    .nav-elements img{
+        padding: 2px;
+    }
+
+    .welcome > h5 {
+        font-size: small;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+}
