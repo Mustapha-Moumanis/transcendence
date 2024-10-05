@@ -5,6 +5,7 @@ import NotFound from './pages/NotFound/NotFound.js';
 import ResetPassword from './pages/ResetPassword/ResetPassword.js';
 import Settings from './pages/Settings/settings.js';
 import Chat from './pages/Chat/chat.js';
+import Game from './pages/Game/game.js';
 import { isAuthenticated } from './utils/js/auth.js';
 import { showLoading, hideLoading} from './utils/js/utils.js';
 
@@ -15,11 +16,16 @@ const routes = {
   'reset-password' : ResetPassword,
   'settings' : Settings,
   'chat' : Chat,
+  'game' : Game,
 };
 
 function Router() {
   const handleRouteChange = async () => {
-    let path = window.location.hash.slice(1) || 'home';
+    let path = window.location.hash.slice(1) || (() => {
+      window.location.hash = '#home';
+      return 'home';
+    })();
+    
     console.log(">> ", path)
     if (isAuthenticated()) {
       console.log("User is authenticated");
@@ -33,7 +39,6 @@ function Router() {
         return window.location.hash = '#login';
       }
     }
-    console.log("component");
     const component = routes[path] || NotFound;
     await component();
 
@@ -42,8 +47,8 @@ function Router() {
 
   window.addEventListener('hashchange', handleRouteChange);
 
-  // showLoading();
-  handleRouteChange();
+  if (!window.location.hash) window.location.hash = '#home';
+  else handleRouteChange();
 }
 
 Router()

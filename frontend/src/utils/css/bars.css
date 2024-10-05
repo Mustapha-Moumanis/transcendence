@@ -98,7 +98,7 @@
     width: 100%;
 }
 
-.menu .active-btn > svg{
+.menu .active-btn svg{
     fill : var(--primary-color);
 }
 
