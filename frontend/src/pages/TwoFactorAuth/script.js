@@ -5,6 +5,7 @@ import {
 	authActions,
 	login
 } from '../../utils/js/auth.js'
+import { startSocket, } from '../chat/js/socket.js'
 
 function numbersInputsEffect(inputs) {
 
@@ -103,6 +104,7 @@ function handleConfirmTwoFactorFormSubmission(userData, inputs) {
 		.then(data => {
 			displaySuccess('Login successful!');
 			login(JSON.stringify(userData));
+			startSocket();
 			setTimeout(() => { window.location.hash = '#home' }, 1000);
 		})
 		.catch(error => {

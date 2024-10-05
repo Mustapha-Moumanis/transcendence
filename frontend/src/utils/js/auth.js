@@ -97,7 +97,7 @@ function authActions() {
 }
 
 async function mainActions() {
-    await HomeEffects();
+    // await HomeEffects();
 }
 
 export {

@@ -105,17 +105,18 @@ export function handleLogoutBtn() {
             return response.json();
         })
         .then(data => {
-            displaySuccess('Logout successful!');
+            // displaySuccess('Logout successful!');
             logout();
             setTimeout(() => { window.location.hash = '#login'; }, 1000);
         })
         .catch(error => {
-            displayError(error.message);
+            // displayError(error.message);
             logout();
             setTimeout(() => { window.location.hash = '#login'; }, 1000);
         });
 	});
 };
+
 
 export async function HomeEffects() {
   const root = document.getElementById('root');
@@ -136,13 +137,29 @@ export async function HomeEffects() {
     
     root.innerHTML = nav + content.outerHTML;
 
-    // loadCSS('./utils/bootstrap.min.css');
-    loadCSS('./pages/Home/home.css');
-    loadCSS('./utils/css/style.css');
     loadCSS('./utils/css/bars.css');
 
-    // handleLogoutBtn();
-    themeAction();
-    // hideLoading();
+    setTimeout(() => { 
+      themeAction();
+      handleLogoutBtn();
+    }, 0);
+
+    const themeButton = document.querySelector('.themeButton');
+    if (themeButton) themeButton.remove();
+  }
+}
+
+export async function AuthEffects() {
+  if (document.querySelector('.themeButton') == null) {
+    console.log("Auth Effect")
+    const themeButtonContent = await loadHTML('../components/themeButton/themeButton.html');
+    
+    const btnContent = document.createElement('div');
+    btnContent.innerHTML = themeButtonContent;
+    
+    document.body.appendChild(btnContent.firstElementChild);
+
+    console.log("Auth Effect")
+    setTimeout(() => { themeAction(); }, 0);
   }
 }

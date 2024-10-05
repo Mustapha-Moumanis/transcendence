@@ -7,10 +7,6 @@ async function Settings() {
   await HomeEffects();
 
   document.getElementById('home-content').innerHTML = html;
-  
-
-  // loadCSS('./utils/bootstrap.min.css');
-  // loadCSS('./utils/css/style.css');
 
   settingsActions();
 }

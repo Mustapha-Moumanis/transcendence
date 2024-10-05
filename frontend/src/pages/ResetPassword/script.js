@@ -44,9 +44,7 @@ function handleResetFormSubmission() {
 			.then(data => {
 				displaySuccess(data.detail);
 				console.log(email.value)
-				showLoading()
 				ResetPasswordConfirm(email.value);
-				hideLoading()
 			})
 			.catch(error => {
 				if (error != "Error")
