@@ -52,10 +52,7 @@ function handleLoginFormSubmission() {
                     // setCookie('my-token', data.access, 30);
                     // setCookie('my-refresh-token', data.refresh, 30);
                     startSocket();
-                    setTimeout(() => {
-                        // Router("home");
-                        window.location.hash = '#home';
-                    }, 1000);
+                    setTimeout(() => { window.location.hash = '#home'; }, 1000);
                 }
             })
             .catch(error => {

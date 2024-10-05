@@ -43,7 +43,6 @@ export function themeAction() {
   });
 
   loadTheme(getCurrentTheme());
-
 };
 
 // --------------------------------------------- //

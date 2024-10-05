@@ -6,8 +6,6 @@ async function ResetPasswordConfirm(email) {
   const root = document.getElementById('root');
 
   root.innerHTML = html;
-  // loadCSS('./utils/bootstrap.min.css');
-  loadCSS('./utils/css/style.css');
 
   ResetPasswordConfirmActions(email);
 }

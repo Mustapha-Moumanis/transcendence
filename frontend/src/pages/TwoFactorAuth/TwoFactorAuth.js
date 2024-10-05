@@ -1,15 +1,16 @@
-import { loadHTML } from '../../utils/js/utils.js';
+import { loadHTML, showLoading, hideLoading, AuthEffects } from '../../utils/js/utils.js';
 import { TwoFactorAuthConfirmActions } from './script.js'
 
 async function TwoFactorAuth(userData) {
+  showLoading();
   const html = await loadHTML('./pages/TwoFactorAuth/TwoFactorAuth.html');
-  const root = document.getElementById('root');
+  await AuthEffects();
 
+  const root = document.getElementById('root');
   root.innerHTML = html;
-  // loadCSS('./utils/bootstrap.min.css');
-  // loadCSS('./utils/css/style.css');
 
   TwoFactorAuthConfirmActions(userData);
+  hideLoading();
 }
 
 export default TwoFactorAuth;
