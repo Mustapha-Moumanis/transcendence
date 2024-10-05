@@ -117,10 +117,25 @@ export function handleLogoutBtn() {
 	});
 };
 
+function updateSidebar() {
+  const currentHash = window.location.hash;
+  const buttons = document.querySelectorAll('.side-btns div');
+
+  if (buttons) {
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        buttons.forEach(btn => btn.classList.remove('active-btn'));
+        button.classList.add('active-btn');
+      });
+      // if (button.getAttribute('href') === currentHash) button.parentElement.classList.add('active-btn');
+      // else button.parentElement.classList.remove('active-btn');
+    });
+  }
+}
 
 export async function HomeEffects() {
   const root = document.getElementById('root');
-  if (root.querySelector('.nav') == null) {
+  if (root.querySelector('.nav-bar') == null) {
     console.log("Home Effect")
     const nav = await loadHTML('../components/nav/navBar.html');
     const sidebar = await loadHTML('../components/sidebar/sidebar.html');
@@ -142,6 +157,7 @@ export async function HomeEffects() {
     setTimeout(() => { 
       themeAction();
       handleLogoutBtn();
+      updateSidebar();
     }, 0);
 
     const themeButton = document.querySelector('.themeButton');
@@ -151,7 +167,6 @@ export async function HomeEffects() {
 
 export async function AuthEffects() {
   if (document.querySelector('.themeButton') == null) {
-    console.log("Auth Effect")
     const themeButtonContent = await loadHTML('../components/themeButton/themeButton.html');
     
     const btnContent = document.createElement('div');
@@ -159,7 +174,38 @@ export async function AuthEffects() {
     
     document.body.appendChild(btnContent.firstElementChild);
 
-    console.log("Auth Effect")
     setTimeout(() => { themeAction(); }, 0);
   }
 }
+
+// function updateSidebar() {
+//   const buttons = document.querySelectorAll('.side-btns div');
+//   const topStyle = {
+//     "home" : "0%",
+//     "game" : "25%",
+//     "chat" : "50%",
+//     "settings" : "75%",
+//   }
+
+
+//   function moveNavActive(button) {
+//     buttons.forEach(btn => btn.classList.remove('active-btn'));
+//     button.classList.add('active-btn');
+//     console.log("btn : ", button.classList[0]);
+//     // console.log(button.classList[0]);
+    
+//   }
+
+//   if (buttons) {
+//     buttons.forEach(button => {
+//       button.addEventListener('click', () => {
+//         moveNavActive(button);
+//       });
+//       // if () {
+//       //   button.parentElement.classList.add('active-btn');
+//       // }
+//       // else button.parentElement.classList.remove('active-btn');
+//     });
+//     // activeBtn.classList.remove('active-btn');
+//   }
+// }
