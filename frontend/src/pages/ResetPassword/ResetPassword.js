@@ -11,7 +11,7 @@ async function ResetPassword() {
   root.innerHTML = html;
 
   ResetPasswordActions();
-  hideLoading();
+  // hideLoading();
 }
 
 export default ResetPassword;

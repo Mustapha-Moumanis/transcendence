@@ -342,13 +342,6 @@ a.btn-sc svg {
     clear: both;
 }
 
-hr {
-    display: block;
-    clear: both;
-    border-top: solid 1px var(--title-color);
-    margin: 40px 0 40px 0;
-}
-
 .no-bottom {
     margin-bottom: 0;
     padding-bottom: 0;
@@ -483,46 +476,4 @@ p {
 
 .themeButton svg {
     fill: var(--sub-color);
-}
-
-/*  */
-
-/* ************************************** */
-/* *********** Settings : 2fa *********** */
-/* ************************************** */
-
-.active2fa {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2001;
-}
-  
-.active2fa-content {
-    background: var(--base);
-    display: flex;
-    flex-direction: column;
-    border-radius: 15px;
-    padding: 30px;
-}
-  
-.active2fa-content h6 {
-    font-weight: bold;
-}
-.active2fa-content .numbers-field {
-    column-gap: 5px;
-}
-  
-#qr-code img{
-    background-color: white;
-    max-width: 150px;
-    max-height: 150px;
 }

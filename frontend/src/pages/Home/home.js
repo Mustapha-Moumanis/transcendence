@@ -9,6 +9,7 @@ async function Home() {
   const html = await loadHTML('./pages/Home/home.html');
   await HomeEffects();
 
+  loadCSS(['./pages/Home/home.html'])
   document.getElementById('home-content').innerHTML = html;
 
   homeActions();

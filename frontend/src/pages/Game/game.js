@@ -7,7 +7,7 @@ async function Game() {
 
   document.getElementById('home-content').innerHTML = html;
 
-  loadCSS('./utils/game/css/game.css');
+  loadCSS(['./pages/Game/game.css']);
 
   gameActions();
 }
