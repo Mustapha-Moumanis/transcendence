@@ -8,6 +8,7 @@ async function Settings() {
 
   document.getElementById('home-content').innerHTML = html;
 
+  loadCSS(['./pages/Settings/settings.css',]);
   settingsActions();
 }
 

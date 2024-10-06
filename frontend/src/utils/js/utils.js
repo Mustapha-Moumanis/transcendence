@@ -14,14 +14,15 @@ export async function loadHTML(url) {
   }
 }
 
-export function loadCSS(url) {
-  if (document.querySelector(`link[href="${url}"]`))
-    return;
+export function loadCSS(urls) {
+  urls.forEach(url => {
+    if (document.querySelector(`link[href="${url}"]`)) return;
 
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = url;
-  document.head.appendChild(link);
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = url;
+    document.head.appendChild(link);
+  });
 }
 
 export function loadJS({ url, defer = false, type = 'text/javascript' }) {
@@ -41,9 +42,19 @@ export function loadJS({ url, defer = false, type = 'text/javascript' }) {
     document.body.appendChild(script);
   });
 }
+
 export function removeAllCSS() {
   const links = document.querySelectorAll('link[rel="stylesheet"]');
-  links.forEach(link => link.parentNode.removeChild(link));
+  const list = [
+    'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
+    './utils/css/style.css',
+    './utils/css/variables.css',
+  ];
+  
+  links.forEach(link => {
+    if (!list.includes(link.getAttribute('href')))
+      link.parentNode.removeChild(link);
+  });
 }
 
 export function removeAllJS() {
@@ -52,10 +63,12 @@ export function removeAllJS() {
 }
 
 export function showLoading() {
+  console.log("show");
   document.getElementById('loading').removeAttribute("style");
 }
 
 export function hideLoading() {
+  console.log("hide");
   setTimeout(() => {
     document.getElementById('loading').style.display = "none";
   }, 1500)
@@ -127,8 +140,10 @@ function updateSidebar() {
         buttons.forEach(btn => btn.classList.remove('active-btn'));
         button.classList.add('active-btn');
       });
-      // if (button.getAttribute('href') === currentHash) button.parentElement.classList.add('active-btn');
-      // else button.parentElement.classList.remove('active-btn');
+      
+      const link = button.querySelector('a');
+      if (link && link.getAttribute('href') === currentHash) button.classList.add('active-btn');
+      else button.classList.remove('active-btn');
     });
   }
 }
@@ -137,6 +152,7 @@ export async function HomeEffects() {
   const root = document.getElementById('root');
   if (root.querySelector('.nav-bar') == null) {
     console.log("Home Effect")
+    showLoading();
     const nav = await loadHTML('../components/nav/navBar.html');
     const sidebar = await loadHTML('../components/sidebar/sidebar.html');
 
@@ -152,7 +168,7 @@ export async function HomeEffects() {
     
     root.innerHTML = nav + content.outerHTML;
 
-    loadCSS('./utils/css/bars.css');
+    loadCSS(['./utils/css/bars.css']);
 
     setTimeout(() => { 
       themeAction();
@@ -166,6 +182,7 @@ export async function HomeEffects() {
 }
 
 export async function AuthEffects() {
+  removeAllCSS();
   if (document.querySelector('.themeButton') == null) {
     const themeButtonContent = await loadHTML('../components/themeButton/themeButton.html');
     
@@ -177,35 +194,3 @@ export async function AuthEffects() {
     setTimeout(() => { themeAction(); }, 0);
   }
 }
-
-// function updateSidebar() {
-//   const buttons = document.querySelectorAll('.side-btns div');
-//   const topStyle = {
-//     "home" : "0%",
-//     "game" : "25%",
-//     "chat" : "50%",
-//     "settings" : "75%",
-//   }
-
-
-//   function moveNavActive(button) {
-//     buttons.forEach(btn => btn.classList.remove('active-btn'));
-//     button.classList.add('active-btn');
-//     console.log("btn : ", button.classList[0]);
-//     // console.log(button.classList[0]);
-    
-//   }
-
-//   if (buttons) {
-//     buttons.forEach(button => {
-//       button.addEventListener('click', () => {
-//         moveNavActive(button);
-//       });
-//       // if () {
-//       //   button.parentElement.classList.add('active-btn');
-//       // }
-//       // else button.parentElement.classList.remove('active-btn');
-//     });
-//     // activeBtn.classList.remove('active-btn');
-//   }
-// }

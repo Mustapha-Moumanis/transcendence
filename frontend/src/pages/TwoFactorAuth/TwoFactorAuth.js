@@ -10,7 +10,7 @@ async function TwoFactorAuth(userData) {
   root.innerHTML = html;
 
   TwoFactorAuthConfirmActions(userData);
-  hideLoading();
+  // hideLoading();
 }
 
 export default TwoFactorAuth;

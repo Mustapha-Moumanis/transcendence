@@ -1,4 +1,4 @@
-import { loadHTML, loadCSS, showLoading, hideLoading, AuthEffects } from '../../utils/js/utils.js';
+import { loadHTML, showLoading, hideLoading, AuthEffects } from '../../utils/js/utils.js';
 import { loginActions } from './script.js'
 
 
@@ -11,7 +11,7 @@ async function Login() {
   root.innerHTML = html;
 
   loginActions();
-  hideLoading();
+  // hideLoading();
 }
 
 

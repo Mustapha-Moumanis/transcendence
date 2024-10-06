@@ -11,7 +11,7 @@ async function Register() {
   root.innerHTML = html;
 
   registerActions();
-  hideLoading();
+  // hideLoading();
 }
 
 export default Register;

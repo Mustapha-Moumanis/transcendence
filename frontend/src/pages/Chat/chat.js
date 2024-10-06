@@ -7,11 +7,14 @@ async function Chat() {
 
   document.getElementById('home-content').innerHTML = html;
 
-  loadCSS('./utils/chat/css/chat.css');
-  loadCSS('./utils/chat/css/main-chat.css');
-  loadCSS('./utils/chat/css/mobile-chat.css');
-  loadCSS('./utils/chat/css/chat-sidebar.css');
-
+  var styleList = [
+    './utils/chat/css/chat.css',
+    './utils/chat/css/main-chat.css',
+    './utils/chat/css/mobile-chat.css',
+    './utils/chat/css/chat-sidebar.css',
+  ]
+  loadCSS(styleList);
+  
   chatActions();
 }
 
