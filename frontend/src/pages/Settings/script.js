@@ -3,7 +3,6 @@ import { displayFieldError, displaySuccess, displayError, authActions} from '../
 
 function close2fa() {
 	document.querySelector(".close2fa").addEventListener("click", () => {
-        console.log("close");
 		document.querySelector(".active2fa").classList.add("d-none");
 	})
 }
@@ -243,7 +242,6 @@ function mode2faDisactive(btn) {
 				.then(response => {
 					if (!response.ok) {
 						return response.json().then(errorData => {
-							console.log(errorData.is2faActive)
 							if (errorData.is2faActive[0])
 								throw new Error(errorData.is2faActive[0]);
 							else if (errorData.code)
@@ -292,7 +290,6 @@ function twoFactorAuth() {
 				}
 			})
 			.then(response => {
-				console.log(response)
 				if (!response.ok) {
 					return response.json().then(errorData => {
 						if (errorData.non_field_errors)

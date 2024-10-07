@@ -28,10 +28,8 @@ function Router() {
     
     console.log(">> ", path)
     if (isAuthenticated()) {
-      console.log("User is authenticated");
 
       if (path === 'login' || path === 'register' || path === 'reset-password') {
-        // path = 'home';
         return window.location.hash = '#home';
       }
     } else {

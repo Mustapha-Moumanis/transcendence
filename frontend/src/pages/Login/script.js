@@ -30,7 +30,6 @@ function handleLoginFormSubmission() {
             })
             .then(response => {
                 if (!response.ok) {
-                    console.log(response)
                     return response.json().then(errorData => {
                         if (errorData.non_field_errors) {
                             throw new Error(errorData.non_field_errors[0]);
@@ -48,10 +47,8 @@ function handleLoginFormSubmission() {
                     TwoFactorAuth(data);
                 else {
                     displaySuccess('Login successful!');
-                    login(JSON.stringify(data))
-                    // setCookie('my-token', data.access, 30);
-                    // setCookie('my-refresh-token', data.refresh, 30);
-                    startSocket();
+                    login(JSON.stringify(data));
+                    // startSocket();
                     setTimeout(() => { window.location.hash = '#home'; }, 1000);
                 }
             })
