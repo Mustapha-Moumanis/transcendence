@@ -1,4 +1,4 @@
-import { showLoading, hideLoading, HomeEffects } from './utils.js';
+import { showLoading, hideLoading, HomeEffects, setCookie, deleteCookie } from './utils.js';
 
 function isAuthenticated() {
     return !!localStorage.getItem('authTokens');
@@ -6,10 +6,14 @@ function isAuthenticated() {
 
 function login(authTokens) {
     localStorage.setItem('authTokens', authTokens);
+    setCookie('my-token', authTokens.access, 30);
+    setCookie('my-refresh-token', authTokens.refresh, 30);
 }
   
 function logout() {
     localStorage.removeItem('authTokens');
+    deleteCookie('my-token');
+    deleteCookie('my-refresh-token');
 }
 
 function displayError(message) {
@@ -81,7 +85,6 @@ function attachRouterListeners() {
     for (let i = 0; i < routerElements.length; i++) {
         routerElements[i].addEventListener('click', function(e) {
             let page = e.currentTarget.getAttribute("data-router");
-            console.log(page);
             window.location.hash = page;
             // Router(page);
         });

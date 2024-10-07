@@ -43,7 +43,6 @@ function handleResetFormSubmission() {
 			})
 			.then(data => {
 				displaySuccess(data.detail);
-				console.log(email.value)
 				ResetPasswordConfirm(email.value);
 			})
 			.catch(error => {

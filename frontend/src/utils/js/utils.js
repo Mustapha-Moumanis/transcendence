@@ -1,5 +1,6 @@
 import { logout, displaySuccess, displayError } from './auth.js'
 import { themeAction } from './theme.js'
+import { startSocket, } from '../../pages/chat/js/socket.js'
 
 export async function loadHTML(url) {
   try {
@@ -63,12 +64,10 @@ export function removeAllJS() {
 }
 
 export function showLoading() {
-  console.log("show");
   document.getElementById('loading').removeAttribute("style");
 }
 
 export function hideLoading() {
-  console.log("hide");
   setTimeout(() => {
     document.getElementById('loading').style.display = "none";
   }, 1500)
@@ -96,37 +95,48 @@ export function getCookie(name) {
   return null;
 }
 
+export function deleteCookie(name) {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+}
+
 export function handleLogoutBtn() {
 	document.getElementById('logout').addEventListener('click', function(e) {
 
-		fetch('api/logout/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        })
-        .then(response => {
-            if (!response.ok) {
-                console.log(response)
-                return response.json().then(errorData => {
-                    if (errorData.non_field_errors) {
-                        throw new Error(errorData.non_field_errors[0]);
-                    }
-                    throw new Error('Handled HTTP error');
-                });
-            }
-            return response.json();
-        })
-        .then(data => {
-            // displaySuccess('Logout successful!');
-            logout();
-            setTimeout(() => { window.location.hash = '#login'; }, 1000);
-        })
-        .catch(error => {
-            // displayError(error.message);
-            logout();
-            setTimeout(() => { window.location.hash = '#login'; }, 1000);
-        });
+    const localData = localStorage.getItem('authTokens');
+    if (localData) {
+      const accessToken = JSON.parse(localData).access;
+      const data = { is2faActive: false };
+      
+      fetch('api/logout/', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${accessToken}`
+          },
+          body: JSON.stringify(data)
+      })
+      .then(response => {
+          if (!response.ok) {
+              return response.json().then(errorData => {
+                  if (errorData.non_field_errors) {
+                      throw new Error(errorData.non_field_errors[0]);
+                  }
+                  throw new Error('Handled HTTP error');
+              });
+          }
+          return response.json();
+      })
+      .then(data => {
+          // displaySuccess('Logout successful!');
+          logout();
+          setTimeout(() => { window.location.hash = '#login'; }, 1000);
+      })
+      .catch(error => {
+          // displayError(error.message);
+          logout();
+          setTimeout(() => { window.location.hash = '#login'; }, 1000);
+      });
+    }
 	});
 };
 
@@ -151,7 +161,6 @@ function updateSidebar() {
 export async function HomeEffects() {
   const root = document.getElementById('root');
   if (root.querySelector('.nav-bar') == null) {
-    console.log("Home Effect")
     showLoading();
     const nav = await loadHTML('../components/nav/navBar.html');
     const sidebar = await loadHTML('../components/sidebar/sidebar.html');
@@ -174,6 +183,7 @@ export async function HomeEffects() {
       themeAction();
       handleLogoutBtn();
       updateSidebar();
+			startSocket();
     }, 0);
 
     const themeButton = document.querySelector('.themeButton');

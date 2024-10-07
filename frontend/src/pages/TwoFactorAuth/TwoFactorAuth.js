@@ -2,7 +2,6 @@ import { loadHTML, showLoading, hideLoading, AuthEffects } from '../../utils/js/
 import { TwoFactorAuthConfirmActions } from './script.js'
 
 async function TwoFactorAuth(userData) {
-  showLoading();
   const html = await loadHTML('./pages/TwoFactorAuth/TwoFactorAuth.html');
   await AuthEffects();
 

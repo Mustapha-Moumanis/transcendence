@@ -13,7 +13,6 @@ export function themeAction() {
   }
   
   function loadTheme(theme){
-    console.log(theme);
     const root = document.querySelector(':root');
     if(theme === "dark") themeBtn.innerHTML = `
       <svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
