@@ -8,8 +8,8 @@
     flex-grow: 2;
     height: 100%;
     border-radius : 20px;
-    background-color: var(--bg-dark-2);
-    color : var(--sub-dark);
+    background-color: var(--base-shade);
+    color : var(--sub-color);
 }
 
 .chat-container {
@@ -25,7 +25,7 @@
     flex-grow: 2;
     display: flex;
     flex-direction: column;
-    background-color: var(--bg-dark-2);
+    background-color: var(--base-shade);
 }
 
 .chat-header {
@@ -33,11 +33,11 @@
     align-items: center;
     padding: 15px;
     gap: 8px;
-    box-shadow: 0px 9px 9px -5px var(--bg-dark-1) ;
+    box-shadow: 0px 9px 9px -5px var(--base) ;
 }
 
 .expand-left {
-    fill: var(--sub-dark);
+    fill: var(--sub-color);
     cursor: pointer;
     display: none;
 }
@@ -58,13 +58,13 @@
 }
 
 .chat-options svg {
-    fill: var(--sub-dark);
+    fill: var(--sub-color);
     cursor: pointer;
 }
 
 .chat-options-list {
     display: flex;
-    background: var(--bg-dark-1);
+    background: var(--base);
     border-radius: 5px;
     position: absolute;
     top: 100%;
@@ -75,11 +75,11 @@
     justify-content: flex-start;
     align-items: center;
     padding: 15px;
-    border: 0.5px solid var(--bg-dark-3);
+    border: 0.5px solid var(--base-tint);
 }
 
 .chat-option-element {
-    color: var(--title-dark);
+    color: var(--title-color);
     font-weight: 500;
     cursor: pointer;
     width: 100%;
@@ -89,7 +89,7 @@
 }
 
 .chat-option-element:hover {
-    background-color: var(--bg-dark-4);
+    background-color: var(--base-hover);
 }
 .chat-box {
     display: flex;
@@ -113,7 +113,7 @@
 }
 
 .chat-profile-content h5 {
-    color: var(--title-dark);
+    color: var(--title-color);
     font-size: 20px;
     padding: 15px;
     white-space: nowrap;
@@ -133,7 +133,6 @@
     margin: 8px 0;
     border-radius: 10px;
     max-width: 70%;
-    color: var(--title-dark);
     word-break: break-all;
 }
 
@@ -142,19 +141,21 @@
     position: absolute;
     top: -15px;
     width: 90px;
-    color: var(--fill-dark);
+    color: var(--sub-color);
     font-size: 10px;
     transition: opacity 0.4s;
 }
 
 .message.sent {
+    color: var(--base);
     background: var(--primary-color);
     border-radius: 16px 16px 3px 16px;
     align-self: flex-end;
 }
 
 .message.received {
-    background-color: var(--bg-dark-4);
+    color: var(--title-color);
+    background-color: var(--base-hover);
     border-radius: 16px 16px 16px 3px;
     align-self: flex-start;
 }
@@ -174,7 +175,7 @@
 /* -------------------------- */
 
 .chat-list-typing {
-    color: var(--sub-dark);
+    color: var(--sub-color);
     margin: 0;
     font-size: 13px;
     white-space: nowrap;
@@ -187,7 +188,7 @@
     width: 3px;
     height: 3px;
     border-radius: 50%;
-    background-color: var(--sub-dark);
+    background-color: var(--sub-color);
 }
   
 .chat-list-typing .chat-list-dote-typing:nth-last-child(3) {
@@ -246,11 +247,11 @@
     flex-grow: 2;
     display: flex;
     flex-direction: column;
-    background-color: var(--bg-dark-2);
+    background-color: var(--base-shade);
 }
 
 .bg-loading {
-    background-color: var(--bg-dark-4) !important;
+    background-color: var(--base-hover) !important;
     width: 100%;
     border-radius: 0.25rem;
     display: inline-flex;
@@ -267,7 +268,7 @@
     animation-iteration-count: infinite;
     animation-name: bg-loading;
     animation-timing-function: ease-in-out;
-    background-image: linear-gradient(90deg, #3e3e3e, #646262, #3e3e3e);
+    background-image: linear-gradient(90deg, var(--base-hover), var(--base-shade), var(--base-hover));
     background-repeat: no-repeat;
     content: " ";
     display: block;
@@ -308,7 +309,7 @@
     width: 7px;
     height: 7px;
     border-radius: 15px;
-    background-color: var(--sub-dark);
+    background-color: var(--sub-color);
 }
   
 .chat-typing .chat-dote-typing:nth-last-child(1) {
@@ -341,7 +342,7 @@
     padding: 15px 24px;
     height: 62px;
     grid-gap: 0 12px;
-    box-shadow: 0px -9px 9px -2px var(--bg-dark-1);  
+    box-shadow: 0px -9px 9px -2px var(--base);  
 }
 
 .input-box img{
@@ -353,9 +354,9 @@
     padding: 8px 16px;
     border-radius: 8px;
     border: none;
-    background-color: var(--bg-dark-1);
+    background-color: var(--base);
     min-width: 50px;
-    color: var(--sub-dark);
+    color: var(--sub-color);
 }
 
 .input-box input:-webkit-autofill,
@@ -363,9 +364,9 @@
 .input-box input:-webkit-autofill:focus, 
 .input-box input:-webkit-autofill:active {
     -webkit-background-clip: text;
-    -webkit-text-fill-color: var(--sub-dark);
-    -webkit-box-shadow: 0 0 0px 1000px var(--bg-dark-1) inset;
-    caret-color: var(--sub-dark);
+    -webkit-text-fill-color: var(--sub-color);
+    -webkit-box-shadow: 0 0 0px 1000px var(--base) inset;
+    caret-color: var(--sub-color);
 }
 
 .list-emoji {
@@ -374,14 +375,14 @@
     height: 290px;
     bottom: 75px;
     left: 24px;
-    background-color: var(--bg-dark-1);
+    background-color: var(--base);
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(30, 31, 34, 100);
     padding: 15px;
     overflow-y: scroll;
     overflow-x: hidden;
-    color: var(--sub-dark);
-    outline: 1px solid var(--bg-dark-3) !important;
+    color: var(--sub-color);
+    outline: 1px solid var(--base-tint) !important;
 }
 
 .list-emoji::-webkit-scrollbar{
@@ -394,7 +395,7 @@
     display: inline-block;
     width: 100%;
     padding: 6px 10px;
-    border-bottom: 1px solid var(--bg-dark-4);
+    border-bottom: 1px solid var(--base-hover);
 }
 
 .emoji-content {

@@ -1,4 +1,8 @@
-
+import {user} from "./socket.js"
+import {activeBtn} from "./listchat.js"
+import {smoothScrollToBottom} from "./scrollHandler.js"
+import {blockClick} from "./homeSocket.js"
+import {sendToBackend} from "../script.js"
 // ------------------ Upadate chat------------------
 
 function updateNotification(data){
@@ -47,7 +51,6 @@ function respondMessage(data) {
     }
     else
         sendToBackend(data.username, "CreatNotifChat", "");
-
 }
 
 function receiveMessage(data) {
@@ -118,7 +121,7 @@ function chatHeader(data) {
 
     const header =  document.querySelector('.chat-header');
     header.innerHTML = `
-        <img class="expand-left" onclick="CloseMainChat()" src="chat/icons/Expand_left.svg" alt="close-chat">
+        <img class="expand-left" onclick="CloseMainChat()" src="utils/chat/icons/Expand_left.svg" alt="close-chat">
         <div class="chat-user-img">
             <img class="avatar" src="${data.avatar}" alt="${data.sendto}">
         </div>
@@ -171,56 +174,6 @@ function createEndOfConv(data){
     return div;
 }
 
-function showAllMessages(data) {
-
-    removeNotif(data.sendto, ".notifMessage");
-
-    messages = data['messages'];
-    const container = document.querySelector("#id_chat_item_container");
-    container.innerHTML = '';
-    messages.forEach(message => {
-        container.appendChild(createMessageElement(message));
-        smoothScrollToBottom(container);
-    });
-
-    scrollDisplay = data["scrollDisplay"];
-    if (!scrollDisplay) {
-        container.appendChild(createEndOfConv(data));
-        removeScroll();
-    }
-    document.querySelector("#id_message_send_input").value = "";
-
-    // ==> This part for hiddin the loading part & display conversation.
-    document.querySelector(".loading-chat").classList.add("d-none");
-    document.querySelector(".main-chat").classList.remove("d-none");
-    // =============================================== END OF THIS PART.
-
-    scrollnb = 0;
-    oldScrollHeight = 0;
-    if (scrollDisplay)
-        focusScroll();
-}
-
-function loadMoreContent(data){
-    messages = data['messages'];
-    // --------- remove loading
-    const loading = document.querySelector(".chat-loading");
-    loading.remove();
-    // ------------------------
-    const container = document.querySelector("#id_chat_item_container");
-    messages.forEach(message => {
-        container.appendChild(createMessageElement(message));
-    });
-    document.querySelector("#id_message_send_input").value = "";
-
-    scrollDisplay = data["scrollDisplay"];
-    if (!scrollDisplay) {
-        container.appendChild(createEndOfConv(data));
-        removeScroll();
-    }
-    focusScroll();
-}
-
 // ------------ Typing ------------
 
 function stopTyping(data){
@@ -268,4 +221,16 @@ function createTypingDiv(){
         <div class="chat-dote-typing"></div>
     `;
     return (div);
+}
+
+export {
+    startTyping,
+    stopTyping,
+    chatHeader,
+    CloseMainChat,
+    receiveMessage,
+    respondMessage,
+    updatestatuUsers,
+    createEndOfConv,
+    createMessageElement,
 }

@@ -1,18 +1,26 @@
+import {startTyping, stopTyping, chatHeader,
+    receiveMessage, respondMessage, updatestatuUsers,} from "./conversationChat.js"
+
+import {friendBlockedYou, updateHomeNotification, homeNotification,
+    searchHome, onlineFriendsHome, updateHomeUsers, debounce, startSearchAndNotif} from "./homeSocket.js"
+
+import {setEmojies} from "./emoji.js"
+import {loadMoreContent, showAllMessages} from "./scrollHandler.js"
+import {showFriends, showUsers, handleChatResise} from "./listchat.js"
+import {sendToBackend} from "../script.js"
+
 // ------------------ Varaibles Of Chat ------------------
-const handlerReference = (event) => scrollHandler(event);
-var scrollDisplay = false;
-var currentSendto = null;
-var oldScrollHeight = 0;
-var scrollnb = 0;
-var notifUser = null;
+export var chatSocket;
+export var dataListFriends;
+export var dataListUsers;
+export var user;
 
-// Chat data =>
-var dataListFriends;
-var dataListUsers;
+export var notifUser = null;
+export var currentSendto = null;
+export const setCurrentSendTo = (newSendTo) => {
+    currentSendto = newSendTo;
+};
 
-// socket varaibels =>
-var chatSocket;
-var user;
 
 function startSocket(){
 
@@ -28,7 +36,7 @@ function startSocket(){
 
     chatSocket.onopen = () => {
         console.log("The connection was setup successfully!");
-        // startSearchAndNotif();
+        startSearchAndNotif();
         sendToBackend("", "getDataHome", "");
     }
 
@@ -37,16 +45,16 @@ function startSocket(){
     chatSocket.onmessage = (event) => {
         const data = JSON.parse(event.data);
         if (data === null) return;
-        
+        console.log(data.type);
         if (data.type === "Error") console.log(data.error);
-        else if (data.type === "Blocked") friendBlockedYou(data);
-        else if (data.type === "reqConfirm") reqConfirm(data.listFriends);
-        else if (data.type === "reqDelete") reqDelete(data);
+        // else if (data.type === "Blocked") friendBlockedYou(data);
+        // else if (data.type === "reqConfirm") reqConfirm(data.listFriends);
+        // else if (data.type === "reqDelete") reqDelete(data);
         else if (data.type === "getHomedata"){
             onlineFriendsHome(data["onlineFriendsHome"]);
             homeNotification(data["homeNotification"]);
         }
-        else if (data.type === "searchHome") searchHome(data);
+        // else if (data.type === "searchHome") searchHome(data);
         else if (data.type === "updateHomeUsers") updateHomeUsers(data);
         else if (data.type === 'CreatNotifChat' || data.type === 'ToPlayPingPong' || data.type === "friendRequest") 
             updateHomeNotification(data);
@@ -74,14 +82,6 @@ function startSocket(){
 
 }
 
-function sendToBackend(sendto, type, message){
-    chatSocket.send(JSON.stringify({
-        type: type,
-        sendto: sendto,
-        message: message,
-    }));
-}
-
 function startChat(){
 
     if (notifUser) {
@@ -105,7 +105,6 @@ function startChat(){
     const debouncedtypingValue = debounce(userStoppedTyping, 1000);
     
     messageInput.onkeyup = function (e) {
-        // const sendto = document.querySelector(".chat-header .chat-user-content h5").innerText;
         if (!hasStartedTyping){
             sendToBackend(currentSendto, "startTyping", "");
             hasStartedTyping = true;
@@ -121,7 +120,6 @@ function startChat(){
     };
 
     function userStoppedTyping() {
-        // const sendto = document.querySelector(".chat-header .chat-user-content h5").innerText;
         hasStartedTyping = false;
         sendToBackend(currentSendto, "stopTyping", "");
     }

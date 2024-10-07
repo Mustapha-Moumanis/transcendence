@@ -1,3 +1,4 @@
+import { chatSocket } from '../../pages/Chat/js/socket.js';
 import { showLoading, hideLoading, HomeEffects, setCookie, deleteCookie } from './utils.js';
 
 function isAuthenticated() {
@@ -5,12 +6,13 @@ function isAuthenticated() {
 }
 
 function login(authTokens) {
-    localStorage.setItem('authTokens', authTokens);
+    localStorage.setItem('authTokens', JSON.stringify(authTokens));
     setCookie('my-token', authTokens.access, 30);
     setCookie('my-refresh-token', authTokens.refresh, 30);
 }
   
 function logout() {
+    chatSocket.close();
     localStorage.removeItem('authTokens');
     deleteCookie('my-token');
     deleteCookie('my-refresh-token');
