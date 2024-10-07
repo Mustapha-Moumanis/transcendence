@@ -121,7 +121,7 @@ function chatHeader(data) {
 
     const header =  document.querySelector('.chat-header');
     header.innerHTML = `
-        <img class="expand-left" onclick="CloseMainChat()" src="utils/chat/icons/Expand_left.svg" alt="close-chat">
+        <img class="expand-left" onclick="CloseMainChat()" src="pages/Chat/icons/Expand_left.svg" alt="close-chat">
         <div class="chat-user-img">
             <img class="avatar" src="${data.avatar}" alt="${data.sendto}">
         </div>

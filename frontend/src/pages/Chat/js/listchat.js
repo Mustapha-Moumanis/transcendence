@@ -120,7 +120,7 @@ function showUsers(data) {
         const div = document.createElement("div");
         div.classList.add("chat-friend-empty");
         div.innerHTML = `
-            <img src="utils/chat/icons/tmp/Empty-messages.png" alt="no-conversations">
+            <img src="pages/Chat/icons/tmp/Empty-messages.png" alt="no-conversations">
             <h5>No Conversations Yet</h5>
         `;
         container.appendChild(div);
@@ -152,7 +152,7 @@ function showFriends(data){
         const div = document.createElement("div");
         div.classList.add("chat-friend-empty");
         div.innerHTML = `
-            <img src="utils/chat/icons/tmp/Empty-friends.png" alt="no-friends">
+            <img src="pages/Chat/icons/tmp/Empty-friends.png" alt="no-friends">
             <h5>No Friends Right Now</h5>
         `;
         container.appendChild(div);

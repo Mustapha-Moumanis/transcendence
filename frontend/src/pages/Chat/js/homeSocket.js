@@ -167,7 +167,7 @@ function checkNotif(){
         const div = document.createElement("div");
         div.classList.add("empty-notifications");
         div.innerHTML = `
-            <img src="utils/chat/icons/tmp/Empty-notification.png" alt="no-notification">
+            <img src="pages/Chat/icons/tmp/Empty-notification.png" alt="no-notification">
             <h5>No Notifications Yet</h5>
         `;
         container.appendChild(div);
@@ -180,7 +180,7 @@ function creatNotifReqFriend(data){
     div.innerHTML = `
         <div class="notification-user-img">
             <img class="avatar" src=${data.avatar}>
-            <img class="notification-user-status" src="utils/chat/icons/UserAdd.svg"></img>
+            <img class="notification-user-status" src="pages/Chat/icons/UserAdd.svg"></img>
         </div>
         <div class="notification-user-content">
             <h5>${data.user}</h5>
@@ -189,11 +189,11 @@ function creatNotifReqFriend(data){
         <div class="notification-choices">
             <button id="reqConfirm" class="notification-btn badge d-flex align-items-center">
                 Confirm
-                <img src="utils/chat/icons/checkOk.svg" alt="OK">
+                <img src="pages/Chat/icons/checkOk.svg" alt="OK">
             </button>
             <button id="reqDelete" class="notification-btn badge d-flex align-items-center">
                 Delete
-                <img src="utils/chat/icons/checkNo.svg" alt="NO">
+                <img src="pages/Chat/icons/checkNo.svg" alt="NO">
             </button>
         </div>`;
 
@@ -222,7 +222,7 @@ function creatNotifReqGame(data){
     div.innerHTML = `
         <div class="notification-user-img">
             <img class="avatar" src=${data.avatar}>
-            <img class="notification-user-status" src="utils/chat/icons/gameIcon.svg"></img>
+            <img class="notification-user-status" src="pages/Chat/icons/gameIcon.svg"></img>
         </div>
         <div class="notification-user-content">
             <h5>${data.user}</h5>
@@ -231,11 +231,11 @@ function creatNotifReqGame(data){
         <div class="notification-choices">
             <button class="notification-btn badge d-flex align-items-center">
                 Accept
-                <img src="utils/chat/icons/checkOk.svg" alt="OK">
+                <img src="pages/Chat/icons/checkOk.svg" alt="OK">
             </button>
             <button class="notification-btn badge d-flex align-items-center">
                 Decline
-                <img src="utils/chat/icons/checkNo.svg" alt="NO">
+                <img src="pages/Chat/icons/checkNo.svg" alt="NO">
             </button>
         </div>
     `
@@ -248,7 +248,7 @@ function creatNotifMessage(data){
     div.innerHTML = `
         <div class="notification-user-img">
             <img class="avatar" src="${data.avatar}">
-            <img class="notification-user-status" src="utils/chat/icons/chatIcon.svg"></img>
+            <img class="notification-user-status" src="pages/Chat/icons/chatIcon.svg"></img>
         </div>
         <div class="notification-user-content">
             <h5>${data.user}</h5>
@@ -257,7 +257,7 @@ function creatNotifMessage(data){
         <div class="notification-choices">
             <button class="message-notification-btn badge d-flex align-items-center">
                 Go to conversation
-                <img src="utils/chat/icons/goToconvIcon.svg" alt="/go-to-conversation">
+                <img src="pages/Chat/icons/goToconvIcon.svg" alt="/go-to-conversation">
             </button>
         </div>
     `;
@@ -294,7 +294,7 @@ function homeNotification(data){
         const div = document.createElement("div");
         div.classList.add("empty-notifications");
         div.innerHTML = `
-            <img src="utils/chat/icons/tmp/Empty-notification.png" alt="no-notification">
+            <img src="pages/Chat/icons/tmp/Empty-notification.png" alt="no-notification">
             <h5>No Notifications Yet</h5>
         `;
         container.appendChild(div)
