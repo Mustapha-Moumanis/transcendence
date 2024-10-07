@@ -8,13 +8,13 @@ async function Chat() {
   document.getElementById('home-content').innerHTML = html;
 
   var styleList = [
-    './utils/chat/css/chat.css',
-    './utils/chat/css/main-chat.css',
-    './utils/chat/css/mobile-chat.css',
-    './utils/chat/css/chat-sidebar.css',
+    './css/chat.css',
+    './css/main-chat.css',
+    './css/mobile-chat.css',
+    './css/chat-sidebar.css',
   ]
   loadCSS(styleList);
-  
+
   chatActions();
 }
 

@@ -1,5 +1,8 @@
-// ------------------ Chat/Friends List ------------------
+import {setCurrentSendTo, currentSendto, dataListFriends, dataListUsers} from "./socket.js"
+import {removeScroll} from "./scrollHandler.js"
+import {sendToBackend} from "../script.js"
 
+// ------------------ Chat/Friends List ------------------
 function activeBtn(activebtn, btn, displayContent, hideContent, cardClass){
 
     activebtn.classList.add("chat-active");
@@ -38,9 +41,9 @@ function userCard(classes, activeClass) {
         card.addEventListener('click', function() {
 
             if (classes === ".friend-chat .chat-friend-card")
-                currentSendto = dataListFriends[index].user; 
+                setCurrentSendTo(dataListFriends[index].user); 
             else
-                currentSendto = dataListUsers[index].user;
+                setCurrentSendTo(dataListUsers[index].user);
             
             document.querySelector(".welcome-chat").classList.add("d-none");
             handleChatResise();
@@ -83,9 +86,9 @@ function creatUserCard(listuser){
                 <div class="chat-list-dote-typing"></div>
             </div>
         </div>
-        <span class="chat-notification">${listuser.notifacations}</span>
+        <span class="chat-notification">${listuser.notifications}</span>
     `;
-    if (listuser.notifacations == 0){
+    if (listuser.notifications == 0){
         div.querySelector(".chat-notification").classList.add("d-none");
     }
     const statusSpan = div.querySelector('.chat-user-status');
@@ -117,7 +120,7 @@ function showUsers(data) {
         const div = document.createElement("div");
         div.classList.add("chat-friend-empty");
         div.innerHTML = `
-            <img src="chat/icons/no-conversations.png" alt="no-conversations">
+            <img src="utils/chat/icons/tmp/Empty-messages.png" alt="no-conversations">
             <h5>No Conversations Yet</h5>
         `;
         container.appendChild(div);
@@ -127,7 +130,7 @@ function showUsers(data) {
         var sendto = document.querySelector(".chat-header .chat-user-content h5");
         if (sendto) {
             document.querySelectorAll(".chat-list .chat-user-card").forEach(card => {
-                username = card.querySelector(".chat-user-content h5");
+                var username = card.querySelector(".chat-user-content h5");
                 if (sendto.innerHTML === username.innerHTML) card.classList.add("chat-card-active");
             })
         }
@@ -149,7 +152,7 @@ function showFriends(data){
         const div = document.createElement("div");
         div.classList.add("chat-friend-empty");
         div.innerHTML = `
-            <img src="chat/icons/no-friends.png" alt="no-friends">
+            <img src="utils/chat/icons/tmp/Empty-friends.png" alt="no-friends">
             <h5>No Friends Right Now</h5>
         `;
         container.appendChild(div);
@@ -157,4 +160,11 @@ function showFriends(data){
     else 
         data.listFriends.forEach(listfriend => container.appendChild(creatFriendCard(listfriend)));
     userCard(".friend-chat .chat-friend-card", ".friend-chat .chat-card-active");
+}
+
+export {
+    showFriends,
+    showUsers,
+    activeBtn,
+    handleChatResise,
 }

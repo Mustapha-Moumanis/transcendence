@@ -1,7 +1,7 @@
 import { login } from '../../utils/js/auth.js'
 import { displayFieldError, displaySuccess, displayError, authActions} from '../../utils/js/auth.js'
 import TwoFactorAuth from '../TwoFactorAuth/TwoFactorAuth.js'
-import { startSocket, sendToBackend, startChat } from '../chat/js/socket.js'
+// import { startSocket, sendToBackend, startChat } from '../chat/js/socket.js'
 
 function handleLoginFormSubmission() {
     document.getElementById('form_login').addEventListener('submit', function(e) {
@@ -47,7 +47,7 @@ function handleLoginFormSubmission() {
                     TwoFactorAuth(data);
                 else {
                     displaySuccess('Login successful!');
-                    login(JSON.stringify(data));
+                    login(data);
                     // startSocket();
                     setTimeout(() => { window.location.hash = '#home'; }, 1000);
                 }

@@ -1,7 +1,7 @@
 .chat-sidebar {
     border-radius : 20px;
     min-width: 350px;
-    background-color: var(--bg-dark-2);
+    background-color: var(--base-shade);
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -13,8 +13,8 @@
     position: relative;
     justify-content: center;
     flex-wrap: wrap;
-    border-bottom: 1px solid var(--bg-dark-1);
-    box-shadow: 0px 9px 9px -5px var(--bg-dark-1);
+    border-bottom: 1px solid var(--base);
+    box-shadow: 0px 9px 9px -5px var(--base);
     margin-bottom: 15px;
     margin-top: 6px;
 }
@@ -22,14 +22,14 @@
 .chat-btn {
     padding: 15px 10px;
     text-align: center;
-    color: var(--sub-dark);
+    color: var(--sub-color);
     cursor: pointer;
     min-width: 80px;
     flex: 1;
 }
 
 .chat-nav-sidebar > .chat-active {
-    color: var(--title-dark);
+    color: var(--title-color);
 }
 
 .nav-indicator {
@@ -65,7 +65,7 @@
     justify-content: center;
     flex-direction: column;
     height: 90%;
-    color: var(--sub-dark);
+    color: var(--sub-color);
     text-align: center;
 }
 
@@ -88,7 +88,7 @@
 }
 
 .chat-friend-card:hover{
-    background-color: var(--bg-dark-4); 
+    background-color: var(--base-hover); 
 }
 
 .chat-list::-webkit-scrollbar,
@@ -98,7 +98,7 @@
 
 .chat-list .chat-card-active, 
 .chat-user-card:hover {
-    background-color: var(--bg-dark-4);
+    background-color: var(--base-hover);
 }
 
 /* user card */
@@ -141,7 +141,7 @@
 
 .friend-chat .chat-card-active,
 .chat-friend-card:hover {
-    background-color: var(--bg-dark-4);
+    background-color: var(--base-hover);
 }
 
 .chat-user-img {
@@ -154,7 +154,7 @@
     right: 0;
     width: 12px;
     height: 12px;
-    border: 2px solid var(--bg-dark-3);
+    border: 2px solid var(--base-tint);
     border-radius: 50%;
 }
 
@@ -173,7 +173,7 @@
 }
 
 .chat-user-content h5 {
-    color: var(--title-dark);
+    color: var(--title-color);
     margin: 0;
     font-size: 15px;
     margin-bottom: 0;
@@ -183,7 +183,7 @@
 }
 
 .chat-user-content p {
-    color: var(--sub-dark);
+    color: var(--sub-color);
     margin: 0;
     font-size: 13px;
     max-width: 140px;
@@ -194,8 +194,8 @@
 
 .chat-notification {
     font-size: 10px;
-    background-color: var(--tertiary-color);
-    color: var(--title-dark);
+    background-color: var(--gradient-color);
+    color: var(--title-color);
     border-radius: 5px;
     padding: 2px 4px 2px 4px;
     margin: 5px;

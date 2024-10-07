@@ -1,6 +1,6 @@
 import { logout, displaySuccess, displayError } from './auth.js'
 import { themeAction } from './theme.js'
-import { startSocket, } from '../../pages/chat/js/socket.js'
+import { startSocket } from '../../pages/Chat/js/socket.js'
 
 export async function loadHTML(url) {
   try {

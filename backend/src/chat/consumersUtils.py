@@ -11,13 +11,13 @@ def getTheLastMessage(user, send):
     user_room = ChatRoom.objects.get(name="room_{}".format(user))
 
     lastMessage = Message.objects.filter(user__in=[user, send], chat_room__in=[send_room, user_room]).last()
-    notifacations = Message.objects.filter(user=send, chat_room=user_room, seen=False).count()
+    notifications = Message.objects.filter(user=send, chat_room=user_room, seen=False).count()
 
     if lastMessage:
         time = DateFormat((lastMessage.timestamp)).format('Y-m-d H:i:s')
     else : time = 0
 
-    return lastMessage, time, notifacations
+    return lastMessage, time, notifications
 
 def showUsers(user, Friends):
 
@@ -35,7 +35,7 @@ def showUsers(user, Friends):
                 "status" : userprofile.status,
                 "avatar":  str(userprofile.avatar),
                 "lastMessage": message.content,
-                "notifacations": notf,
+                "notifications": notf,
                 "timesort": timesort,
             })
 
