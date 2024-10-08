@@ -95,12 +95,13 @@ function addEventListenerChatObtions(data){
     });
 
     document.querySelector("#chat-show-profile").addEventListener('click', () => {
+        console.log("show-profile");
         namelist.classList.add("d-none");
-        const hash = `#profile/${data.id}`;
-        const id = data.id;
-        const state = { id };
-        history.pushState(state, '', hash);
-        loadContentWithProfile(hash, data.id);
+        // const hash = `#profile/${data.id}`;
+        // const id = data.id;
+        // const state = { id };
+        // history.pushState(state, '', hash);
+        // loadContentWithProfile(hash, data.id);
     });
     document.querySelector("#chat-play").addEventListener('click', () => {
         // send notifactation to play;
@@ -121,7 +122,7 @@ function chatHeader(data) {
 
     const header =  document.querySelector('.chat-header');
     header.innerHTML = `
-        <img class="expand-left" onclick="CloseMainChat()" src="utils/chat/icons/Expand_left.svg" alt="close-chat">
+        <img class="expand-left" onclick="CloseMainChat()" src="pages/Chat/icons/Expand_left.svg" alt="close-chat">
         <div class="chat-user-img">
             <img class="avatar" src="${data.avatar}" alt="${data.sendto}">
         </div>

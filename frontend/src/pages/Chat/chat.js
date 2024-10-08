@@ -8,10 +8,10 @@ async function Chat() {
   document.getElementById('home-content').innerHTML = html;
 
   var styleList = [
-    './css/chat.css',
-    './css/main-chat.css',
-    './css/mobile-chat.css',
-    './css/chat-sidebar.css',
+    'pages/Chat/css/chat.css',
+    'pages/Chat/css/main-chat.css',
+    'pages/Chat/css/mobile-chat.css',
+    'pages/Chat/css/chat-sidebar.css',
   ]
   loadCSS(styleList);
 
