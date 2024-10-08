@@ -2,7 +2,9 @@ import {startTyping, stopTyping, chatHeader,
     receiveMessage, respondMessage, updatestatuUsers,} from "./conversationChat.js"
 
 import {friendBlockedYou, updateHomeNotification, homeNotification,
-    searchHome, onlineFriendsHome, updateHomeUsers, debounce, startSearchAndNotif} from "./homeSocket.js"
+    searchHome, onlineFriendsHome, updateHomeUsers, startSearchAndNotif} from "./homeSocket.js"
+
+import { debounce } from "../../../utils/js/utils.js"
 
 import {setEmojies} from "./emoji.js"
 import {loadMoreContent, showAllMessages} from "./scrollHandler.js"
@@ -23,7 +25,6 @@ export const setCurrentSendTo = (newSendTo) => {
 
 
 function startSocket(){
-
     // ------------------ Get User ------------------
     const value = localStorage.getItem('authTokens');
     const authTokens = JSON.parse(value);
@@ -83,7 +84,7 @@ function startSocket(){
 }
 
 function startChat(){
-
+    console.log("chaT");
     if (notifUser) {
         sendToBackend(notifUser, "showConversation", "");
         notifUser = null;
@@ -95,11 +96,11 @@ function startChat(){
     });
 
     sendToBackend("", "showUsersFriend", "");
-    setEmojies();
 
     const messageInput = document.querySelector("#id_message_send_input");
     const messageSendButton = document.querySelector("#id_message_send_button");
     messageInput.focus();
+    setEmojies();
 
     let hasStartedTyping = false;
     const debouncedtypingValue = debounce(userStoppedTyping, 1000);

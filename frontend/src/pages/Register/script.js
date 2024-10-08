@@ -1,4 +1,4 @@
-import { displayFieldError, displaySuccess, displayError, authActions} from '../../utils/js/auth.js'
+import { displayFieldError, showAlert, authActions} from '../../utils/js/auth.js'
 
 function handleRegisterFormSubmission() {
     document.getElementById('form_register').addEventListener('submit', function(e) {
@@ -53,12 +53,12 @@ function handleRegisterFormSubmission() {
             return response.json();
         })
         .then(data => {
-            displaySuccess('Registration successful!');
+            showAlert('success', 'Registration successful!');
             setTimeout(() => { window.location.hash = "login"; }, 1000);
         })
         .catch(error => {
             if (error != "Error")
-                displayError(error);
+                showAlert('error', error);
         });
     });
 }

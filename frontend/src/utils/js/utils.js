@@ -1,4 +1,4 @@
-import { logout, displaySuccess, displayError } from './auth.js'
+import { logout, showAlert, attachRouterListeners } from './auth.js'
 import { themeAction } from './theme.js'
 import { startSocket } from '../../pages/Chat/js/socket.js'
 
@@ -63,13 +63,19 @@ export function removeAllJS() {
   scripts.forEach(script => script.parentNode.removeChild(script));
 }
 
-export function showLoading() {
-  document.getElementById('loading').removeAttribute("style");
+export function showLoading(position) {
+  const loadingBox = document.createElement('div');
+  loadingBox.id = "loading";
+  loadingBox.appendChild(document.createElement("span"));
+  document.querySelector(position).appendChild(loadingBox);
 }
 
 export function hideLoading() {
   setTimeout(() => {
-    document.getElementById('loading').style.display = "none";
+    const loadingElement = document.getElementById('loading');
+    if (loadingElement) {
+      loadingElement.remove();
+    }
   }, 1500)
 }
 
@@ -97,6 +103,16 @@ export function getCookie(name) {
 
 export function deleteCookie(name) {
   document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+}
+
+export function debounce(func, delay) {
+  let timer;
+  return function(...args) {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+          func.apply(this, args);
+      }, delay);
+  };
 }
 
 export function handleLogoutBtn() {
@@ -127,12 +143,12 @@ export function handleLogoutBtn() {
           return response.json();
       })
       .then(data => {
-          // displaySuccess('Logout successful!');
+          showAlert('success', 'Logout successful!');
           logout();
           setTimeout(() => { window.location.hash = '#login'; }, 1000);
       })
       .catch(error => {
-          // displayError(error.message);
+          showAlert('error', error.message);
           logout();
           setTimeout(() => { window.location.hash = '#login'; }, 1000);
       });
@@ -141,18 +157,17 @@ export function handleLogoutBtn() {
 };
 
 function updateSidebar() {
-  const currentHash = window.location.hash;
+  const currentHash = window.location.hash.slice(1);
   const buttons = document.querySelectorAll('.side-btns div');
 
   if (buttons) {
     buttons.forEach(button => {
-      button.addEventListener('click', () => {
-        buttons.forEach(btn => btn.classList.remove('active-btn'));
-        button.classList.add('active-btn');
-      });
-      
-      const link = button.querySelector('a');
-      if (link && link.getAttribute('href') === currentHash) button.classList.add('active-btn');
+      // button.addEventListener('click', () => {
+      //   buttons.forEach(btn => btn.classList.remove('active-btn'));
+      //   button.classList.add('active-btn');
+      // });
+      const dataRouter = button.getAttribute("data-router");
+      if (dataRouter && dataRouter === currentHash) button.classList.add('active-btn');
       else button.classList.remove('active-btn');
     });
   }
@@ -161,7 +176,7 @@ function updateSidebar() {
 export async function HomeEffects() {
   const root = document.getElementById('root');
   if (root.querySelector('.nav-bar') == null) {
-    showLoading();
+    showLoading("body");
     const nav = await loadHTML('../components/nav/navBar.html');
     const sidebar = await loadHTML('../components/sidebar/sidebar.html');
 
@@ -183,11 +198,17 @@ export async function HomeEffects() {
       themeAction();
       handleLogoutBtn();
       updateSidebar();
+      attachRouterListeners();
 			startSocket();
     }, 0);
 
     const themeButton = document.querySelector('.themeButton');
     if (themeButton) themeButton.remove();
+  }
+  else {
+    setTimeout(() => { 
+      showLoading("#home-content");
+    }, 0);
   }
 }
 

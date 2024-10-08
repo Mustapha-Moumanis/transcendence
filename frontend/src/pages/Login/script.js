@@ -1,5 +1,5 @@
 import { login } from '../../utils/js/auth.js'
-import { displayFieldError, displaySuccess, displayError, authActions} from '../../utils/js/auth.js'
+import { displayFieldError, showAlert, authActions} from '../../utils/js/auth.js'
 import TwoFactorAuth from '../TwoFactorAuth/TwoFactorAuth.js'
 // import { startSocket, sendToBackend, startChat } from '../chat/js/socket.js'
 
@@ -46,14 +46,14 @@ function handleLoginFormSubmission() {
                 if (data.user.is2faActive)
                     TwoFactorAuth(data);
                 else {
-                    displaySuccess('Login successful!');
+                    showAlert('success', 'Login successful!');
                     login(data);
                     // startSocket();
                     setTimeout(() => { window.location.hash = '#home'; }, 1000);
                 }
             })
             .catch(error => {
-                displayError(error.message);
+                showAlert('error', error.message);
             });
         }
     });

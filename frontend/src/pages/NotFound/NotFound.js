@@ -8,7 +8,7 @@ async function NotFound() {
   app.innerHTML = html;
 
   document.getElementById('notfound-button').addEventListener('click', () => {
-    alert('NotFound button clicked!');
+    window.location.hash = "#home";
   });
 }
 

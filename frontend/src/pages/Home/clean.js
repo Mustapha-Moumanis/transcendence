@@ -2,8 +2,7 @@ import {
     logout,
     mainActions,
     displayFieldError,
-    displaySuccess,
-    displayError,
+    showAlert,
     authActions
 } from '../../utils/js/auth.js';
 import {
@@ -28,12 +27,12 @@ function handleLogoutBtn() {
             return response.json();
         })
         .then(() => {
-            displaySuccess('Logout successful!');
+            showAlert('success', 'Logout successful!');
             logout();
             setTimeout(() => window.location.hash = '#login', 1000);
         })
         .catch(error => {
-            displayError(error.message);
+            showAlert('error', error.message);
             logout();
             setTimeout(() => window.location.hash = '#login', 1000);
         });
@@ -75,7 +74,7 @@ function generateQrCode() {
             img.alt = "QR Code";
             qrCodeContainer.append(img);
         })
-        .catch(error => displayError(error.message));
+        .catch(error => showAlert('error', error.message));
     }
 }
 
@@ -162,12 +161,12 @@ function handle2faAction(inputs, btn) {
                 return response.json();
             })
             .then(data => {
-                displaySuccess(data.message);
+                showAlert('success', data.message);
                 mode2faDisactive(btn);
                 btn.removeEventListener('click', handleClick);
                 document.querySelector(".active2fa").classList.add("d-none");
             })
-            .catch(error => displayError(error.message));
+            .catch(error => showAlert('error', error.message));
         }
     });
 
@@ -218,13 +217,13 @@ function mode2faDisactive(btn) {
                 btn.classList.remove("activeBtn");
                 btn.innerHTML = "Enable 2FA";
                 mode2faActive(btn);
-                displaySuccess('2FA Disabled');
+                showAlert('success', '2FA Disabled');
                 
                 btn.removeEventListener('click', handleClick);
             })
             .catch(
                 error => {
-                    displayError(error.message)
+                    showAlert('error', error.message)
                     console.log(error);
                 }
             );
@@ -264,7 +263,7 @@ function twoFactorAuth() {
                     logout();
                     setTimeout(() => { window.location.hash = '#login'; }, 1000);
                 }
-                displayError(error.message);
+                showAlert('error', error.message);
             }
         );
     }

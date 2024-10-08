@@ -1,5 +1,6 @@
 import {notifUser} from "./socket.js"
 import {sendToBackend} from "../script.js"
+import { debounce } from "../../../utils/js/utils.js";
 
 function startSearchAndNotif(){
     
@@ -34,16 +35,6 @@ function startSearchAndNotif(){
 }
 
 // ------------- functions General -------------
-
-function debounce(func, delay) {
-    let timer;
-    return function(...args) {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-            func.apply(this, args);
-        }, delay);
-    };
-}
 
 function sendValue() {
     const searchInput = document.querySelector("#search-input");
@@ -456,6 +447,5 @@ export {
     searchHome,
     onlineFriendsHome,
     updateHomeUsers,
-    debounce,
     removeNotif,
 }

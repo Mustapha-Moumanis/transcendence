@@ -15,7 +15,9 @@ async function Chat() {
   ]
   loadCSS(styleList);
 
-  chatActions();
+  setTimeout(() => {
+    chatActions();
+  }, 200);
 }
 
 

@@ -1,8 +1,6 @@
-import { hideLoading, showLoading } from '../../utils/js/utils.js';
 import {
 	displayFieldError,
-	displaySuccess,
-	displayError,
+	showAlert,
 	authActions
 } from '../../utils/js/auth.js'
 
@@ -42,12 +40,12 @@ function handleResetFormSubmission() {
 				return response.json();
 			})
 			.then(data => {
-				displaySuccess(data.detail);
+				showAlert('success', data.detail);
 				ResetPasswordConfirm(email.value);
 			})
 			.catch(error => {
 				if (error != "Error")
-					displayError(error);
+					showAlert('error', error);
 			});
 	});
 
