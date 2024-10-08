@@ -1,23 +1,42 @@
-import {notifUser} from "./socket.js"
+import {setnotifUser} from "./socket.js"
 import {sendToBackend} from "../script.js"
 import { debounce } from "../../../utils/js/utils.js";
 
 function startSearchAndNotif(){
     
+    // --------------- Search Button ---------------
+    const searchButton = document.querySelector(".nav-buttons .search");
+    const searchOverlay = document.querySelector(".search-overlay");
+    const searchDiv = document.querySelector(".search-div");
+    
+    const searchInput = document.querySelector("#search-input");
+    searchInput.focus();
+    
+    const debouncedSendValue = debounce(sendValue, 1000);
+    
+    searchInput.onkeyup = function () {
+        debouncedSendValue();
+    }
+
+    searchButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        searchOverlay.classList.remove("d-none");
+    });
+    
+    searchDiv.addEventListener('click', (event) => {
+        event.stopPropagation();
+    });
+
+    searchOverlay.addEventListener('click', (event) => {
+        event.stopPropagation();
+        searchDiv.querySelector(".search-content").innerHTML = "";
+        searchOverlay.classList.add("d-none");
+    });
+    
+    // --------------- Notification Button ---------------
     const notificationButton = document.querySelector(".nav-buttons .notification");
     const listnotification = document.querySelector(".show-notification");
 
-    // const searchInput = document.querySelector(".search-input");
-    // searchInput.focus();
-    
-    // const debouncedSendValue = debounce(sendValue, 1000);
-    
-    // searchInput.onkeyup = function () {
-    //     debouncedSendValue();
-    // }
-    
-    // --------------- Notification Button ---------------
-    
     notificationButton.addEventListener('click', (event) => {
         event.stopPropagation();
         listnotification.classList.remove("d-none");
@@ -40,7 +59,7 @@ function sendValue() {
     const searchInput = document.querySelector("#search-input");
     const value = searchInput.value;
     if (value.trim() != "")
-        sendToBackend("", "searchHome",searchInput.value);
+        sendToBackend("", "searchHome", searchInput.value);
 }
 
 // --------------- Upadate Home ---------------
@@ -48,7 +67,6 @@ function sendValue() {
 function creatonlineUsers(listuser){
     const div = document.createElement("div");
     div.classList.add("user");
-    console.log(listuser);
     div.innerHTML =`<img class="avatar" src="${listuser.avatar}" alt="${listuser.user}" user="${listuser.user}">`;
 
     // div.addEventListener('click', function() {  
@@ -91,10 +109,10 @@ function onlineFriendsHome(data){
 }
 
 function searchHome(data){
-    const container = document.querySelector(".search-body");
+    const container = document.querySelector(".search-content");
     container.innerHTML = "";
 
-    list = data["listsearch"]
+    let list = data.listsearch;
     if (list.length === 0) {
         const div = document.createElement("div");
         div.classList.add("no-results");
@@ -107,41 +125,27 @@ function searchHome(data){
 
     list.forEach(user => { 
         const div = document.createElement("div");
-        div.classList.add("member");
+        div.classList.add("col-xl-3", "col-lg-4", "col-md-6", "col-sm-6", "p-1");
         div.innerHTML = `
-            <img src="${user.avatar}" class="card-img-top search-pr" id="search--pr" alt="${user.username}">
-            <div class="card-body1 text-center">
-                <h5 class="card-title">${user.username}</h5>
-                <div class="progress-info">
-                    <span class="card-text-left">LVL 8</span>
-                    <span class="card-text-right">75%</span>
-                </div>
-                <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
+            <div class="user-card tf-card-box style-1">
+                <img src="${user.avatar}" alt="${user.username}">
+                <h5 class="text-center text-md-start">${user.username}</h5>
             </div>
         `;
-        div.addEventListener('click', () => {
-            const tmpoverlay = document.querySelector("#overlay");
-            tmpoverlay.querySelector("#search-input").value = "";
-            container.innerHTML = "";
-            tmpoverlay.style.display = "none";
-            const hash = `#profile/${user.id}`;
-            const id = user.id;
-            const state = { id };
-            history.pushState(state, '', hash);
-            loadContentWithProfile( hash , user.id);
-        });
+        // div.addEventListener('click', () => {
+        //     const tmpoverlay = document.querySelector("#overlay");
+        //     tmpoverlay.querySelector("#search-input").value = "";
+        //     container.innerHTML = "";
+        //     tmpoverlay.style.display = "none";
+        //     const hash = `#profile/${user.id}`;
+        //     const id = user.id;
+        //     const state = { id };
+        //     history.pushState(state, '', hash);
+        //     loadContentWithProfile( hash , user.id);
+        // });
         container.appendChild(div);
     });
 }
-
-// window.addEventListener('popstate', (event) => {
-//     if (event.state) {
-//         loadContentWithProfile(location.hash, event.state.id);
-//     } 
-  
-// });
 
 // --------------------------------------------------------------
 
@@ -154,7 +158,7 @@ function checkNotif(){
 
     const notification = notificationButton.querySelector("span");
     if (notifications.length === 0){
-        notification.style.backgroundColor = "#ABADC7";
+        notification.style.backgroundColor = "";
         const div = document.createElement("div");
         div.classList.add("empty-notifications");
         div.innerHTML = `
@@ -191,7 +195,7 @@ function creatNotifReqFriend(data){
     div.querySelector(".notification-choices #reqConfirm").addEventListener('click',() => {
         console.log("Confirm");
         sendToBackend(data.user, "reqConfirm", "");
-        reqConfirm(data);// |!!|
+        reqConfirm(data); // |!!|
         document.querySelector(".show-notification").classList.add("d-none");
         div.remove();
         checkNotif();
@@ -252,18 +256,13 @@ function creatNotifMessage(data){
             </button>
         </div>
     `;
-    // div.querySelector(".message-notification-btn").addEventListener('click', function() {
-    //     loadContentInDiv("#chat");
-
-    //     document.querySelectorAll(".chat").forEach(element => {
-    //         setActive(element);
-    //     });
-        
-    //     document.querySelector(".show-notification").classList.add("d-none");
-    //     div.remove();
-    //     checkNotif();
-    //     notifUser = data.user;
-    // });
+    div.querySelector(".message-notification-btn").addEventListener('click', function() {
+        window.location.hash = '#chat';
+        setnotifUser(data.user);
+        document.querySelector(".show-notification").classList.add("d-none");
+        div.remove();
+        checkNotif();
+    });
     return div;
 }
 
@@ -317,7 +316,6 @@ function updateHomeNotification(data){
     if (data.type == "ToPlayPingPong")
         creatNotification(data, ".notifReqGame .notification-user-content", creatNotifReqGame);
 
-    console.log(data);
     if (data.type == "friendRequest")
         creatNotification(data, ".notifReqFriend .notification-user-content", creatNotifReqFriend);
 
@@ -340,10 +338,12 @@ function removeOnlineFriend(friend){
 
     const users = document.querySelector(".online-users");
     var len = users.querySelectorAll(".user").length;
+    console.log(users);
     users.querySelectorAll(".user").forEach(user => {
         const username = user.querySelector("img").getAttribute("user");
+        console.log(username, friend);
         if (username === friend){
-            if (len == 1) 
+            if (len == 1)
                 users.parentElement.classList.add("d-none");
             user.remove();
         }
@@ -366,16 +366,20 @@ function friendBlockedYou(data){
                         <span>${data.username}</span> 
                         is no longer available as they have blocked you.
                     </p>
-                    <button class="chat-warning-button" onclick="closeWarning()">Dismiss</button>
+                    <button id="warningDismiss" class="chat-warning-button">Dismiss</button>
                 </div>
             `;
         document.querySelector(".chat-container").appendChild(div);
         document.querySelector(".main-chat").classList.add("d-none");
         document.querySelector(".welcome-chat").classList.remove("d-none");
+
+        div.querySelector(".chat-warning #warningDismiss").addEventListener('click', () => {
+            closeWarning();
+        })
         sendToBackend("", "showUsersFriend", "");
     }
     removeOnlineFriend(data.username);
-    // removeNotif(data.username, ".notification-user-card");
+    removeNotif(data.username, ".notification-user-card");
 }
 
 function blockClick(friend){
@@ -389,12 +393,15 @@ function blockClick(friend){
                 Are you sure?
             </p>
             <div class="chat-block-warning">
-                <button class="chat-warning-button" onclick="closeWarning()">Cancel</button>
+                <button id="warningCancel" class="chat-warning-button">Cancel</button>
                 <button id="chat-button-Block" class="chat-warning-button">Block</button>
             </div>
         </div>`;
     document.querySelector(".content").append(div);
 
+    div.querySelector(".chat-warning #warningCancel").addEventListener('click', () => {
+        closeWarning();
+    })
     document.querySelector(".chat-warning #chat-button-Block").addEventListener('click', () => {
         sendToBackend(friend, "blockUser", "");
         if (document.querySelector("#chat-content")){
@@ -402,10 +409,10 @@ function blockClick(friend){
             document.querySelector(".welcome-chat").classList.remove("d-none");
             sendToBackend("", "showUsersFriend", "");
         }
-        // else
-        //     loadContentInDiv("#home");
-        // removeOnlineFriend(friend);
-        // removeNotif(friend, ".notification-user-card");
+        else
+            window.location.hash = '#home';
+        removeOnlineFriend(friend);
+        removeNotif(friend, ".notification-user-card");
         closeWarning();
     });
 }

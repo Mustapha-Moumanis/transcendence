@@ -18,6 +18,10 @@ export var dataListUsers;
 export var user;
 
 export var notifUser = null;
+export const setnotifUser = (newnotifUser) => {
+    notifUser = newnotifUser;
+};
+
 export var currentSendto = null;
 export const setCurrentSendTo = (newSendTo) => {
     currentSendto = newSendTo;
@@ -46,16 +50,16 @@ function startSocket(){
     chatSocket.onmessage = (event) => {
         const data = JSON.parse(event.data);
         if (data === null) return;
-        console.log(data.type);
+
         if (data.type === "Error") console.log(data.error);
-        // else if (data.type === "Blocked") friendBlockedYou(data);
+        else if (data.type === "Blocked") friendBlockedYou(data);
         // else if (data.type === "reqConfirm") reqConfirm(data.listFriends);
         // else if (data.type === "reqDelete") reqDelete(data);
         else if (data.type === "getHomedata"){
             onlineFriendsHome(data["onlineFriendsHome"]);
             homeNotification(data["homeNotification"]);
         }
-        // else if (data.type === "searchHome") searchHome(data);
+        else if (data.type === "searchHome") searchHome(data);
         else if (data.type === "updateHomeUsers") updateHomeUsers(data);
         else if (data.type === 'CreatNotifChat' || data.type === 'ToPlayPingPong' || data.type === "friendRequest") 
             updateHomeNotification(data);

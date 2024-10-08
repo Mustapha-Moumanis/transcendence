@@ -47,7 +47,7 @@ function removeScroll() {
 
 function showAllMessages(data) {
 
-    // removeNotif(data.sendto, ".notifMessage");
+    removeNotif(data.sendto, ".notifMessage");
 
     var messages = data['messages'];
     const container = document.querySelector("#id_chat_item_container");
