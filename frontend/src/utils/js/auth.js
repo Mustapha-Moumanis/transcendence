@@ -1,5 +1,6 @@
 import { chatSocket } from '../../pages/Chat/js/socket.js';
 import { showLoading, hideLoading, HomeEffects, setCookie, deleteCookie } from './utils.js';
+import { debounce } from './utils.js';
 
 function isAuthenticated() {
     return !!localStorage.getItem('authTokens');
@@ -18,44 +19,68 @@ function logout() {
     deleteCookie('my-refresh-token');
 }
 
-function displayError(message) {
-    let success = document.querySelector(".success");
-    let faild = document.querySelector(".error");
+function showAlert(type, message) {
+    let alertContainer = document.getElementById('alert-container');
+    
+    if (!alertContainer) {
+        alertContainer = document.createElement('div');
+        alertContainer.id = 'alert-container';
+        document.body.appendChild(alertContainer);
+    }
 
-    success.style.display = "none";
-    success.style.opacity = "0"; 
+    const alertBox = document.createElement('div');
+    alertBox.classList.add('alert-box', type);
 
-    faild.innerHTML = message;
-    faild.style.display = "block"; 
-    faild.style.opacity = "1";
+    var title = 'Success Message';
+    var icon =  `
+        <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM16.59 7.58L10 14.17L7.41 11.59L6 13L10 17L18 9L16.59 7.58Z"/>
+        </svg>
+    `;
+    if (type == 'error') {
+        title = 'Error Message';
+        icon = `
+        <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11 15H13V17H11V15ZM11 7H13V13H11V7ZM11.99 2C6.47 2 2 6.48 2 12C2 17.52 6.47 22 11.99 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 11.99 2ZM12 20C7.58 20 4 16.42 4 12C4 7.58 7.58 4 12 4C16.42 4 20 7.58 20 12C20 16.42 16.42 20 12 20Z" />
+            </svg>
+        `;
+    }
+    const alertContent = `
+        <div class="alert-content">
+            <div class="alert-icon">
+                ${icon}
+            </div>
+            <div class="alert-message">
+                <h4>${title}</h4>
+                <p>${message}</p>
+            </div>
+            <div class="alert-close">&#10005;</div>
+        </div>
+    `;
+
+    alertBox.innerHTML = alertContent;
+
+    alertContainer.appendChild(alertBox);
 
     setTimeout(() => {
-        faild.style.opacity = "0"; 
+        alertBox.classList.add('show');
+    }, 100);
 
-        setTimeout(() => {
-            faild.style.display = "none";
-        }, 500);
+    const closeBtn = alertBox.querySelector('.alert-close');
+    closeBtn.addEventListener('click', function () {
+        closeAlert(alertBox);
+    });
+
+    setTimeout(() => {
+        closeAlert(alertBox);
     }, 5000);
 }
 
-function displaySuccess(message) {
-    let success = document.querySelector(".success");
-    let faild = document.querySelector(".error");
-
-    faild.style.display = "none";
-    faild.style.opacity = "0";
-
-    success.innerHTML = message;
-    success.style.display = "block"; 
-    success.style.opacity = "1";
-
+function closeAlert(alertElement) {
+    alertElement.classList.remove('show');
     setTimeout(() => {
-        success.style.opacity = "0";
-
-        setTimeout(() => {
-            success.style.display = "none";
-        }, 500);
-    }, 5000);
+        alertElement.remove();
+    }, 300);
 }
 
 function displayFieldError(element, message) {
@@ -82,19 +107,33 @@ function attachInputFocusListeners() {
     });
 }
 
-function attachRouterListeners() {
-    var routerElements = document.getElementsByClassName('router');
-    for (let i = 0; i < routerElements.length; i++) {
-        routerElements[i].addEventListener('click', function(e) {
-            let page = e.currentTarget.getAttribute("data-router");
-            window.location.hash = page;
-            // Router(page);
+export function attachRouterListeners() {
+    const elementsWithRouter = document.querySelectorAll('[data-router]');
+    
+    elementsWithRouter.forEach(element => {
+        element.addEventListener('click', (event) => {
+            const parentElement = element.parentElement;
+
+            if (!parentElement.classList.contains('disabled')) {
+                const routerValue = element.getAttribute('data-router');
+                parentElement.classList.add('disabled');
+
+                elementsWithRouter.forEach(btn => btn.classList.remove('active-btn'));
+                element.classList.add('active-btn');
+
+                window.location.hash = routerValue;
+
+                debounce(() => {
+                    parentElement.classList.remove('disabled'); 
+                }, 350)();
+            }
         });
-    }
+    });
 }
+
 // import { themeAction, } from './theme.js';
 function authActions() {
-    // showLoading();
+    // showLoading("body");
     // themeAction();
     attachInputFocusListeners();
     attachRouterListeners();
@@ -102,6 +141,8 @@ function authActions() {
 }
 
 async function mainActions() {
+    window.location.hash = "#game";
+    // attachRouterListeners();
     // await HomeEffects();
 }
 
@@ -109,8 +150,7 @@ export {
     isAuthenticated,
     login,
     logout,
-    displayError,
-    displaySuccess,
+    showAlert,
     displayFieldError,
     removeFieldError,
     mainActions,

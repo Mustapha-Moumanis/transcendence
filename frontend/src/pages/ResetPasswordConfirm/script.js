@@ -1,8 +1,7 @@
 import Router from '../../router.js';
 import {
 	displayFieldError,
-	displaySuccess,
-	displayError,
+	showAlert,
 	authActions
 } from '../../utils/js/auth.js'
 
@@ -112,10 +111,10 @@ function handleConfirmResetFormSubmission(email) {
 						}
 						if (errorData.token) {
 
-							displayError("Token :" + errorData.token[0]);
+							showAlert('error', "Token :" + errorData.token[0]);
 						}
 						if (errorData.email) {
-							displayError("Email: " + errorData.email[0])
+							showAlert('error', "Email: " + errorData.email[0])
 						}
 						throw new Error();
 
@@ -124,12 +123,12 @@ function handleConfirmResetFormSubmission(email) {
 				return response.json();
 			})
 			.then(data => {
-				displaySuccess(data.detail);
+				showAlert('success', data.detail);
 				setTimeout(() => { window.location.hash = "login"; }, 1000);
 			})
 			.catch(error => {
 				if (error != "Error")
-					displayError(error);
+					showAlert('error', error);
 			});
 	});
 }

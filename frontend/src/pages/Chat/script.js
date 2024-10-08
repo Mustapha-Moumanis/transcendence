@@ -11,8 +11,5 @@ export function sendToBackend(sendto, type, message){
 }
 
 export function chatActions() {
-	setTimeout(() => {
-		startChat();
-	}, 500);
-	
+	startChat();
 }

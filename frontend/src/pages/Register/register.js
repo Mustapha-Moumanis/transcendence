@@ -2,7 +2,7 @@ import { loadHTML, loadCSS, showLoading, hideLoading, AuthEffects } from '../../
 import { registerActions } from './script.js'
 
 async function Register() {
-  showLoading();
+  showLoading("body");
   const html = await loadHTML('./pages/Register/register.html');
   await AuthEffects();
 

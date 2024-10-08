@@ -3,7 +3,7 @@ import { loginActions } from './script.js'
 
 
 async function Login() {
-  showLoading();
+  showLoading("body");
   const html = await loadHTML('./pages/Login/login.html');
   await AuthEffects();
   

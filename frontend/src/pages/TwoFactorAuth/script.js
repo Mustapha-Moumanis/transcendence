@@ -1,7 +1,6 @@
 import {
 	displayFieldError,
-	displaySuccess,
-	displayError,
+	showAlert,
 	authActions,
 	login
 } from '../../utils/js/auth.js'
@@ -102,13 +101,13 @@ function handleConfirmTwoFactorFormSubmission(userData, inputs) {
 			return response.json();
 		})
 		.then(data => {
-			displaySuccess('Login successful!');
+			showAlert('success', 'Login successful!');
 			login(userData);
 			// startSocket();
 			setTimeout(() => { window.location.hash = '#home' }, 1000);
 		})
 		.catch(error => {
-			displayError(error.message);
+			showAlert('error', error.message);
 		});
 	});
 }

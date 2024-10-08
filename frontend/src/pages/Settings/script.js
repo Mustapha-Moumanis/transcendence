@@ -1,5 +1,5 @@
 import { logout } from '../../utils/js/auth.js'
-import { displayFieldError, displaySuccess, displayError, authActions} from '../../utils/js/auth.js'
+import { displayFieldError, showAlert, authActions} from '../../utils/js/auth.js'
 
 function close2fa() {
 	document.querySelector(".close2fa").addEventListener("click", () => {
@@ -39,7 +39,7 @@ function generateQrCode() {
             qrCodeContainer.append(img);
         })
         .catch(error => {
-            displayError(error.message);
+            showAlert('error', error.message);
         });
 	}
 }
@@ -179,10 +179,10 @@ function handle2faAction(inputs, btn) {
 								displayFieldError(numbersFields.parentElement, errorData.key);
 								throw new Error();
 
-								// displayError("key :" + errorData.message);
+								// showAlert('error', "key :" + errorData.message);
 							} else if (errorData.message) {
 								throw new Error("Error :" + errorData.message);
-								// displayError("key :" + errorData.message);
+								// showAlert('error', "key :" + errorData.message);
 							} else
 								throw new Error('Handled HTTP error');
 
@@ -191,7 +191,7 @@ function handle2faAction(inputs, btn) {
 					return response.json();
 				})
 				.then(data => {
-					displaySuccess(data);
+					showAlert('success', data);
 					mode2faDisactive(btn);
 					btn.removeEventListener('click', handleClick);
 					document.querySelector(".active2fa").classList.add("d-none");
@@ -199,7 +199,7 @@ function handle2faAction(inputs, btn) {
 				})
 				.catch(error => {
 					if (error.message)
-						displayError(error.message);
+						showAlert('error', error.message);
 					console.log("key abro")
 				});
 		}
@@ -257,7 +257,7 @@ function mode2faDisactive(btn) {
 					btn.classList.remove("activeBtn");
 					btn.innerHTML = "Enable 2FA";
 					mode2faActive(btn);
-					displaySuccess('2FA Disabled');
+					showAlert('success', '2FA Disabled');
 					btn.removeEventListener('click', handleClick);
 				})
 				.catch((error) => {
@@ -265,7 +265,7 @@ function mode2faDisactive(btn) {
 						logout();
 						setTimeout(() => { window.location.hash = '#login'; }, 1000);
 					}
-					displayError(error.message);
+					showAlert('error', error.message);
 				});
 		}
 	}
@@ -311,7 +311,7 @@ function twoFactorAuth() {
                     logout();
                     setTimeout(() => { window.location.hash = '#login'; }, 1000);
                 }
-                displayError(error.message);
+                showAlert('error', error.message);
 			});
 	}
 }

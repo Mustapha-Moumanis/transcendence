@@ -2,7 +2,7 @@ import { loadHTML, loadCSS, showLoading, hideLoading, AuthEffects} from '../../u
 import { ResetPasswordActions } from './script.js'
 
 async function ResetPassword() {
-  showLoading();
+  showLoading("body");
   const html = await loadHTML('./pages/ResetPassword/ResetPassword.html');
   await AuthEffects();
   
