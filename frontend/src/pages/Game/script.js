@@ -1,4 +1,264 @@
+import * as THREE from './lib/three.js-master/build/three.module.js'
+import { OrbitControls } from './lib/three.js-master/examples/jsm/controls/OrbitControls.js'
+// import * as dat from 'lil-gui'
+import Ball from './src/Ball.js'
+import Paddle from './src/Paddle.js'
+import { AmbientLight, DirectionalLight } from './lib/three.js-master/build/three.module.js'
+import { RoundedBoxGeometry } from './lib/three.js-master/examples/jsm/geometries/RoundedBoxGeometry.js'
+// import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js'
+// import AIControls from './src/AIControls'
+import lights from './src/Lighting.js'
+
+
 
 export function gameActions() {
-	
+	/**
+ * Debug
+ */
+// const gui = new dat.GUI()
+
+window.addEventListener('keydown', onKeyDown);
+window.addEventListener('keyup', onKeyUp);
+
+let moveLeft = false;
+let moveRight = false;
+let moveLeft2 = false;
+let moveRight2 = false;
+
+/**
+ * Scene
+ */
+const scene = new THREE.Scene()
+scene.background = new THREE.Color(0xfcbf49);
+scene.fog = new THREE.Fog(0xfcbf49, 90, 120);
+
+scene.add(...lights);
+// scene.background = new THREE.Color(0xdedede)
+const clock = new THREE.Clock();
+
+
+/**
+ * BOX
+ */
+// const material = new THREE.MeshNormalMaterial()
+const material = new THREE.MeshStandardMaterial({ color: 'coral' })
+const geometry = new THREE.BoxGeometry(1, 1, 1)
+
+/**
+ * Plane
+ */
+const groundMaterial = new THREE.MeshStandardMaterial({ color: 'lightgray' })
+const groundGeometry = new THREE.PlaneGeometry(10, 10)
+groundGeometry.rotateX(-Math.PI * 0.5)
+const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+
+
+// scene.add(ground)
+
+const boundaries = new THREE.Vector2(20, 20);
+
+const planeGeometry = new THREE.PlaneGeometry(boundaries.x * 20, boundaries.y * 20, boundaries.x * 20, boundaries.y * 20);
+planeGeometry.rotateX(-Math.PI * 0.5)
+const planeMaterial = new THREE.MeshStandardMaterial({
+    color: 0x003049 
+    // wireframe: true,
+	// transparent: true,
+	// opacity: 0.4
+});
+
+const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+plane.position.y = -1.5;
+plane.receiveShadow = true;
+scene.add(plane);
+
+const boundGeo = new RoundedBoxGeometry(1, 2, boundaries.x * 2, 5, 0.5)
+const boundMat = new THREE.MeshStandardMaterial({ color: 0xfcbf49 });
+const leftBound = new THREE.Mesh(boundGeo, boundMat)
+leftBound.position.x = -boundaries.x - 0.5;
+leftBound.castShadow = true;
+leftBound.receiveShadow = true;
+const rightBound = leftBound.clone();
+rightBound.castShadow = true;
+rightBound.position.x *= -1;
+
+scene.add(leftBound, rightBound)
+
+/**
+ * Meshes
+ */
+
+const playerPaddle = new Paddle(scene, new THREE.Vector3(0, 0, 15), boundaries);
+const player2Paddle = new Paddle(scene, new THREE.Vector3(0, 0, -15), boundaries);
+const ball = new Ball(scene, boundaries, [playerPaddle, player2Paddle]);
+
+ball.addEventListener('ongoal', (e) => {
+    // console.log('goal', e.message)
+
+    score[e.message] += 1;
+    updateScore();
+    // console.log(score);
+});
+
+/**
+ * render sizes
+ */
+const sizes = {
+	width: window.innerWidth,
+	height: window.innerHeight,
+}
+/**
+ * Camera
+ */
+const fov = 60
+const camera = new THREE.PerspectiveCamera(fov, sizes.width / sizes.height, 0.1)
+camera.position.set(0, 25, 30)
+camera.lookAt(new THREE.Vector3(0, 2.5, 0))
+
+/**
+ * Show the axes of coordinates system
+//  */
+// const axesHelper = new THREE.AxesHelper(3)
+// scene.add(axesHelper)
+
+/**
+ * renderer
+ */
+const renderer = new THREE.WebGLRenderer()
+// document.body.appendChild(renderer.domElement)
+document.querySelector('.gameInterface').appendChild(renderer.domElement);
+handleResize()
+
+renderer.shadowMap.enabled = true;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.2;
+renderer.shadowMap.type = THREE.VSMShadowMap;
+
+/**
+ * OrbitControls
+ */
+const controls = new OrbitControls(camera, renderer.domElement)
+controls.enableDamping = true
+
+
+// const controller = new AIControls(pcPaddle, ball);
+
+/**
+ * Lights
+ */
+const ambientLight = new AmbientLight(0xffffff, 1.5)
+const directionalLight = new DirectionalLight(0xffffff, 4.5)
+directionalLight.position.set(3, 10, 7)
+scene.add(ambientLight, directionalLight)
+
+/**
+ * Score
+ */
+const score = {
+    player2: 0,
+    player1: 0,
+};
+
+function updateScore() {
+    document.getElementById('score-player1').textContent = score.player1;
+    document.getElementById('score-player2').textContent = score.player2;
+}
+
+function onKeyDown(event) {
+    switch (event.key) {
+        case 'a':
+        case 'A':
+            moveLeft = true;
+            break;
+        case 'd':
+        case 'D':
+            moveRight = true;
+            break;
+        case 'j':
+        case 'J':
+            moveLeft2 = true;
+            break;
+        case 'l':
+        case 'L':
+            moveRight2 = true;
+            break;
+    }
+}
+
+function onKeyUp(event) {
+    switch (event.key) {
+        case 'a':
+        case 'A':
+            moveLeft = false;
+            break;
+        case 'd':
+        case 'D':
+            moveRight = false;
+            break;
+        case 'j':
+        case 'J':
+            moveLeft2 = false;
+            break;
+        case 'l':
+        case 'L':
+            moveRight2 = false;
+            break;
+    }
+}
+
+/**
+ * frame loop
+ */
+function tic() {
+	const deltaTime = clock.getDelta()
+
+    const dt = deltaTime / 10;
+
+    for(let i = 0; i < 10; i++){
+        // console.log("looping")
+        
+        if (moveLeft && playerPaddle.mesh.position.x > -boundaries.x) {
+            playerPaddle.setX((playerPaddle.mesh.position.x - 0.025)); // Adjust the value as needed
+            controls.update()
+        }
+        if (moveRight && playerPaddle.mesh.position.x < boundaries.x) {
+            playerPaddle.setX((playerPaddle.mesh.position.x + 0.025)); // Adjust the value as needed
+            controls.update()
+        }
+        if (moveLeft2 && player2Paddle.mesh.position.x > -boundaries.x) {
+            player2Paddle.setX(player2Paddle.mesh.position.x - 0.025);
+            controls.update()
+        }
+        if (moveRight2 && player2Paddle.mesh.position.x < boundaries.x) {
+            player2Paddle.setX(player2Paddle.mesh.position.x + 0.025);
+            controls.update()
+        }
+
+        ball.update(dt);
+        // controller.update(dt);
+    }
+
+	controls.update()
+
+	renderer.render(scene, camera)
+
+	requestAnimationFrame(tic)
+}
+
+requestAnimationFrame(tic)
+
+window.addEventListener('resize', handleResize)
+
+function handleResize() {
+	sizes.width = window.innerWidth
+	sizes.height = window.innerHeight
+
+	camera.aspect = sizes.width / sizes.height
+	camera.updateProjectionMatrix()
+
+	renderer.setSize(sizes.width, sizes.height)
+
+	// const pixelRatio = Math.min(window.devicePixelRatio, 2)
+	// renderer.setPixelRatio(pixelRatio)
+}
+
 }

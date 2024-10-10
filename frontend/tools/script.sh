@@ -7,5 +7,6 @@
 # -e "s@Default_key@'$KEY'@" \
 # -e "s@Default_name@'$DOMAIN_NAME'@" \
 # /etc/nginx/sites-available/default
+# npm install three
 
 exec nginx -g "daemon off;"
