@@ -13,7 +13,7 @@ export default class Ball extends EventDispatcher{
         this.paddles = paddles;
         this.radius = 0.5
         this.geometry = new SphereGeometry(this.radius)
-        this.material = new MeshStandardMaterial({color: 0xd62828})
+        this.material = new MeshStandardMaterial({color: 0xce51284})
         this.mesh = new Mesh(this.geometry, this.material)
         this.mesh.castShadow = true;
         this.mesh.receiveShadow = true;
@@ -26,10 +26,10 @@ export default class Ball extends EventDispatcher{
         this.raycaster.near = 0;
         this.raycaster.far = this.boundaries.y * 2.5;
 
-        const lineGeometry = new BufferGeometry().setFromPoints([new Vector3(), new Vector3()]);
-        const lineMaterial = new LineBasicMaterial({ color: 0xff0000 });
-        this.rayLine = new Line(lineGeometry, lineMaterial);
-        this.scene.add(this.rayLine);
+        // const lineGeometry = new BufferGeometry().setFromPoints([new Vector3(), new Vector3()]);
+        // const lineMaterial = new LineBasicMaterial({ color: 0xff0000 });
+        // this.rayLine = new Line(lineGeometry, lineMaterial);
+        // this.scene.add(this.rayLine);
 
         // this.collisionPoint = new Mesh(new SphereGeometry(0.1), new MeshBasicMaterial({color: 'red'}));
         
@@ -63,7 +63,7 @@ export default class Ball extends EventDispatcher{
         const tPos = this.mesh.position.clone().add(s);
 
         const rayEnd = this.mesh.position.clone().add(direction.multiplyScalar(this.raycaster.far));
-        this.rayLine.geometry.setFromPoints([this.mesh.position, rayEnd]);
+        // this.rayLine.geometry.setFromPoints([this.mesh.position, rayEnd]);
 
         /* check collision */
         const dx =  (this.boundaries.x - this.radius) - Math.abs(this.mesh.position.x);

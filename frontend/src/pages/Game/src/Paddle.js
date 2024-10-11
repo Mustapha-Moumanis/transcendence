@@ -13,7 +13,7 @@ export default class Paddle {
         this.helper_geometry.rotateZ(Math.PI * 0.5)
         this.helper_geometry.rotateX(Math.PI / 8)
 
-        this.material = new MeshStandardMaterial({ color: 0xf77f00 });
+        this.material = new MeshStandardMaterial({ color: 0x5b8e00 });
         this.mesh = new Mesh(this.geometry, this.material);
         this.mesh.castShadow = true;
         this.mesh.receiveShadow = true;

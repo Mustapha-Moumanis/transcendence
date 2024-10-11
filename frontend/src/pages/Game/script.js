@@ -30,12 +30,11 @@ let moveRight2 = false;
  */
 const scene = new THREE.Scene()
 scene.background = new THREE.Color(0xfcbf49);
-scene.fog = new THREE.Fog(0xfcbf49, 90, 120);
+scene.fog = new THREE.Fog(0x5b8e00, 90, 120);
 
 scene.add(...lights);
 // scene.background = new THREE.Color(0xdedede)
 const clock = new THREE.Clock();
-
 
 /**
  * BOX
@@ -60,7 +59,7 @@ const boundaries = new THREE.Vector2(20, 20);
 const planeGeometry = new THREE.PlaneGeometry(boundaries.x * 20, boundaries.y * 20, boundaries.x * 20, boundaries.y * 20);
 planeGeometry.rotateX(-Math.PI * 0.5)
 const planeMaterial = new THREE.MeshStandardMaterial({
-    color: 0x003049 
+    color: 0x070707
     // wireframe: true,
 	// transparent: true,
 	// opacity: 0.4
@@ -72,7 +71,7 @@ plane.receiveShadow = true;
 scene.add(plane);
 
 const boundGeo = new RoundedBoxGeometry(1, 2, boundaries.x * 2, 5, 0.5)
-const boundMat = new THREE.MeshStandardMaterial({ color: 0xfcbf49 });
+const boundMat = new THREE.MeshStandardMaterial({ color: 0x5b8e00 });
 const leftBound = new THREE.Mesh(boundGeo, boundMat)
 leftBound.position.x = -boundaries.x - 0.5;
 leftBound.castShadow = true;
@@ -125,8 +124,56 @@ camera.lookAt(new THREE.Vector3(0, 2.5, 0))
  */
 const renderer = new THREE.WebGLRenderer()
 // document.body.appendChild(renderer.domElement)
-document.querySelector('.gameInterface').appendChild(renderer.domElement);
+document.querySelector('#root').innerHTML = `<div class="gameInterface">
+			<div id="score-player1" class="score">0</div>
+			<div id="score-player2" class="score">0</div>
+			<a href="#home">
+				<button id="Home-button" class="btn-main">Back to Home</button>
+			</a>
+		</div>`;
+document.querySelector('#root').appendChild(renderer.domElement);
 handleResize()
+const HomeButton = document.getElementById('Home-button');
+
+HomeButton.addEventListener('click', () => {
+    cleanupScene();
+    setTimeout(() => {
+        window.location.hash = '#home';
+    }, 200);
+});
+
+function cleanupScene() {
+    // Dispose of all objects in the scene
+    while (scene.children.length > 0) {
+        const object = scene.children[0];
+        scene.remove(object);
+        if (object.geometry) object.geometry.dispose();
+        if (object.material) {
+            if (Array.isArray(object.material)) {
+                object.material.forEach(material => material.dispose());
+            } else {
+                object.material.dispose();
+            }
+        }
+    }
+
+    // Dispose of renderer
+    if (renderer) {
+        renderer.dispose();
+    }
+
+    // Dispose of controls
+    if (controls) {
+        controls.dispose();
+    }
+
+    // Dispose of camera
+    if (camera) {
+        camera = null;
+    }
+
+
+}
 
 renderer.shadowMap.enabled = true;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
