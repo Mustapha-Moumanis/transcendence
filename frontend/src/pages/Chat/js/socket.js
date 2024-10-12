@@ -10,6 +10,7 @@ import {setEmojies} from "./emoji.js"
 import {loadMoreContent, showAllMessages} from "./scrollHandler.js"
 import {showFriends, showUsers, handleChatResise} from "./listchat.js"
 import {sendToBackend} from "../script.js"
+import { logout } from "../../../utils/js/auth.js"
 
 // ------------------ Varaibles Of Chat ------------------
 export var chatSocket;
@@ -45,7 +46,10 @@ function startSocket(){
         sendToBackend("", "getDataHome", "");
     }
 
-    chatSocket.onclose = (e) => console.log("Something unexpected happened!" + e.code);
+    chatSocket.onclose = (e) => {
+        console.log("Something unexpected happened!" + e.code);
+        logout();
+    }
 
     chatSocket.onmessage = (event) => {
         const data = JSON.parse(event.data);
@@ -88,23 +92,22 @@ function startSocket(){
 }
 
 function startChat(){
-    console.log("chaT");
     if (notifUser) {
         sendToBackend(notifUser, "showConversation", "");
         notifUser = null;
     }
+    sendToBackend("", "showUsersFriend", "");
 
     window.addEventListener('resize', function() {
         if (document.querySelector("#chat-content"))
             handleChatResise();
     });
 
-    sendToBackend("", "showUsersFriend", "");
+    setEmojies();
 
     const messageInput = document.querySelector("#id_message_send_input");
     const messageSendButton = document.querySelector("#id_message_send_button");
     messageInput.focus();
-    setEmojies();
 
     let hasStartedTyping = false;
     const debouncedtypingValue = debounce(userStoppedTyping, 1000);

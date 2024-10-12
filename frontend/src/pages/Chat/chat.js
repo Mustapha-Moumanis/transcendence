@@ -16,7 +16,9 @@ async function Chat() {
   loadCSS(styleList);
 
   setTimeout(() => {
-    chatActions();
+      try {
+        chatActions();
+      } catch (error) { console.log(error); }
   }, 200);
 }
 
