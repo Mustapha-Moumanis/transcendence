@@ -141,7 +141,7 @@ function authActions() {
 }
 
 async function mainActions() {
-    window.location.hash = "#game";
+    // window.location.hash = "#game";
     // attachRouterListeners();
     // await HomeEffects();
 }

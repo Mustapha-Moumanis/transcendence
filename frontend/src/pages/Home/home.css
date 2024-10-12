@@ -1,0 +1,134 @@
+.form-home {
+    background-color: var(--base);
+    display: flex;
+    height: 100%;
+}
+
+.user-home-information {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 50%;
+    gap: 10px;
+}
+
+.home-top-player, .home-profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--base-shade);
+}
+
+.home-top-player {
+    /* width: 70%; */
+    height: 50%;
+}
+
+.home-profile {
+    /* width: 30%; */
+    height: 50%;
+}
+
+.user-match-history {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 50%;
+    gap: 5px;
+}
+
+.one-vs-one-history, .tourenoument-history {
+    background: var(--base-shade);
+    height: 100%;
+    width: calc(70% / 2);
+}
+
+.user-informations {
+    background: var(--base-shade);
+    height: 100%;
+    width: 30%;
+}
+
+
+
+/* --------------------------- */
+.gradient-container {
+    width: 150px;
+    height: 150px;
+    position: relative;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline-offset: -1px;
+    outline: 2px solid var(--base);
+}
+
+.gradient-container svg {
+    fill: #000;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+}
+
+.gradient-container .avatar {
+    position: absolute;
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    overflow: hidden;
+    z-index: 3;
+}
+
+.gradient-container .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    padding: 1px;
+    z-index: 1;
+}
+
+@media (max-width: 768px) {
+    .gradient-container {
+        width: 150px;
+        height: 150px;
+    }
+
+    .gradient-container svg,
+    #spinner {
+        width: 135px;
+        height: 135px;
+    }
+
+    .gradient-container .avatar {
+        width: 105px;
+        height: 105px;
+    }
+}
+
+@media (max-width: 480px) {
+    .gradient-container {
+        width: 100px;
+        height: 100px;
+    }
+
+    .gradient-container svg,
+    #spinner {
+        width: 90px;
+        height: 90px;
+    } 
+    .gradient-container .avatar {
+        width: 50px;
+        height: 50px;
+    }
+}

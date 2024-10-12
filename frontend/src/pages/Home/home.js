@@ -9,10 +9,12 @@ async function Home() {
   const html = await loadHTML('./pages/Home/home.html');
   await HomeEffects();
 
-  loadCSS(['./pages/Home/home.html'])
   document.getElementById('home-content').innerHTML = html;
+  loadCSS(['./pages/Home/home.css']);
 
-  homeActions();
+  setTimeout(() => {
+    homeActions();
+  }, 200);
 }
 
 export default Home;

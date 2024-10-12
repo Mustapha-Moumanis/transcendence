@@ -5,6 +5,7 @@
 * {
     --title-font: "Oxanium", Helvetica, Arial, sans-serif;
     --body-font: "Manrope", Helvetica, Arial, sans-serif;
+    outline: none !important;
 }
 
 .sub-color {

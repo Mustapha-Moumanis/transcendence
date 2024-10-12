@@ -4,9 +4,6 @@ import {startTyping, stopTyping, chatHeader,
 import {friendBlockedYou, updateHomeNotification, homeNotification,
     searchHome, onlineFriendsHome, updateHomeUsers, startSearchAndNotif} from "./homeSocket.js"
 
-import { debounce } from "../../../utils/js/utils.js"
-
-import {setEmojies} from "./emoji.js"
 import {loadMoreContent, showAllMessages} from "./scrollHandler.js"
 import {showFriends, showUsers, handleChatResise} from "./listchat.js"
 import {sendToBackend} from "../script.js"
@@ -45,7 +42,10 @@ function startSocket(){
         sendToBackend("", "getDataHome", "");
     }
 
-    chatSocket.onclose = (e) => console.log("Something unexpected happened!" + e.code);
+    chatSocket.onclose = (e) => {
+        console.log("Something unexpected happened!" + e.code);
+        logout();
+    }
 
     chatSocket.onmessage = (event) => {
         const data = JSON.parse(event.data);
@@ -88,57 +88,58 @@ function startSocket(){
 }
 
 function startChat(){
+
     console.log("chaT");
+
     if (notifUser) {
         sendToBackend(notifUser, "showConversation", "");
         notifUser = null;
     }
+    sendToBackend("", "showUsersFriend", "");
 
     window.addEventListener('resize', function() {
         if (document.querySelector("#chat-content"))
             handleChatResise();
     });
 
-    sendToBackend("", "showUsersFriend", "");
+    // setEmojies();
+    // const messageInput = document.querySelector("#id_message_send_input");
+    // const messageSendButton = document.querySelector("#id_message_send_button");
+    // messageInput.focus();
 
-    const messageInput = document.querySelector("#id_message_send_input");
-    const messageSendButton = document.querySelector("#id_message_send_button");
-    messageInput.focus();
-    setEmojies();
-
-    let hasStartedTyping = false;
-    const debouncedtypingValue = debounce(userStoppedTyping, 1000);
+    // let hasStartedTyping = false;
+    // const debouncedtypingValue = debounce(userStoppedTyping, 1000);
     
-    messageInput.onkeyup = function (e) {
-        if (!hasStartedTyping){
-            sendToBackend(currentSendto, "startTyping", "");
-            hasStartedTyping = true;
-        }
+    // messageInput.onkeyup = function (e) {
+    //     if (!hasStartedTyping){
+    //         sendToBackend(currentSendto, "startTyping", "");
+    //         hasStartedTyping = true;
+    //     }
 
-        debouncedtypingValue();
+    //     debouncedtypingValue();
 
-        if (e.keyCode === 13) {
-            hasStartedTyping = false;
-            sendToBackend(currentSendto, "stopTyping", "");
-            messageSendButton.dispatchEvent(new Event('click'));
-        }
-    };
+    //     if (e.keyCode === 13) {
+    //         hasStartedTyping = false;
+    //         sendToBackend(currentSendto, "stopTyping", "");
+    //         messageSendButton.dispatchEvent(new Event('click'));
+    //     }
+    // };
 
-    function userStoppedTyping() {
-        hasStartedTyping = false;
-        sendToBackend(currentSendto, "stopTyping", "");
-    }
+    // function userStoppedTyping() {
+    //     hasStartedTyping = false;
+    //     sendToBackend(currentSendto, "stopTyping", "");
+    // }
 
-    messageSendButton.addEventListener('click', () => {
-        const message = messageInput.value;
-        var emoji = document.querySelector(".list-emoji");
-        messageInput.value = "";
-        if (message.trim() != "") {
-            if (emoji)
-                emoji.classList.add("d-none");
-            sendToBackend(currentSendto, "message", message);
-        }
-    });
+    // messageSendButton.addEventListener('click', () => {
+    //     const message = messageInput.value;
+    //     var emoji = document.querySelector(".list-emoji");
+    //     messageInput.value = "";
+    //     if (message.trim() != "") {
+    //         if (emoji)
+    //             emoji.classList.add("d-none");
+    //         sendToBackend(currentSendto, "message", message);
+    //     }
+    // });
 }
 
 export {

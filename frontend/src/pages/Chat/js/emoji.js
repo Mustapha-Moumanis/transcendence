@@ -74,4 +74,53 @@ function setEmojies(){
     });
 }
 
+function drawtheLevel(lvl) {
+    let spinner = document.getElementById("spinner");
+    let ctx = spinner.getContext("2d");
+    let width = spinner.width;
+    let height = spinner.height;
+    let degrees = 0;
+    let new_degrees = (lvl/100)*180;  // % to degrees
+    let color = "turquoise";
+    let bgcolor = "#222";
+    let animation_loop;
+  
+    
+    function drawArc(degrees) {
+      ctx.clearRect(0, 0, width, height);
+  
+      // Background (half-circle)
+      ctx.beginPath();
+      ctx.strokeStyle = bgcolor;
+      ctx.lineWidth = 5;
+      ctx.arc(width / 2, height, 100, Math.PI, 2 * Math.PI, false);
+      ctx.stroke();
+  
+      // Foreground (progress)
+      ctx.beginPath();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 5;
+      let radians = degrees * Math.PI / 180;
+      ctx.arc(width / 2, height, 100, Math.PI, radians + Math.PI, false);
+      ctx.stroke();
+  
+      // Text (percentage)
+      ctx.fillStyle = color;
+      ctx.font = "30px Arial";
+      let percentage = Math.floor(degrees / 180 * 100) + "%";
+      let text_width = ctx.measureText(percentage).width;
+    }
+  
+    function animate() {
+      if (degrees < new_degrees) {
+        degrees++;
+        drawArc(degrees);
+      } else {
+        clearInterval(animation_loop);
+      }
+    }
+  
+    animation_loop = setInterval(animate, 20);
+  };
+
 export {setEmojies}
