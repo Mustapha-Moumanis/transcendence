@@ -57,7 +57,7 @@ function handleRegisterFormSubmission() {
             setTimeout(() => { window.location.hash = "login"; }, 1000);
         })
         .catch(error => {
-            if (error != "Error")
+            // if (error != "Error")
                 showAlert('error', error);
         });
     });
