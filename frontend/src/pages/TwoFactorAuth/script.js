@@ -90,7 +90,6 @@ function handleConfirmTwoFactorFormSubmission(userData, inputs) {
 		.then(response => {
 			if (!response.ok) {
 				return response.json().then(errorData => {
-					console.log(errorData);
 					if (errorData.key)
 						throw new Error("key :" + errorData.key[0]);
 					else if (errorData.message)

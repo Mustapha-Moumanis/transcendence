@@ -9,6 +9,11 @@ import Game from './pages/Game/game.js';
 import { isAuthenticated } from './utils/js/auth.js';
 import { showLoading, hideLoading} from './utils/js/utils.js';
 
+export var myIntervalID = null;
+export const setmyIntervalID = (newmyIntervalID) => {
+    myIntervalID = newmyIntervalID;
+};
+
 const routes = {
   'home': Home,
   'login': Login,
@@ -27,8 +32,9 @@ function Router() {
     })();
     
     console.log(">> ", path)
-    if (isAuthenticated()) {
-
+    var isAuth =  isAuthenticated();
+    console.log("isAuth >> ", isAuth)
+    if (isAuth) {
       if (path === 'login' || path === 'register' || path === 'reset-password') {
         return window.location.hash = '#home';
       }

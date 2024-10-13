@@ -127,8 +127,8 @@ function handleConfirmResetFormSubmission(email) {
 				setTimeout(() => { window.location.hash = "login"; }, 1000);
 			})
 			.catch(error => {
-				if (error != "Error")
-					showAlert('error', error);
+				// if (error != "Error")
+				// 	showAlert('error', error);
 			});
 	});
 }

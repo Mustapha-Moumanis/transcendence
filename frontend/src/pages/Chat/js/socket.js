@@ -7,6 +7,7 @@ import {friendBlockedYou, updateHomeNotification, homeNotification,
 import {loadMoreContent, showAllMessages} from "./scrollHandler.js"
 import {showFriends, showUsers, handleChatResise} from "./listchat.js"
 import {sendToBackend} from "../script.js"
+import { logout } from "../../../utils/js/auth.js"
 
 // ------------------ Varaibles Of Chat ------------------
 export var chatSocket;
@@ -89,8 +90,6 @@ function startSocket(){
 
 function startChat(){
 
-    console.log("chaT");
-
     if (notifUser) {
         sendToBackend(notifUser, "showConversation", "");
         notifUser = null;
@@ -102,10 +101,6 @@ function startChat(){
             handleChatResise();
     });
 
-    // setEmojies();
-    // const messageInput = document.querySelector("#id_message_send_input");
-    // const messageSendButton = document.querySelector("#id_message_send_button");
-    // messageInput.focus();
 
     // let hasStartedTyping = false;
     // const debouncedtypingValue = debounce(userStoppedTyping, 1000);

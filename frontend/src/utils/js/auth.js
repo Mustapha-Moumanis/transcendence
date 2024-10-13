@@ -1,22 +1,144 @@
 import { chatSocket } from '../../pages/Chat/js/socket.js';
-import { showLoading, hideLoading, HomeEffects, setCookie, deleteCookie } from './utils.js';
+import { setmyIntervalID, myIntervalID } from '../../router.js';
+import { showLoading, hideLoading, HomeEffects, setCookie, getCookie, deleteCookie } from './utils.js';
 import { debounce } from './utils.js';
 
 function isAuthenticated() {
-    return !!localStorage.getItem('authTokens');
+    const userInfo = localStorage.getItem('authTokens');
+    const token = getCookie('my-token');
+    const refreshToken = getCookie('my-refresh-token');
+
+    return !!userInfo && !!token && !!refreshToken;
 }
+
+function clearTokenCheckInterval() {
+    if (myIntervalID) {
+        clearInterval(myIntervalID);
+        setmyIntervalID(null);
+    }
+}
+
+function getUserData() {
+    return new Promise(function(resolve, reject){
+        var token = getCookie('my-token');
+    
+        fetch('api/user/', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(errorData => {
+                    if (errorData.non_field_errors)
+                        reject(errorData.non_field_errors[0]);
+                    else if (errorData.code)
+                        reject(errorData.code);
+                    reject('Can\'t get user data');
+                })
+            }
+            resolve(response.json());
+        })
+    })
+} 
+
+function verifyRefreshToken(refresh) {
+    return new Promise(function(resolve, reject){
+        const data = { refresh };
+        
+        fetch("/api/token/refresh/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", },
+            body: JSON.stringify(data),
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json()
+                    .then(errorData => {
+                        if (errorData.detail) {
+                            reject(errorData.detail);
+                        }
+                        reject('Invalid token');
+                    }
+                );
+            }
+            return response.json();
+        })
+        .then (data => {
+            if (data) {
+                setCookie('my-token', data.access);
+                resolve();
+            }
+            reject('Have no access');
+        })
+    })
+}
+
+function verifyToken(token, refresh) {
+    return new Promise(function(resolve, reject){
+        const data = { token };
+        
+        fetch("/api/token/verify/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", },
+            body: JSON.stringify(data),
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json()
+                    .then(() => {
+                        verifyRefreshToken(refresh)
+                        .then (() => {
+                            resolve();
+                        })
+                        .catch (error => {
+                            if (error.detail) {
+                                reject(error.detail);
+                            }
+                            reject('Invalid token');
+                        })
+                    }
+                );
+            }
+            resolve();
+        })
+    })
+}
+
+function checkToken() {
+    const refreshToken = getCookie('my-refresh-token');
+    if (refreshToken){
+        verifyRefreshToken(refreshToken)
+        .then(() => {
+            if (!myIntervalID) setmyIntervalID(setInterval(checkToken, 25*60*1000));
+        })
+        .catch (error => {
+            showAlert('error', error);
+            logout();
+            return false;
+        })
+    }
+    else logout();
+}
+
+window.addEventListener('beforeunload', () => {
+    clearTokenCheckInterval();
+});
 
 function login(authTokens) {
     localStorage.setItem('authTokens', JSON.stringify(authTokens));
     setCookie('my-token', authTokens.access, 30);
     setCookie('my-refresh-token', authTokens.refresh, 30);
 }
-  
+
 function logout() {
     chatSocket.close();
     localStorage.removeItem('authTokens');
     deleteCookie('my-token');
     deleteCookie('my-refresh-token');
+    clearTokenCheckInterval();
+    window.location.hash = "#login";
 }
 
 function showAlert(type, message) {
@@ -123,9 +245,9 @@ export function attachRouterListeners() {
 
                 window.location.hash = routerValue;
 
-                debounce(() => {
+                // debounce(() => {
                     parentElement.classList.remove('disabled'); 
-                }, 350)();
+                // }, 350)();
             }
         });
     });
@@ -155,4 +277,7 @@ export {
     removeFieldError,
     mainActions,
     authActions,
+    getUserData,
+    checkToken,
+    verifyToken,
 }
