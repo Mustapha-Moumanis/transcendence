@@ -30,6 +30,7 @@ function startSearchAndNotif(){
     searchOverlay.addEventListener('click', (event) => {
         event.stopPropagation();
         searchDiv.querySelector(".search-content").innerHTML = "";
+        searchInput.value = "";
         searchOverlay.classList.add("d-none");
     });
     

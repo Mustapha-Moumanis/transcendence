@@ -1,89 +1,152 @@
-<div class="border rounded-3" id="settings">
-    <div class="row m-3">
-        <div class="col-md-6 p-3">
-            <div class="mb-3">
-                <h4 >Change password</h4>
-                <p class="sub-color">Never share your password with anyone.</p>
+<div id="settings" class="setting-content">
+    <div class="setting-header">
+        <div class="setting-chooses">
+            <div class="btn-account setting-active">
+                <svg width="24" height="25" viewBox="0 0 24 25" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20.8673 20.715C21.4647 20.5947 21.819 19.9683 21.5173 19.4389C20.8216 18.2181 19.7177 17.1454 18.3024 16.3295C16.4943 15.2872 14.279 14.7222 12 14.7222C9.72103 14.7222 7.50572 15.2872 5.69767 16.3295C4.28234 17.1454 3.17848 18.2181 2.48279 19.4389C2.18108 19.9683 2.53531 20.5947 3.1327 20.715L4.10623 20.9109C9.3165 21.9598 14.6836 21.9598 19.8938 20.9109L20.8673 20.715Z"/>
+                    <path d="M17.7517 8.05556C17.7517 11.1238 15.1766 13.6111 12.0001 13.6111C8.82364 13.6111 6.24859 11.1238 6.24859 8.05556C6.24859 4.98731 8.82364 2.5 12.0001 2.5C15.1766 2.5 17.7517 4.98731 17.7517 8.05556Z"/>
+                </svg>
+                <h6>Account</h6>
             </div>
-            <form class="form-border">
-                <div class="field-set mb-3">
-                    <label for="old_password" class="mb-2">Current Password</label><br>
-                    <input type="password" id="old_password" name="old_password" class="form-control" autocomplete="off">
-                </div>
-                <div class="field-set mb-3">
-                    <label for="new_password1" class="mb-2">New Password</label>
-                    <input type="password" id="new_password1" name="new_password1" class="form-control" autocomplete="off">
-                </div>
-                <div class="field-set mb-3">
-                    <label for="new_password2" class="mb-2">Repeat new password</label>
-                    <input type="password" id="new_password2" name="new_password2" class="form-control" autocomplete="off">
-                </div>
-            </form>    
-            <button class="btn-main" id='save_set_pass' class="btn-main">Save Changes</button>
-        </div>
-        <div class="col-md-6 p-3" id="Two-factor">
-            <h4 class="mb-3">Two-factor authentication</h4>
-            <div class="row">
-                <div class="col-md-8">
-                    <h5>Secure your account <i class="active2faIcon"></i></h5>
-                    <p class="sub-color">Enable two-factor authentication to add an extra layer of security</p>
-                </div>
-                <div class="col-md-4">
-                    <button class="btn-main" id='enable2fa' class="btn-main">Enable 2FA</button>
-                </div>
+            <div class="btn-securty">
+                <svg width="24" height="25" viewBox="0 0 24 25" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M19.3073 5.43106L13.3506 2.87817C12.4881 2.50855 11.5119 2.50855 10.6494 2.87817L4.69266 5.43106C4.27245 5.61115 4 6.02434 4 6.48152V12.4848C4 14.6993 5.06948 16.7775 6.87151 18.0647L10.6715 20.779C11.4662 21.3466 12.5338 21.3466 13.3285 20.779L17.1285 18.0647C18.9305 16.7775 20 14.6993 20 12.4848V6.48152C20 6.02434 19.7275 5.61115 19.3073 5.43106ZM16.2094 9.78145C16.5545 9.35019 16.4845 8.7209 16.0533 8.37589C15.622 8.03088 14.9927 8.1008 14.6477 8.53206L10.7742 13.3739L9.27854 11.8782C8.88801 11.4877 8.25485 11.4877 7.86432 11.8782C7.4738 12.2687 7.4738 12.9019 7.86432 13.2924L9.75503 15.1831C10.3872 15.8153 11.4285 15.7576 11.987 15.0595L16.2094 9.78145Z"/>
+                </svg>
+                <h6>Securty</h6>
             </div>
-
-            <div class="active2fa d-none">
-                <!-- <div class="row">
-                    <div class="col-lg-8"> -->
-                        <div class="active2fa-content">
-                            <h2 class="mb-4">Enable 2FA</h2>
-                            <div class="row m-0">
-                                <div class="col-md-8 p-0">
-                                    <h6 class="text-bold">1. You will need amoble authenticator app to complete this process.<br>Some popular options include:</h6>
-                                    <ul>
-                                        <li>Google Authenticator</li>
-                                        <li>Duo Mobile</li>
-                                        <li>Microsoft Authenticator</li>
-                                    </ul>
-                                    <p class="sub-color">Feel free to use any compatible app of your choice.</p>
-                                </div>
-                                <div class="col-md-4 d-flex justify-content-center p-0 mb-3" id="qr-code">
-                                </div>
-                            </div>
-                            <h6>2. After scanning the QR code, enter the six-digit code generated by your authenticator app.</h6>
-                            <form id='conferm-2fa-code' class="form-border">
-                                <div class="numbers-field justify-content-start pt-3">
-                                    <input type="number" name="number_1" class="form-control" placeholder="0"/>
-                                    <input type="number" name="number_2" disabled class="form-control" placeholder="0"/>
-                                    <input type="number" name="number_3" disabled class="form-control" placeholder="0"/>
-                                    <input type="number" name="number_4" disabled class="form-control" placeholder="0"/>
-                                    <input type="number" name="number_5" disabled class="form-control" placeholder="0"/>
-                                    <input type="number" name="number_6" disabled class="form-control" placeholder="0"/>
-                                </div>
-                            </form>
-                            <hr>
-                            <div class="d-flex justify-content-end gap-1">
-                                <button class="btn btn-dark close2fa">Close</button>
-                                <button class="btn-main" id="verify2faKey">Verify now</button>
-                            </div>
-                        </div> 
-                    <!-- </div>
-                </div> -->
-
+            <div class="nav-indicator">
+                <span></span>
             </div>
         </div>
     </div>
-    
-    <!-- <div class="no-bottom no-top" style="position: absolute; left: 0; top: 0; background: #1E1F22; opacity: 50%;" id="content" >
-        <section class="v-center">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-8 offset-lg-2 z-1000 bg-info" style="height: 80vh;">
-                        text
+    <div class="setting-form form-border">
+        <div class="setting-account">
+            <div class="row setting-profile">
+                <div class="col-md-10 user-picture">
+                    <img class="avatar" src="/static/default/1.svg" alt="Souad-Hilal">
+                    <h5>Souad Hilal</h5>
+                </div>
+                <div class="col-md-2 mt-2">
+                    <button>Upload new picture</button>
+                </div>
+            </div>
+            <div class="row user-info">
+                <div class="col-md-6">
+                    <label for="first-name" class="mb-2">First Name</label><br>
+                    <input type="text" id="first-name" name="first-name" class="form-control" autocomplete="off">
+                </div>
+                <div class="col-md-6">
+                    <label for="last-name" class="mb-2">Last Name</label><br>
+                    <input type="text" id="last-name" name="last-name" class="form-control" autocomplete="off">
+                </div>
+                <div class="col-md-6">
+                    <label for="country" class="mb-2">Country</label><br>
+                    <select id="country" name="country" class="form-control">
+                        <option value="">--Please choose an option--</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="date-of-birth" class="mb-2">Date of birth</label><br>
+                    <input type="date" id="date-of-birth" name="date-of-birth"  class="form-control" value="2016-12-31" min="1700-01-01" max="2016-12-31"/>
+                </div>
+                <div class="about col-md-12">
+                    <label for="about" class="mb-2">About</label><br>
+                    <textarea id="about"></textarea>
+                    <p class="sub-color">Brief information about you to display on profile (max: 150 characters).</p>
+                </div>
+                <div class="col-md-2">
+                    <button>Save Changes</button>
+                </div>
+            </div>
+        </div>
+        <div class="d-none setting-securty rounded-3">
+            <div class="row m-3">
+                <div class="col-md-6 p-3">
+                    <div class="mb-3">
+                        <h4 >Change password</h4>
+                        <p class="sub-color">Never share your password with anyone.</p>
+                    </div>
+                    <form>
+                        <div class="field-set mb-3">
+                            <label for="old_password" class="mb-2">Current Password</label><br>
+                            <input type="password" id="old_password" name="old_password" class="form-control" autocomplete="off">
+                        </div>
+                        <div class="field-set mb-3">
+                            <label for="new_password1" class="mb-2">New Password</label>
+                            <input type="password" id="new_password1" name="new_password1" class="form-control" autocomplete="off">
+                        </div>
+                        <div class="field-set mb-3">
+                            <label for="new_password2" class="mb-2">Repeat new password</label>
+                            <input type="password" id="new_password2" name="new_password2" class="form-control" autocomplete="off">
+                        </div>
+                    </form>    
+                    <button class="btn-main" id='save_set_pass' class="btn-main">Save Changes</button>
+                </div>
+                <div class="col-md-6 p-3" id="Two-factor">
+                    <h4 class="mb-3">Two-factor authentication</h4>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h5>Secure your account <i class="active2faIcon"></i></h5>
+                            <p class="sub-color">Enable two-factor authentication to add an extra layer of security</p>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn-main" id='enable2fa' class="btn-main">Enable 2FA</button>
+                        </div>
+                    </div>
+        
+                    <div class="active2fa d-none">
+                        <!-- <div class="row">
+                            <div class="col-lg-8"> -->
+                                <div class="active2fa-content">
+                                    <h2 class="mb-4">Enable 2FA</h2>
+                                    <div class="row m-0">
+                                        <div class="col-md-8 p-0">
+                                            <h6 class="text-bold">1. You will need amoble authenticator app to complete this process.<br>Some popular options include:</h6>
+                                            <ul>
+                                                <li>Google Authenticator</li>
+                                                <li>Duo Mobile</li>
+                                                <li>Microsoft Authenticator</li>
+                                            </ul>
+                                            <p class="sub-color">Feel free to use any compatible app of your choice.</p>
+                                        </div>
+                                        <div class="col-md-4 d-flex justify-content-center p-0 mb-3" id="qr-code">
+                                        </div>
+                                    </div>
+                                    <h6>2. After scanning the QR code, enter the six-digit code generated by your authenticator app.</h6>
+                                    <form id='conferm-2fa-code'>
+                                        <div class="numbers-field justify-content-start pt-3">
+                                            <input type="number" name="number_1" class="form-control" placeholder="0"/>
+                                            <input type="number" name="number_2" disabled class="form-control" placeholder="0"/>
+                                            <input type="number" name="number_3" disabled class="form-control" placeholder="0"/>
+                                            <input type="number" name="number_4" disabled class="form-control" placeholder="0"/>
+                                            <input type="number" name="number_5" disabled class="form-control" placeholder="0"/>
+                                            <input type="number" name="number_6" disabled class="form-control" placeholder="0"/>
+                                        </div>
+                                    </form>
+                                    <hr>
+                                    <div class="d-flex justify-content-end gap-1">
+                                        <button class="btn btn-dark close2fa">Close</button>
+                                        <button class="btn-main" id="verify2faKey">Verify now</button>
+                                    </div>
+                                </div> 
+                            <!-- </div>
+                        </div> -->
+        
                     </div>
                 </div>
             </div>
-        </section>
-    </div> -->
+            
+            <!-- <div class="no-bottom no-top" style="position: absolute; left: 0; top: 0; background: #1E1F22; opacity: 50%;" id="content" >
+                <section class="v-center">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-lg-8 offset-lg-2 z-1000 bg-info" style="height: 80vh;">
+                                text
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div> -->
+        </div>
+    </div>
 </div>

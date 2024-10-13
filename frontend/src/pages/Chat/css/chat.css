@@ -65,7 +65,7 @@
 .chat-warning-button{
     background: var(--primary-color);
     border: solid 1px #ffffff00;
-    color: var(--title-color);
+    color: var(--base);
     border-radius: 8px;
     font-weight: bold;
     padding: 8px;
@@ -79,6 +79,7 @@
 }
 
 .chat-warning-button:hover{
+    color: var(--title-color);
     box-shadow: 0px 3px 18px 3px #0000006e;
     background: var(--base);
 }

@@ -24,6 +24,7 @@
 .active2fa-content h6 {
     font-weight: bold;
 }
+
 .active2fa-content .numbers-field {
     column-gap: 5px;
 }
@@ -36,4 +37,154 @@
 
 .active2fa-content hr{
     margin: 40px 0 40px 0;
+}
+
+.setting-content {
+    background-color: var(--base);
+    display: flex;
+    height: 100%;
+    grid-gap: 18px;
+    flex-direction: column;
+}
+
+.setting-header{
+    border-bottom: solid 1px var(--base-hover);
+    height: 10%;
+    width: 100%;
+}
+
+.setting-chooses {
+    width: 270px;
+    height: 100%;
+    display: flex;
+    position: relative;
+    color: var(--title-color);
+    align-items: flex-end;
+    grid-gap: 20px;
+}
+
+.btn-account {
+    display: flex;
+    grid-gap: 10px;
+    padding: 6px 12px;
+    fill: var(--sub-color);
+    color: var(--sub-color);
+}
+
+.btn-securty {
+    display: flex;
+    grid-gap: 10px;
+    padding: 6px 12px;
+    fill: var(--sub-color);
+    color: var(--sub-color);
+}
+
+.setting-chooses .nav-indicator {
+    width: 130px;
+    position: absolute;
+    bottom: -5%;
+    transition: 0.4s;
+    height: 5px;
+    padding: 0 5px;
+}
+
+.setting-chooses .nav-indicator > span {
+    display: block;
+    height: 100%;
+    width: 100%;
+    border-radius: 8px;
+    background-color: var(--primary-color);
+}
+
+.setting-chooses .setting-active {
+    color: var(--title-color);
+    fill: var(--title-color);
+}
+
+.btn-account.setting-active ~ .nav-indicator {
+    left: 0;
+}
+
+.btn-securty.setting-active + .nav-indicator {
+    left: 50%;
+}
+
+.setting-form {
+    border: solid 1px var(--base-hover);
+    width: 100%;
+    border-radius: 20px;
+}
+
+.setting-account {
+    padding: 20px;
+    height: 100%;
+}
+
+.setting-securty {
+    padding: 20px;
+    height: 100%;
+}
+
+.setting-profile {
+    display: flex;
+    padding: 20px;
+    align-items: center;
+    border-bottom: solid 1px var(--base-hover);
+}
+
+.user-picture {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    grid-gap: 20px;
+}
+
+.user-picture .avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.setting-account button {
+    background: var(--primary-color);
+    border: none;
+    color: var(--base);
+    border-radius: 8px;
+    font-weight: bold;
+    padding: 8px;
+    transition: 0.2s;
+    width: 100%;
+}
+
+.user-info {
+    padding: 20px;
+}
+
+.about textarea { 
+    height: 150px;
+    width: 100%;
+}
+    
+::-webkit-calendar-picker-indicator{
+    background: none;
+}
+
+@media (max-width: 480px){
+
+    .btn-securty h6{
+        display: none;
+    }
+
+    .btn-account h6{
+        display: none;
+    }
+
+    .setting-chooses{
+        width: 130px;
+    }
+
+    .setting-chooses .nav-indicator{
+        width: 50px;
+    }
 }

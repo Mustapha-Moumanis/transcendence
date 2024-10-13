@@ -1,5 +1,5 @@
-import {startSocket, startChat} from "./js/socket.js";
-import { chatSocket} from "./js/socket.js";
+import { startChat } from "./js/socket.js";
+import { chatSocket } from "./js/socket.js";
 
 export function sendToBackend(sendto, type, message){
 
@@ -11,5 +11,8 @@ export function sendToBackend(sendto, type, message){
 }
 
 export function chatActions() {
+	document.addEventListener("DOMContentLoaded", function() {
+		console.log("Window is fully loaded!");
+	});
 	startChat();
 }

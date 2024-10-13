@@ -1,8 +1,11 @@
-import {user} from "./socket.js"
+import {user, currentSendto} from "./socket.js"
 import {activeBtn} from "./listchat.js"
 import {smoothScrollToBottom} from "./scrollHandler.js"
 import {blockClick} from "./homeSocket.js"
 import {sendToBackend} from "../script.js"
+import {setEmojies} from "./emoji.js"
+import { debounce } from "../../../utils/js/utils.js"
+
 // ------------------ Upadate chat------------------
 
 function updateNotification(data){
@@ -114,15 +117,58 @@ function addEventListenerChatObtions(data){
     });
 }
 
+function stratChatBox(){
+
+    setEmojies();
+    const messageInput = document.querySelector("#id_message_send_input");
+    const messageSendButton = document.querySelector("#id_message_send_button");
+    messageInput.focus();
+
+    let hasStartedTyping = false;
+    const debouncedtypingValue = debounce(userStoppedTyping, 1000);
+    
+    messageInput.onkeyup = function (e) {
+        if (!hasStartedTyping){
+            sendToBackend(currentSendto, "startTyping", "");
+            hasStartedTyping = true;
+        }
+
+        debouncedtypingValue();
+
+        if (e.keyCode === 13) {
+            hasStartedTyping = false;
+            sendToBackend(currentSendto, "stopTyping", "");
+            messageSendButton.dispatchEvent(new Event('click'));
+        }
+    };
+
+    function userStoppedTyping() {
+        hasStartedTyping = false;
+        sendToBackend(currentSendto, "stopTyping", "");
+    }
+
+    messageSendButton.addEventListener('click', () => {
+        const message = messageInput.value;
+        var emoji = document.querySelector(".list-emoji");
+        messageInput.value = "";
+        if (message.trim() != "") {
+            if (emoji)
+                emoji.classList.add("d-none");
+            sendToBackend(currentSendto, "message", message);
+        }
+    });
+}
+
 function chatHeader(data) {
 
+    stratChatBox();
     // This part for hiding the welcome state & displaying loading.
     document.querySelector(".welcome-chat").classList.add("d-none");
     document.querySelector(".loading-chat").classList.remove("d-none");
 
     const header =  document.querySelector('.chat-header');
     header.innerHTML = `
-        <img class="expand-left" onclick="CloseMainChat()" src="pages/Chat/icons/Expand_left.svg" alt="close-chat">
+        <img class="expand-left" src="pages/Chat/icons/Expand_left.svg" alt="close-chat">
         <div class="chat-user-img">
             <img class="avatar" src="${data.avatar}" alt="${data.sendto}">
         </div>
@@ -141,7 +187,9 @@ function chatHeader(data) {
                 <div id="chat-block-friend" class="chat-option-element" style="color: #D31010;">Block Friend</div>
             </div>
         </div>`;
-    
+    header.querySelector(".expand-left").addEventListener('click', () => {
+        CloseMainChat();
+    })
     addEventListenerChatObtions(data);
 }
 
@@ -228,7 +276,6 @@ export {
     startTyping,
     stopTyping,
     chatHeader,
-    CloseMainChat,
     receiveMessage,
     respondMessage,
     updatestatuUsers,
