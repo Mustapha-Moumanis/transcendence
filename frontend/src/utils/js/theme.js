@@ -2,6 +2,8 @@
 // Color Switch Start
 // --------------------------------------------- //
 
+import {drawtheLevel} from "../../pages/Home/script.js";
+
 export function themeAction() {
 
   const themeBtn = document.querySelector('#color-switcher');
@@ -31,7 +33,7 @@ export function themeAction() {
   
   themeBtn.addEventListener('click', () => {
     let theme = getCurrentTheme();
-  
+    
     if(theme === 'dark'){
       theme = 'light';
     } else {
@@ -39,6 +41,10 @@ export function themeAction() {
     }
     localStorage.setItem('template.theme', `${theme}`);
     loadTheme(theme);
+
+    let spinner = document.getElementById("spinner");
+    if (spinner)
+      drawtheLevel(20, spinner);
   });
 
   loadTheme(getCurrentTheme());
