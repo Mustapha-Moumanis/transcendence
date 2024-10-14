@@ -1,7 +1,7 @@
 :root {
     --secondary-color: #6B7730;
     --tertiary-color: #449F93;
-    --gradient-color: #E51284;
+    --gradient-color: #e51284;
 
     --secondary-color-rgb: 141, 149, 96;
     --tertiary-color-rgb: 68, 159, 147;
@@ -26,7 +26,7 @@
 
 
     /* ---- Light Mode ---- */
-    --primary-color--light: #5B8E00;
+    --primary-color--light: #5b8e00;
     --base--light: #E8E8E8;
     --base-tint--light: #F5F5F5;
     --base-shade--light: #D0D0D0; 
