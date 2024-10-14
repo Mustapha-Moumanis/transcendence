@@ -387,9 +387,7 @@ function handle2faAction(inputs, btn) {
 					verify2faKey.removeEventListener('click', handleVerify2faKeyClick);
 					document.querySelector(".active2fa").classList.add("d-none");
 				})
-				.catch(error => {
-					showAlert('error', error);
-				});
+				.catch(error => showAlert('error', error));
 				inputs.forEach((input, index) => {
 					input.value = "";
 					if (index == 0) input.focus();

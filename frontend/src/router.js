@@ -31,10 +31,8 @@ function Router() {
       return 'home';
     })();
     
-    console.log(">> ", path)
-    var isAuth =  isAuthenticated();
-    console.log("isAuth >> ", isAuth)
-    if (isAuth) {
+    console.log(">> ", path);
+    if (isAuthenticated()) {
       if (path === 'login' || path === 'register' || path === 'reset-password') {
         return window.location.hash = '#home';
       }

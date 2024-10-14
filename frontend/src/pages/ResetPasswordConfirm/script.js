@@ -82,7 +82,8 @@ function passResetActions(email) {
 function handleConfirmResetFormSubmission(email) {
 	document.getElementById('form_reset_password_confirm').addEventListener('submit', function(e) {
 		e.preventDefault();
-		const inputs = document.querySelectorAll(".numbers-field > input");
+		const numbersFields = document.querySelector('.numbers-field');
+		const inputs = numbersFields.querySelectorAll("input");
 		const token = [...inputs].map(input => input.value).join('');
 		const new_password1 = document.querySelector("#password");
 		const new_password2 = document.querySelector("#re-password");
@@ -93,7 +94,8 @@ function handleConfirmResetFormSubmission(email) {
 			new_password1: new_password1.value,
 			new_password2: new_password2.value,
 		};
-		fetch('api/password/reset/confirm/', {
+		var ResetPasswordConfirmPromise = new Promise(function(resolve, reject){
+			fetch('api/password/reset/confirm/', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -103,33 +105,28 @@ function handleConfirmResetFormSubmission(email) {
 			.then(response => {
 				if (!response.ok) {
 					return response.json().then(errorData => {
-						if (errorData.new_password1) {
-							displayFieldError(new_password1.parentElement, errorData.new_password1[0]);
-						}
-						if (errorData.new_password2) {
-							displayFieldError(new_password2.parentElement, errorData.new_password2[0]);
-						}
-						if (errorData.token) {
-
-							showAlert('error', "Token :" + errorData.token[0]);
-						}
-						if (errorData.email) {
-							showAlert('error', "Email: " + errorData.email[0])
-						}
-						throw new Error();
-
+						if (errorData.new_password1) displayFieldError(new_password1.parentElement, errorData.new_password1[0]);
+						if (errorData.new_password2) displayFieldError(new_password2.parentElement, errorData.new_password2[0]);
+						if (errorData.token) displayFieldError(numbersFields.parentElement, "Key: " + errorData.token[0]);
+						if (errorData.email) reject("Email: " + errorData.email[0])
+						reject("You can not Reset your password");
 					});
 				}
-				return response.json();
+				resolve(response.json());
 			})
-			.then(data => {
-				showAlert('success', data.detail);
-				setTimeout(() => { window.location.hash = "login"; }, 1000);
-			})
-			.catch(error => {
-				// if (error != "Error")
-				// 	showAlert('error', error);
-			});
+		});
+	
+		ResetPasswordConfirmPromise
+		.then(data => {
+			showAlert('success', data.detail);
+			window.location.hash = "login";
+		})
+		.catch(error => showAlert('error', error));
+		inputs.forEach((input, index) => {
+			input.value = "";
+			if (index == 0) input.focus();
+			else input.disabled = true;
+		});
 	});
 }
 

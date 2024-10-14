@@ -206,7 +206,9 @@ function closeAlert(alertElement) {
 }
 
 function displayFieldError(element, message) {
+    console.log("1 ", element, message)
     if (!element.classList.contains("has-error")) {
+        console.log("2 ", element, message)
         let span = document.createElement('span');
         span.innerHTML = message;
         span.classList.add("error-block");
