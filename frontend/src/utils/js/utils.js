@@ -1,4 +1,4 @@
-import { logout, showAlert, attachRouterListeners } from './auth.js'
+import { logout, showAlert, attachRouterListeners, checkToken } from './auth.js'
 import { themeAction } from './theme.js'
 import { startSocket } from '../../pages/Chat/js/socket.js'
 
@@ -145,12 +145,10 @@ export function handleLogoutBtn() {
       .then(data => {
           showAlert('success', 'Logout successful!');
           logout();
-          setTimeout(() => { window.location.hash = '#login'; }, 1000);
       })
       .catch(error => {
           showAlert('error', error.message);
           logout();
-          setTimeout(() => { window.location.hash = '#login'; }, 1000);
       });
     }
 	});
@@ -162,10 +160,6 @@ function updateSidebar() {
 
   if (buttons) {
     buttons.forEach(button => {
-      // button.addEventListener('click', () => {
-      //   buttons.forEach(btn => btn.classList.remove('active-btn'));
-      //   button.classList.add('active-btn');
-      // });
       const dataRouter = button.getAttribute("data-router");
       if (dataRouter && dataRouter === currentHash) button.classList.add('active-btn');
       else button.classList.remove('active-btn');
@@ -190,16 +184,18 @@ export async function HomeEffects() {
     content.innerHTML = sidebar;
     content.appendChild(mainContent);
     
-    root.innerHTML = nav + content.outerHTML;
+    root.innerHTML = nav;
+    root.appendChild(content);
 
     loadCSS(['./utils/css/bars.css']);
 
     setTimeout(() => { 
       themeAction();
       handleLogoutBtn();
-      updateSidebar();
       attachRouterListeners();
 			startSocket();
+      updateSidebar();
+      checkToken();
     }, 0);
 
     const themeButton = document.querySelector('.themeButton');
@@ -208,6 +204,7 @@ export async function HomeEffects() {
   else {
     setTimeout(() => { 
       showLoading("#home-content");
+      updateSidebar();
     }, 0);
   }
 }

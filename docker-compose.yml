@@ -10,12 +10,12 @@ services:
         # volumes:
         #     - ./data/db:/var/lib/postgresql/data
     
-    ngnix:
+    nginx:
         depends_on:
             - web
-        container_name : ngnix
+        container_name : nginx
         build : ./frontend/
-        image : ngnix
+        image : nginx
         ports:
             - 8080:80
         restart: on-failure

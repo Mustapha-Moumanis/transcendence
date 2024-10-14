@@ -33,7 +33,7 @@ function handleResetFormSubmission() {
 						if (errorData.non_field_errors) {
 							throw new Error(errorData.non_field_errors[0]);
 						}
-						throw new Error();
+						throw new Error("You can not Reset your password");
 
 					});
 				}
@@ -44,8 +44,7 @@ function handleResetFormSubmission() {
 				ResetPasswordConfirm(email.value);
 			})
 			.catch(error => {
-				if (error != "Error")
-					showAlert('error', error);
+				showAlert('error', error);
 			});
 	});
 
