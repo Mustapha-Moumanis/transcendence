@@ -69,7 +69,11 @@
     opacity: 0.65;
 }
 
-
-#start {
-    
+.main-menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    flex-direction: column;
+    grid-gap: 20px;
 }

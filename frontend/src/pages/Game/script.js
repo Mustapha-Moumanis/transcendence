@@ -11,8 +11,22 @@ import lights from './src/Lighting.js'
 
 
 
+
+
+
 export function gameActions() {
-	/**
+
+    /*      colors        */
+    let rootStyles = getComputedStyle(document.documentElement);
+    let baseColor = rootStyles.getPropertyValue('--base').trim(); 
+    var baseTintColor = rootStyles.getPropertyValue('--base-tint').trim();
+    var baseShadeColor = rootStyles.getPropertyValue('--base-shade').trim();
+    var baseHoverColor = rootStyles.getPropertyValue('--base-hover').trim();
+    var primaryColor = rootStyles.getPropertyValue('--primary-color').trim();
+    var titleColor = rootStyles.getPropertyValue('--title-color').trim();
+    var subColor = rootStyles.getPropertyValue('--sub-color').trim();
+
+    /**
  * Debug
  */
 // const gui = new dat.GUI()
@@ -30,7 +44,7 @@ let moveRight2 = false;
  */
 const scene = new THREE.Scene()
 scene.background = new THREE.Color(0xfcbf49);
-scene.fog = new THREE.Fog(0x5b8e00, 90, 120);
+scene.fog = new THREE.Fog(primaryColor, 90, 120);
 
 scene.add(...lights);
 // scene.background = new THREE.Color(0xdedede)
@@ -46,10 +60,10 @@ const geometry = new THREE.BoxGeometry(1, 1, 1)
 /**
  * Plane
  */
-const groundMaterial = new THREE.MeshStandardMaterial({ color: 'lightgray' })
-const groundGeometry = new THREE.PlaneGeometry(10, 10)
-groundGeometry.rotateX(-Math.PI * 0.5)
-const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+// const groundMaterial = new THREE.MeshStandardMaterial({ color: 'lightgray' })
+// const groundGeometry = new THREE.PlaneGeometry(10, 10)
+// groundGeometry.rotateX(-Math.PI * 0.5)
+// const ground = new THREE.Mesh(groundGeometry, groundMaterial);
 
 
 // scene.add(ground)
@@ -59,11 +73,12 @@ const boundaries = new THREE.Vector2(20, 20);
 const planeGeometry = new THREE.PlaneGeometry(boundaries.x * 20, boundaries.y * 20, boundaries.x * 20, boundaries.y * 20);
 planeGeometry.rotateX(-Math.PI * 0.5)
 const planeMaterial = new THREE.MeshStandardMaterial({
-    color: 0x070707
+    color: baseColor
     // wireframe: true,
 	// transparent: true,
 	// opacity: 0.4
 });
+
 
 const plane = new THREE.Mesh(planeGeometry, planeMaterial);
 plane.position.y = -1.5;
@@ -71,7 +86,7 @@ plane.receiveShadow = true;
 scene.add(plane);
 
 const boundGeo = new RoundedBoxGeometry(1, 2, boundaries.x * 2, 5, 0.5)
-const boundMat = new THREE.MeshStandardMaterial({ color: 0x5b8e00 });
+const boundMat = new THREE.MeshStandardMaterial({ color: primaryColor });
 const leftBound = new THREE.Mesh(boundGeo, boundMat)
 leftBound.position.x = -boundaries.x - 0.5;
 leftBound.castShadow = true;
@@ -192,8 +207,8 @@ controls.enableDamping = true
 /**
  * Lights
  */
-const ambientLight = new AmbientLight(0xffffff, 1.5)
-const directionalLight = new DirectionalLight(0xffffff, 4.5)
+const ambientLight = new AmbientLight(0xffffff, 5)
+const directionalLight = new DirectionalLight(0xffffff, 8)
 directionalLight.position.set(3, 10, 7)
 scene.add(ambientLight, directionalLight)
 
@@ -206,8 +221,12 @@ const score = {
 };
 
 function updateScore() {
-    document.getElementById('score-player1').textContent = score.player1;
-    document.getElementById('score-player2').textContent = score.player2;
+    var score1 = document.getElementById('score-player1');
+    var score2 = document.getElementById('score-player2');
+    if (score1 && score2) {
+        document.getElementById('score-player1').textContent = score.player1;
+        document.getElementById('score-player2').textContent = score.player2;
+    }
 }
 
 function onKeyDown(event) {

@@ -1,8 +1,11 @@
 import { MeshNormalMaterial,MeshStandardMaterial, SphereGeometry, Mesh, CapsuleGeometry } from "../lib/three.js-master/build/three.module.js";
 
+
 export default class Paddle {
     
     constructor(scene, position, boundaries) {
+        var rootStyles = getComputedStyle(document.documentElement);
+        var color = rootStyles.getPropertyValue('--primary-color').trim(); 
         this.scene = scene
         this.boundaries = boundaries
 
@@ -13,7 +16,7 @@ export default class Paddle {
         this.helper_geometry.rotateZ(Math.PI * 0.5)
         this.helper_geometry.rotateX(Math.PI / 8)
 
-        this.material = new MeshStandardMaterial({ color: 0x5b8e00 });
+        this.material = new MeshStandardMaterial({ color: color });
         this.mesh = new Mesh(this.geometry, this.material);
         this.mesh.castShadow = true;
         this.mesh.receiveShadow = true;
