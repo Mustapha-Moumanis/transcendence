@@ -107,7 +107,10 @@ function handleConfirmResetFormSubmission(email) {
 					return response.json().then(errorData => {
 						if (errorData.new_password1) displayFieldError(new_password1.parentElement, errorData.new_password1[0]);
 						if (errorData.new_password2) displayFieldError(new_password2.parentElement, errorData.new_password2[0]);
-						if (errorData.token) displayFieldError(numbersFields.parentElement, "Key: " + errorData.token[0]);
+						if (errorData.token) {
+							displayFieldError(numbersFields, null);
+							reject("Key: " + errorData.token[0]);
+						}
 						if (errorData.email) reject("Email: " + errorData.email[0])
 						reject("You can not Reset your password");
 					});
@@ -122,11 +125,11 @@ function handleConfirmResetFormSubmission(email) {
 			window.location.hash = "login";
 		})
 		.catch(error => showAlert('error', error));
-		inputs.forEach((input, index) => {
-			input.value = "";
-			if (index == 0) input.focus();
-			else input.disabled = true;
-		});
+		// inputs.forEach((input, index) => {
+		// 	input.value = "";
+		// 	if (index == 0) input.focus();
+		// 	else input.disabled = true;
+		// });
 	});
 }
 

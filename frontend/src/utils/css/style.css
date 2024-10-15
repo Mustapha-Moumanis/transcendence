@@ -119,7 +119,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .has-error label {
-    color: rgb(231, 80, 90) !important;
+    color: #e7505a !important;
 }
 
 .has-error .form-control {
