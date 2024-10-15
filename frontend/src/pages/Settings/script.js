@@ -1,4 +1,4 @@
-import { getUserData, logout, verifyToken } from '../../utils/js/auth.js'
+import { attachInputFocusListeners, getUserData, logout, verifyToken } from '../../utils/js/auth.js'
 import { displayFieldError, showAlert} from '../../utils/js/auth.js'
 import { getCookie } from '../../utils/js/utils.js';
 
@@ -351,19 +351,15 @@ function handle2faAction(inputs, btn) {
 				if (!response.ok) {
 					return response.json()
 					.then(errorData => {
-						if (errorData.key) {
-							const numbersFields = document.querySelector('.numbers-field');
-							displayFieldError(numbersFields.parentElement, errorData.key);
-							reject("errorData.key");
-						} else if (errorData.message)
-							reject(errorData.message);
-						reject('You can not active 2fa');
+                        const numbersFields = document.querySelector('.numbers-field');
+						if (errorData.key) displayFieldError(numbersFields.parentElement, errorData.key);
+						else if (errorData.message) displayFieldError(numbersFields.parentElement, errorData.message);
+						reject('Failed to active 2fa');
 					});
 				}
 				resolve();
 			})
 		})
-		
 	}
 
 	function handleVerify2faKeyClick() {
@@ -387,14 +383,12 @@ function handle2faAction(inputs, btn) {
 					verify2faKey.removeEventListener('click', handleVerify2faKeyClick);
 					document.querySelector(".active2fa").classList.add("d-none");
 				})
-				.catch(error => {
-					showAlert('error', error);
-				});
-				inputs.forEach((input, index) => {
-					input.value = "";
-					if (index == 0) input.focus();
-					else input.disabled = true;
-				});
+				.catch(error => showAlert('error', error));
+				// inputs.forEach((input, index) => {
+				// 	input.value = "";
+				// 	if (index == 0) input.focus();
+				// 	else input.disabled = true;
+				// });
 			}
 		})
 		.catch (error => {
@@ -520,4 +514,5 @@ function addListenerSettings(){
 export function settingsActions() {
     addListenerSettings();
     twoFactorAuth();
+    attachInputFocusListeners();
 }

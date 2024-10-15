@@ -119,7 +119,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .has-error label {
-    color: rgb(231, 80, 90) !important;
+    color: #e7505a !important;
 }
 
 .has-error .form-control {
@@ -250,7 +250,7 @@ a.btn-sc svg {
 }
 
 .btn-main:hover,
-.btn-main:active,
+.btn-main:active,numbers-fieldu
 .activeBtn {
     -webkit-box-shadow: 2px 2px 20px 0px rgba(var(--primary-color-rgb), 0.5);
     -moz-box-shadow: 2px 2px 20px 0px rgba(var(--primary-color-rgb), 0.5);

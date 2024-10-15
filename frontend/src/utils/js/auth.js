@@ -208,17 +208,27 @@ function closeAlert(alertElement) {
 function displayFieldError(element, message) {
     if (!element.classList.contains("has-error")) {
         let span = document.createElement('span');
-        span.innerHTML = message;
-        span.classList.add("error-block");
         element.classList.add("has-error");
-        element.appendChild(span);
+        if (message) {
+            span.innerHTML = message;
+            span.classList.add("error-block");
+            element.appendChild(span);
+        }
     }
 }
 
-function removeFieldError(input) {
-    if (input.classList.contains("has-error")) {
-        input.classList.remove("has-error");
-        input.removeChild(input.children[2]);
+function removeFieldError(element) {
+    if (element.parentElement.classList.contains("has-error"))
+        element = element.parentElement;
+    if (element.classList.contains("has-error")) {
+        element.classList.remove("has-error");
+        element.querySelector(".error-block").remove();
+        var inputs = element.querySelectorAll(".form-control");
+        inputs.forEach((input, index) => {
+			input.value = "";
+			if (index == 0) input.focus();
+			else input.disabled = true;
+		});
     }
 }
 
@@ -245,9 +255,9 @@ export function attachRouterListeners() {
 
                 window.location.hash = routerValue;
 
-                // debounce(() => {
+                debounce(() => {
                     parentElement.classList.remove('disabled'); 
-                // }, 350)();
+                }, 350)();
             }
         });
     });
@@ -264,7 +274,7 @@ function authActions() {
 
 async function mainActions() {
     // window.location.hash = "#game";
-    // attachRouterListeners();
+    attachInputFocusListeners();
     // await HomeEffects();
 }
 
@@ -280,4 +290,5 @@ export {
     getUserData,
     checkToken,
     verifyToken,
+    attachInputFocusListeners,
 }

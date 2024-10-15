@@ -21,40 +21,34 @@ function handleLoginFormSubmission() {
             displayFieldError(password.parentElement, 'Password: This field may not be blank.');
         }
         else {
-            fetch('api/login/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(errorData => {
-                        if (errorData.non_field_errors) {
-                            throw new Error(errorData.non_field_errors[0]);
-                        } else if (errorData.password) {
-                            throw new Error("Password: " + errorData.password[0]);
-                        }
-                        throw new Error('Handled HTTP error');
-                    });
-                }
-                return response.json();
-            })
-            .then(data => {
+            var loginPromise = new Promise(function(resolve, reject){
+                fetch('api/login/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(errorData => {
+                            if (errorData.non_field_errors) reject(errorData.non_field_errors[0]);
+                            else if (errorData.password) reject("Password: " + errorData.password[0]);
+                            reject('Failed to login');
+                        });
+                    }
+                    resolve(response.json());
+                })
+            });
 
-                if (data.user.is2faActive)
-                    TwoFactorAuth(data);
+            loginPromise
+            .then(data => {
+                if (data.user.is2faActive) TwoFactorAuth(data);
                 else {
                     showAlert('success', 'Login successful!');
                     login(data);
-                    // startSocket();
-                    setTimeout(() => { window.location.hash = '#home'; }, 1000);
+                    window.location.hash = '#home';
                 }
             })
-            .catch(error => {
-                showAlert('error', error.message);
-            });
+            .catch(error => showAlert('error', error));
         }
     });
 };
