@@ -137,6 +137,8 @@ function logout() {
     localStorage.removeItem('authTokens');
     deleteCookie('my-token');
     deleteCookie('my-refresh-token');
+    deleteCookie('sessionid');
+    deleteCookie('messages');
     clearTokenCheckInterval();
     window.location.hash = "#login";
 }
