@@ -10,11 +10,11 @@ import { RoundedBoxGeometry } from './lib/three.js-master/examples/jsm/geometrie
 import lights from './src/Lighting.js'
 
 
-
-
+let gameRunning = false;
 
 
 export function gameActions() {
+    gameRunning = true;
 
     /*      colors        */
     let rootStyles = getComputedStyle(document.documentElement);
@@ -124,7 +124,7 @@ const sizes = {
  * Camera
  */
 const fov = 60
-const camera = new THREE.PerspectiveCamera(fov, sizes.width / sizes.height, 0.1)
+let camera = new THREE.PerspectiveCamera(fov, sizes.width / sizes.height, 0.1)
 camera.position.set(0, 25, 30)
 camera.lookAt(new THREE.Vector3(0, 2.5, 0))
 
@@ -159,6 +159,7 @@ HomeButton.addEventListener('click', () => {
 
 function cleanupScene() {
     // Dispose of all objects in the scene
+    gameRunning = false;
     while (scene.children.length > 0) {
         const object = scene.children[0];
         scene.remove(object);
@@ -275,6 +276,9 @@ function onKeyUp(event) {
  * frame loop
  */
 function tic() {
+    if (!gameRunning) {
+        return;
+    }
 	const deltaTime = clock.getDelta()
 
     const dt = deltaTime / 10;
@@ -283,19 +287,19 @@ function tic() {
         // console.log("looping")
         
         if (moveLeft && playerPaddle.mesh.position.x > -boundaries.x) {
-            playerPaddle.setX((playerPaddle.mesh.position.x - 0.025)); // Adjust the value as needed
+            playerPaddle.setX((playerPaddle.mesh.position.x - 0.045)); // Adjust the value as needed
             controls.update()
         }
         if (moveRight && playerPaddle.mesh.position.x < boundaries.x) {
-            playerPaddle.setX((playerPaddle.mesh.position.x + 0.025)); // Adjust the value as needed
+            playerPaddle.setX((playerPaddle.mesh.position.x + 0.045)); // Adjust the value as needed
             controls.update()
         }
         if (moveLeft2 && player2Paddle.mesh.position.x > -boundaries.x) {
-            player2Paddle.setX(player2Paddle.mesh.position.x - 0.025);
+            player2Paddle.setX(player2Paddle.mesh.position.x - 0.045);
             controls.update()
         }
         if (moveRight2 && player2Paddle.mesh.position.x < boundaries.x) {
-            player2Paddle.setX(player2Paddle.mesh.position.x + 0.025);
+            player2Paddle.setX(player2Paddle.mesh.position.x + 0.045);
             controls.update()
         }
 

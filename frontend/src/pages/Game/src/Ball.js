@@ -13,7 +13,7 @@ export default class Ball extends EventDispatcher{
         this.paddles = paddles;
         this.radius = 0.5
         this.geometry = new SphereGeometry(this.radius)
-        this.material = new MeshStandardMaterial({color: 0xce51284})
+        this.material = new MeshStandardMaterial({color: 0xe51284})
         this.mesh = new Mesh(this.geometry, this.material)
         this.mesh.castShadow = true;
         this.mesh.receiveShadow = true;
@@ -48,11 +48,6 @@ export default class Ball extends EventDispatcher{
         this.velocity.set(Math.sin(angle) * speed, 0, Math.sign(this.velocity.z) * Math.cos(angle) * speed);
 
         this.velocity.normalize().multiplyScalar(this.speed);
-        // const direction = this.velocity.z
-        // const angle = (Math.random() * Math.PI) / 4 - Math.PI / 8; // Random angle between -22.5 and 22.5 degrees
-        // const speed = 0.5; // Adjust the speed as needed
-
-        // this.velocity.set(Math.sin(angle) * speed, 0, direction * Math.cos(angle) * speed);
     }
 
     update(dt) {

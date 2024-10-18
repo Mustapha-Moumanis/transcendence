@@ -39220,6 +39220,7 @@ function splitPolygon( a, b ) {
 
 	const a2 = new Node( a.i, a.x, a.y ),
 		b2 = new Node( b.i, b.x, b.y ),
+		
 		an = a.next,
 		bp = b.prev;
 
