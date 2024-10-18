@@ -207,8 +207,8 @@ controls.enableDamping = true
 /**
  * Lights
  */
-const ambientLight = new AmbientLight(0xffffff, 5)
-const directionalLight = new DirectionalLight(0xffffff, 8)
+const ambientLight = new AmbientLight(0xffffff, 1.5)
+const directionalLight = new DirectionalLight(0xffffff, 2.5)
 directionalLight.position.set(3, 10, 7)
 scene.add(ambientLight, directionalLight)
 
