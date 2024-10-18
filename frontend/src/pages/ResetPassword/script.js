@@ -12,42 +12,33 @@ function handleResetFormSubmission() {
 
 		const email = document.querySelector("#email");
 
-		const data = {
-			email: email.value,
-		};
+		const data = { email: email.value };
 
-		fetch('api/password/reset/', {
+		var ResetPasswordPromise = new Promise(function(resolve, reject){
+            fetch('api/password/reset/', {
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(data)
 			})
-			.then(response => {
+            .then(response => {
 				if (!response.ok) {
 					return response.json().then(errorData => {
-						console.log(errorData)
-						if (errorData.email) {
-							displayFieldError(email.parentElement, errorData.email[0]);
-						}
-						if (errorData.non_field_errors) {
-							throw new Error(errorData.non_field_errors[0]);
-						}
-						throw new Error("You can not Reset your password");
-
+						if (errorData.email) displayFieldError(email.parentElement, errorData.email[0]);
+						if (errorData.non_field_errors) reject(errorData.non_field_errors[0]);
+						reject("You can not Reset your password");
 					});
 				}
-				return response.json();
+				resolve(response.json());
 			})
-			.then(data => {
-				showAlert('success', data.detail);
-				ResetPasswordConfirm(email.value);
-			})
-			.catch(error => {
-				showAlert('error', error);
-			});
-	});
+        });
 
+        ResetPasswordPromise
+		.then(data => {
+			showAlert('success', data.detail);
+			ResetPasswordConfirm(email.value);
+		})
+		.catch(error => showAlert('error', error));
+	});
 };
 
 export function ResetPasswordActions() {

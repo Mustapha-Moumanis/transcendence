@@ -2,15 +2,17 @@ import { logout, mainActions } from '../../utils/js/auth.js'
 import { displayFieldError, authActions } from '../../utils/js/auth.js'
 import { getCookie } from '../../utils/js/utils.js'
 
-function drawtheLevel(lvl, spinner) {
+export function drawtheLevel(lvl, spinner) {
 
-	let color = '#c4f000';
+	let rootStyles = getComputedStyle(document.documentElement);
+ 	let color = rootStyles.getPropertyValue('--primary-color').trim();
+	let bgcolor = rootStyles.getPropertyValue('--sub-color').trim();
+
 	let ctx = spinner.getContext("2d");
 	let width = spinner.width;
 	let height = spinner.height;
 	let degrees = 0;
 	let new_degrees = (lvl/100)*280;
-	let bgcolor = "transparent";
 	let animation_loop;
 
 	

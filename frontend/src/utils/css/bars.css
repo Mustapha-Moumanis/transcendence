@@ -320,6 +320,7 @@
 
 .sidebar-content svg{
     fill : var(--sub-color);
+    cursor: pointer;
 }
 
 .sidebar-content svg:hover{

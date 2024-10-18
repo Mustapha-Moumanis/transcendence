@@ -17,49 +17,36 @@ function handleRegisterFormSubmission() {
             password1: password.value,
             password2: rePassword.value,
         };
-
-        fetch('api/register/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => {
-            if (!response.ok) {
-                return response.json().then(errorData => {
-                    if (errorData.first_name) { 
-                        displayFieldError(firstName.parentElement, errorData.first_name[0]);
-                    }
-                    if (errorData.last_name) {
-                        displayFieldError(lastName.parentElement, errorData.last_name[0]);
-                    }
-                    if (errorData.email) {
-                        displayFieldError(email.parentElement, errorData.email[0]);
-                    }
-                    if (errorData.password1) {
-                        displayFieldError(password.parentElement, errorData.password1[0]);
-                    }
-                    if (errorData.password2) {
-                        displayFieldError(rePassword.parentElement, errorData.password2[0]);
-                    }
-                    if (errorData.non_field_errors) {
-                        throw new Error(errorData.non_field_errors[0]);
-                    }
-                    throw new Error();
-
-                });
-            }
-            return response.json();
-        })
-        .then(data => {
-            showAlert('success', 'Registration successful!');
-            setTimeout(() => { window.location.hash = "login"; }, 1000);
-        })
-        .catch(error => {
-            // if (error != "Error")
-                showAlert('error', error);
+        var registerPromise = new Promise(function(resolve, reject){
+            fetch('api/register/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errorData => {
+                        if (errorData.first_name) displayFieldError(firstName.parentElement, errorData.first_name[0]);
+                        if (errorData.last_name) displayFieldError(lastName.parentElement, errorData.last_name[0]);
+                        if (errorData.email) displayFieldError(email.parentElement, errorData.email[0]);
+                        if (errorData.password1) displayFieldError(password.parentElement, errorData.password1[0]);
+                        if (errorData.password2) displayFieldError(rePassword.parentElement, errorData.password2[0]);
+                        if (errorData.non_field_errors) reject(errorData.non_field_errors[0]);
+                        reject("Failed to register");
+                    });
+                }
+                resolve(response.json());
+            })
         });
+
+        registerPromise
+        .then(() => {
+            showAlert('success', 'Registration successful!');
+            window.location.hash = "login";
+        })
+        .catch(error => showAlert('error', error));
     });
 }
 
