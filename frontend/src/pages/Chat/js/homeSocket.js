@@ -1,4 +1,4 @@
-import {setnotifUser} from "./socket.js"
+import {setnotifUser, user} from "./socket.js"
 import {sendToBackend} from "../script.js"
 import { debounce } from "../../../utils/js/utils.js";
 
@@ -268,6 +268,10 @@ function creatNotifMessage(data){
 }
 
 function homeNotification(data){
+    // add username to sidebar:
+    let welcome = document.querySelector(".welcome h5");
+    welcome.innerHTML = `Welcome ${user}`;
+
     const listnotification = document.querySelector(".show-notification");
     const notification = document.querySelector(".notification span");
     const container = listnotification.querySelector(".list-notification");

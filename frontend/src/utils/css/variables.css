@@ -8,6 +8,8 @@
     --gradient-color-rgb: 229, 18, 132;
 
     /* ---- Dark Mode ---- */
+    --url--banner-dark : url(../../images/background/Banner-dark.png);
+
     --primary-color--dark: #c4f000;
     --base--dark: #070707;
     --base-shade--dark: #1C1C1C;
@@ -26,6 +28,8 @@
 
 
     /* ---- Light Mode ---- */
+    --url--banner-light : url(../../images/background/Banner-light.png);
+
     --primary-color--light: #5b8e00;
     --base--light: #E8E8E8;
     --base-tint--light: #F5F5F5;
@@ -45,6 +49,7 @@
 }
 
 [color-scheme=light] {
+    --url--banner: var(--url--banner-light);
     --base: var(--base--light);
     --base-tint: var(--base-tint--light);
     --base-shade: var(--base-shade--light);
@@ -63,6 +68,7 @@
 }
 
 [color-scheme=dark] {
+    --url--banner: var(--url--banner-dark);
     --base: var(--base--dark);
     --base-tint: var(--base-tint--dark);
     --base-shade: var(--base-shade--dark);

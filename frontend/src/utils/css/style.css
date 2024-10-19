@@ -8,6 +8,10 @@
     outline: none !important;
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
+
 .sub-color {
     color: var(--sub-color);
 }

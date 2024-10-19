@@ -104,6 +104,10 @@
     display: none;
 }
 
+.chat-box svg {
+    fill : var(--primary-color);
+}
+
 .chat-profile {
     flex-direction: column;
     height: 50%;
