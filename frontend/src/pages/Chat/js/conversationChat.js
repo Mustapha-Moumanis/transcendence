@@ -100,16 +100,6 @@ function addEventListenerChatObtions(data){
     document.querySelector("#chat-show-profile").addEventListener('click', () => {
         console.log("show-profile");
         namelist.classList.add("d-none");
-        // const hash = `#profile/${data.id}`;
-        // const id = data.id;
-        // const state = { id };
-        // history.pushState(state, '', hash);
-        // loadContentWithProfile(hash, data.id);
-    });
-    document.querySelector("#chat-play").addEventListener('click', () => {
-        // send notifactation to play;
-        namelist.classList.add("d-none");
-        sendToBackend(data.sendto, "ToPlayPingPong", "");
     });
     document.querySelector("#chat-block-friend").addEventListener('click', () => {
         namelist.classList.add("d-none");
@@ -168,7 +158,9 @@ function chatHeader(data) {
 
     const header =  document.querySelector('.chat-header');
     header.innerHTML = `
-        <img class="expand-left" src="pages/Chat/icons/Expand_left.svg" alt="close-chat">
+        <svg class="expand-left" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M14.293 5.29297L15.7073 6.70718L10.4144 12.0001L15.7073 17.293L14.293 18.7072L7.58594 12.0001L14.293 5.29297Z"/>
+        </svg>
         <div class="chat-user-img">
             <img class="avatar" src="${data.avatar}" alt="${data.sendto}">
         </div>
@@ -177,13 +169,13 @@ function chatHeader(data) {
             <p>${data.status}</p>
         </div>
         <div class="chat-options">
-            <svg id="id_chat-options" width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20 10L20 30" stroke="#ABADC7" stroke-width="2" stroke-linecap="round"/>
-                <path d="M30 20L10 20" stroke="#ABADC7" stroke-width="2" stroke-linecap="round"/>
+            <svg id="id_chat-options" width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M20 9C20.5523 9 21 9.44772 21 10L21 30C21 30.5523 20.5523 31 20 31C19.4477 31 19 30.5523 19 30L19 10C19 9.44772 19.4477 9 20 9Z" />
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M31 20C31 20.5523 30.5523 21 30 21L10 21C9.44772 21 9 20.5523 9 20C9 19.4477 9.44772 19 10 19L30 19C30.5523 19 31 19.4477 31 20Z"/>
             </svg>
+
             <div class="d-none chat-options-list">
                 <div id="chat-show-profile" class="chat-option-element">Show Profile</div>
-                <div id="chat-play" class="chat-option-element">Play Ping Pong</div>
                 <div id="chat-block-friend" class="chat-option-element" style="color: #D31010;">Block Friend</div>
             </div>
         </div>`;

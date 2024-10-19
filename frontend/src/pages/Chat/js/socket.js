@@ -62,7 +62,7 @@ function startSocket(){
         }
         else if (data.type === "searchHome") searchHome(data);
         else if (data.type === "updateHomeUsers") updateHomeUsers(data);
-        else if (data.type === 'CreatNotifChat' || data.type === 'ToPlayPingPong' || data.type === "friendRequest") 
+        else if (data.type === 'CreatNotifChat' || data.type === "friendRequest") 
             updateHomeNotification(data);
         else if (data.type === 'private_message_received') respondMessage(data);
         else {
