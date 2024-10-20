@@ -140,9 +140,9 @@ from django.core.validators import URLValidator, ValidationError
 class MyUserDetailsSerializer(UserDetailsSerializer):
     class Meta:
         model = UserModel
-        extra_fields = ['username', 'email', 'first_name', 'last_name', 'avatar', 'status', 'country', 'is2faActive', 'otpCheck']
+        extra_fields = ['username', 'email', 'first_name', 'last_name', 'avatar', 'status', 'country', 'is2faActive', 'otpCheck', 'level', 'exp', 'wins', 'draws', 'losses']
         fields = ('pk', *extra_fields)
-        read_only_fields = ('email', 'username', 'status', 'otpCheck')
+        read_only_fields = ('email', 'username', 'status', 'otpCheck', 'level', 'exp', 'wins', 'draws', 'losses')
 
     def validate_is2faActive(self, is2faActive):
         otpCheck = self.instance.otpCheck

@@ -1,6 +1,5 @@
 import { loadHTML, loadCSS, HomeEffects } from '../../utils/js/utils.js';
 import { settingsActions } from './script.js'
-import Home from '../Home/home.js'
 
 async function Settings() {
   const html = await loadHTML('./pages/Settings/settings.html');
@@ -11,9 +10,10 @@ async function Settings() {
   loadCSS(['./pages/Settings/settings.css',]);
 
   setTimeout(() => {
-    settingsActions();
+    try {
+      settingsActions();
+    } catch (error) { console.log(error); }
   }, 200);
 }
-
 
 export default Settings;

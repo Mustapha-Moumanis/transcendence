@@ -23,3 +23,9 @@ class User(AbstractUser):
     country = models.CharField(max_length=20, default='Palestine')
     is2faActive = models.BooleanField(default=False)
     otpCheck = models.BooleanField(default=False)
+    
+    level = models.IntegerField(default=1)
+    exp = models.IntegerField(default=0)
+    wins = models.IntegerField(default=0)
+    draws = models.IntegerField(default=0)
+    losses = models.IntegerField(default=0)

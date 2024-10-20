@@ -78,6 +78,7 @@ INSTALLED_APPS = [
     'twoFactorAuth.apps.TwofactorauthConfig',
 
     'chat.apps.ChatConfig',
+    'game.apps.GameConfig',
 ]
 
 SITE_ID = 1
