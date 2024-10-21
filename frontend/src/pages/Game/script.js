@@ -43,7 +43,7 @@ let moveRight2 = false;
  * Scene
  */
 const scene = new THREE.Scene()
-scene.background = new THREE.Color(0xfcbf49);
+scene.background = new THREE.Color(primaryColor);
 scene.fog = new THREE.Fog(primaryColor, 90, 120);
 
 scene.add(...lights);
@@ -234,18 +234,26 @@ function onKeyDown(event) {
     switch (event.key) {
         case 'a':
         case 'A':
+        case 'w':
+        case 'W':
             moveLeft = true;
             break;
         case 'd':
         case 'D':
+        case 's':
+        case 'S':
             moveRight = true;
             break;
         case 'j':
         case 'J':
+        case 'i':
+        case 'I':
             moveLeft2 = true;
             break;
         case 'l':
         case 'L':
+        case 'k':
+        case 'K':
             moveRight2 = true;
             break;
     }
@@ -255,18 +263,26 @@ function onKeyUp(event) {
     switch (event.key) {
         case 'a':
         case 'A':
+        case 'w':
+        case 'W':
             moveLeft = false;
             break;
         case 'd':
         case 'D':
-            moveRight = false;
+        case 's':
+        case 'S':
+        moveRight = false;
             break;
         case 'j':
         case 'J':
+        case 'i':
+        case 'I':
             moveLeft2 = false;
             break;
         case 'l':
         case 'L':
+        case 'k':
+        case 'K':
             moveRight2 = false;
             break;
     }
@@ -317,18 +333,23 @@ function tic() {
 requestAnimationFrame(tic)
 
 window.addEventListener('resize', handleResize)
+window.addEventListener('hashchange', handleHashChange);
 
 function handleResize() {
-	sizes.width = window.innerWidth
-	sizes.height = window.innerHeight
+    sizes.width = window.innerWidth
+    sizes.height = window.innerHeight
 
-	camera.aspect = sizes.width / sizes.height
-	camera.updateProjectionMatrix()
+    camera.aspect = sizes.width / sizes.height
+    camera.updateProjectionMatrix()
 
-	renderer.setSize(sizes.width, sizes.height)
+    renderer.setSize(sizes.width, sizes.height)
 
-	// const pixelRatio = Math.min(window.devicePixelRatio, 2)
-	// renderer.setPixelRatio(pixelRatio)
+    // const pixelRatio = Math.min(window.devicePixelRatio, 2)
+    // renderer.setPixelRatio(pixelRatio)
+}
+function handleHashChange() {
+    window.removeEventListener('resize', handleResize);
+    console.log("Resize event listener removed on hash change");
 }
 
 }

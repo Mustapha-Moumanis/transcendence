@@ -1,7 +1,6 @@
 .gameInterface {
     position: fixed;
     width: 100vw;
-    height: 100vh;
 }
 
 .score {
@@ -15,11 +14,13 @@
 }
 
 #score-player1 {
+    font-family: var(--title-font);
     top: 30px;
     left: 10px;
 }
 
 #score-player2 {
+    font-family: var(--title-font);
     top: 30px;
     right: 10px;
 }
@@ -77,3 +78,27 @@
     flex-direction: column;
     grid-gap: 20px;
 }
+
+.player-nick {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2001;
+}
+  
+.player-nick-content {
+    background: var(--base);
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+    padding: 30px;
+}
+  
