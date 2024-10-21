@@ -37,10 +37,6 @@
     padding: 8px;
 }
 
-.nav-elements img {
-    padding: 8px;
-}
-
 .nav-elements svg{
     fill: var(--sub-color);
 }
@@ -95,6 +91,10 @@
 .empty-notifications {
     text-align: center;
     color :var(--sub-color);
+}
+
+.empty-notifications img {
+    width: 200px;
 }
 
 .notification-user-card {
@@ -155,6 +155,7 @@
     justify-content: center;
     grid-gap: 0 5px;
 }
+
 
 .notification-btn{
     background-color: var(--base-tint);
@@ -433,16 +434,13 @@
 
 
 @media only screen and (max-width: 720px){
+
     .nav-bar {
-        padding: 20px 20px;
+        padding: 20px;
     }
 
     .nav-buttons{
         grid-gap: 3px;
-    }
-
-    .nav-elements img{
-        padding: 2px;
     }
 
     .welcome > h5 {
@@ -458,17 +456,39 @@
     }
 }
 
+@media (max-width: 480px) {
 
-/* half circle */
+    .nav-bar {
+        padding: 10px;
+    }
 
-/* 
-#spinner {
-	display: block;
-	w;idth: 300px;
-    height: 300px
-    position: absolute;
-    left: 50%; 
-    top: 50%;
-    transform: translate(-50%, -50%);
+    .nav-elements svg {
+       width: 20px;
+       height: 20px;
+    }
+
+    .empty-notifications img {
+        width: 100px;
+    }
+
+    .empty-notifications h5 {
+        font-size: medium;
+    }
+    
+    .notification > span {
+        height: 5px;
+        width: 5px;
+    }
+
+    .show-notification {
+        padding: 10px;
+        transform: translateX(-25%);
+        width: 200px;
+
+    }
+
+    .notification-user-card {
+        grid-gap: 5px;
+        flex-direction: column;
+    }
 }
-} */

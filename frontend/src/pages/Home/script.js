@@ -1,6 +1,7 @@
 import { logout, mainActions } from '../../utils/js/auth.js'
 import { displayFieldError, authActions } from '../../utils/js/auth.js'
 import { getCookie } from '../../utils/js/utils.js'
+import { user } from '../Chat/js/socket.js';
 
 export function drawtheLevel(lvl, spinner) {
 
@@ -45,9 +46,21 @@ export function drawtheLevel(lvl, spinner) {
 	animation_loop = setInterval(animate, 20);
 }
 
-export function homeActions() {
+function homeData(){
+	const value = JSON.parse(localStorage.getItem('authTokens'));
+    const userData = value.user;
+	console.log(userData);
+	let profile = document.querySelector(".home-profile .div-info");
+	profile.querySelector(".home-user-info p").innerHTML = `${userData.first_name}  ${userData.last_name}`;
+	profile.querySelector(".home-user-info span").innerHTML = `${userData.country}`;
+
 	const spinner = document.getElementById("spinner");
     drawtheLevel(20, spinner);
+}
+
+export function homeActions() {
+	
+	homeData();
 	// mainActions();
 	// handleLogoutBtn();
 	// twoFactorAuth();
