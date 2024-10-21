@@ -8,6 +8,7 @@ export default class Ball extends EventDispatcher{
     constructor(scene, boundaries, paddles) {        
     
         super()
+        this.isPaused = false;
         this.scene = scene
         this.boundaries = boundaries;
         this.paddles = paddles;
@@ -51,6 +52,7 @@ export default class Ball extends EventDispatcher{
     }
 
     update(dt) {
+        if (this.isPaused) return;
         const direction = this.velocity.clone().normalize()
         this.raycaster.set(this.mesh.position, direction);
 
@@ -66,6 +68,7 @@ export default class Ball extends EventDispatcher{
         if (dx <= 0) {
             tPos.x = (this.boundaries.x - this.radius + dx) * Math.sign(this.mesh.position.x)
             this.velocity.x *= -1;
+            this.speed += 2.05;
         }
 
         /* goal scored here */
@@ -75,6 +78,12 @@ export default class Ball extends EventDispatcher{
             this.dispatchEvent({type: 'ongoal', message: message})
             tPos.set(0, 0, 0)
             this.resetBallVelocity();
+
+            // Pause the ball for one second
+            this.isPaused = true;
+            setTimeout(() => {
+                this.isPaused = false;
+            }, 1000);
          }
 
          /* collision with padd;e */

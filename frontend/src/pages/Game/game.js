@@ -1,5 +1,6 @@
 import { loadHTML, loadCSS, HomeEffects } from '../../utils/js/utils.js';
 import { gameActions } from './script.js'
+// import { loadAnimation } from './animation.js'
 
 async function Game() {
   const html = await loadHTML('./pages/Game/game.html');
@@ -12,6 +13,9 @@ async function Game() {
   
   loadCSS(['./pages/Game/game.css']);
   try {
+    //start animation here
+    // loadAnimation();
+    //add buttons
     let startButton = document.getElementById('start');
     startButton.addEventListener('click', () => {
       startButton.style.display = 'none';
