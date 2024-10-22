@@ -93,12 +93,46 @@
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 2001;
 }
-  
+
 .player-nick-content {
+    position: relative;
     background: var(--base);
     display: flex;
     flex-direction: column;
     border-radius: 15px;
     padding: 30px;
+    width: 80%;
+    max-width: 500px;
+    grid-gap: 10px;
 }
   
+.player-prompt{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    flex-direction: column;
+    grid-gap: 20px;
+    padding:  20px;
+}
+
+.prompt-text {
+    font-family: var(--title-font);
+    font-size: 1.5em;
+    color: var(--title-color);
+}
+
+.close-player-nick {
+    position: absolute;
+    padding: 5px;
+    top: 10px;
+    right: 10px;
+}
+
+.close-player-nick svg{
+    fill: var(--sub-color);
+}
+
+.close-player-nick svg:hover{
+    fill: var(--title-color);
+}

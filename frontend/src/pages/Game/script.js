@@ -13,7 +13,8 @@ import lights from './src/Lighting.js'
 let gameRunning = false;
 
 
-export function gameActions() {
+export function gameActions(data) {
+    console.log(data);
     gameRunning = true;
 
     /*      colors        */

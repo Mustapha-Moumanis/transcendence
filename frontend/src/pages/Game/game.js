@@ -16,11 +16,33 @@ async function Game() {
     //start animation here
     // loadAnimation();
     //add buttons
+    let nickContent = document.getElementById('player-nick');
     let startButton = document.getElementById('start');
+    let closeNickContent = document.getElementById('close-player-nick');
+    let player1Name = document.getElementById('player1');
+    let player2Name = document.getElementById('player2');
+    let nameData;
+    let startGame = document.getElementById('start-game');
+
     startButton.addEventListener('click', () => {
       startButton.style.display = 'none';
       console.log('Game started')
-      gameActions();
+      nickContent.classList.remove('d-none');
+    });
+
+    closeNickContent.addEventListener('click', () => {
+      nickContent.classList.add('d-none');
+      startButton.style.display = 'block';
+    });
+
+    startGame.addEventListener('click', () => {
+      nameData = {
+        player1: player1Name.value,
+        player2: player2Name.value
+      }
+      // console.log(nameData);
+      nickContent.classList.add('d-none');
+      gameActions(nameData);
     });
   } catch (error) {} 
 }
