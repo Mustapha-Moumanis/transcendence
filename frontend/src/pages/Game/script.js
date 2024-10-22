@@ -14,8 +14,11 @@ let gameRunning = false;
 
 
 export function gameActions(data) {
+
     console.log(data);
     gameRunning = true;
+    let countDownStarted = false;
+    let gamePaused = false;
 
     /*      colors        */
     let rootStyles = getComputedStyle(document.documentElement);
@@ -39,6 +42,7 @@ let moveLeft = false;
 let moveRight = false;
 let moveLeft2 = false;
 let moveRight2 = false;
+
 
 /**
  * Scene
@@ -141,12 +145,13 @@ camera.lookAt(new THREE.Vector3(0, 2.5, 0))
 const renderer = new THREE.WebGLRenderer()
 // document.body.appendChild(renderer.domElement)
 document.querySelector('#root').innerHTML = `<div class="gameInterface">
-			<div id="score-player1" class="score">0</div>
-			<div id="score-player2" class="score">0</div>
-			<a href="#home">
-				<button id="Home-button" class="btn-main">Back to Home</button>
-			</a>
-		</div>`;
+			                                 <div id="score-player1" class="score">0</div>
+			                                 <div id="score-player2" class="score">0</div>
+			                                 <a href="#home">
+			                                 	<button id="Home-button" class="btn-main">Back to Home</button>
+			                                 </a>
+                                             <div id="countdown" class="countdown"></div>
+		                                     </div>`;
 document.querySelector('#root').appendChild(renderer.domElement);
 handleResize()
 const HomeButton = document.getElementById('Home-button');
@@ -289,46 +294,81 @@ function onKeyUp(event) {
     }
 }
 
+function startCountdown() {
+    if (countDownStarted) {
+        return;
+    }
+    gamePaused = true;
+    countDownStarted = true;
+    const countdownElement = document.getElementById('countdown');
+    let countdown = 3;
+
+    countdownElement.style.display = 'block';
+    countdownElement.innerText = countdown;
+
+    const interval = setInterval(() => {
+        countdown--;
+        if (countdown > 0) {
+            countdownElement.innerText = countdown;
+        } else if (countdown === 0) {
+            countdownElement.innerText = 'GO!';
+        } else {
+            countdownElement.style.display = 'none';
+            // Start the game here
+            gamePaused = false;
+            console.log("IN ELSE STATEMENT");
+            clearInterval(interval);
+        }
+    }, 1000);
+}
+
+
 /**
  * frame loop
- */
+*/
+    startCountdown();
+
 function tic() {
     if (!gameRunning) {
         return;
     }
-	const deltaTime = clock.getDelta()
-
-    const dt = deltaTime / 10;
-
-    for(let i = 0; i < 10; i++){
-        // console.log("looping")
+    // console.log(gameRunning + "\n" + gamePaused);
+    if (!gamePaused)
+    {
+	    const deltaTime = clock.getDelta()
         
-        if (moveLeft && playerPaddle.mesh.position.x > -boundaries.x) {
-            playerPaddle.setX((playerPaddle.mesh.position.x - 0.045)); // Adjust the value as needed
-            controls.update()
-        }
-        if (moveRight && playerPaddle.mesh.position.x < boundaries.x) {
-            playerPaddle.setX((playerPaddle.mesh.position.x + 0.045)); // Adjust the value as needed
-            controls.update()
-        }
-        if (moveLeft2 && player2Paddle.mesh.position.x > -boundaries.x) {
-            player2Paddle.setX(player2Paddle.mesh.position.x - 0.045);
-            controls.update()
-        }
-        if (moveRight2 && player2Paddle.mesh.position.x < boundaries.x) {
-            player2Paddle.setX(player2Paddle.mesh.position.x + 0.045);
-            controls.update()
+        const dt = deltaTime / 10;
+        
+        for(let i = 0; i < 10; i++){
+            // console.log("looping")
+
+            if (moveLeft && playerPaddle.mesh.position.x > -boundaries.x) {
+                playerPaddle.setX((playerPaddle.mesh.position.x - 0.045)); // Adjust the value as needed
+                controls.update()
+            }
+            if (moveRight && playerPaddle.mesh.position.x < boundaries.x) {
+                playerPaddle.setX((playerPaddle.mesh.position.x + 0.045)); // Adjust the value as needed
+                controls.update()
+            }
+            if (moveLeft2 && player2Paddle.mesh.position.x > -boundaries.x) {
+                player2Paddle.setX(player2Paddle.mesh.position.x - 0.045);
+                controls.update()
+            }
+            if (moveRight2 && player2Paddle.mesh.position.x < boundaries.x) {
+                player2Paddle.setX(player2Paddle.mesh.position.x + 0.045);
+                controls.update()
+            }
+
+            ball.update(dt);
+            // controller.update(dt);
         }
 
-        ball.update(dt);
-        // controller.update(dt);
+	    controls.update()
+
     }
-
-	controls.update()
-
-	renderer.render(scene, camera)
-
-	requestAnimationFrame(tic)
+    renderer.render(scene, camera)
+    
+    requestAnimationFrame(tic)
 }
 
 requestAnimationFrame(tic)
