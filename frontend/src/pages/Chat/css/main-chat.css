@@ -28,17 +28,20 @@
     background-color: var(--base-shade);
 }
 
+.main-chat svg{
+    fill: var(--sub-color);
+    cursor: pointer;
+}
+
 .chat-header {
     display: flex;
     align-items: center;
     padding: 15px;
     gap: 8px;
-    box-shadow: 0px 9px 9px -5px var(--base) ;
+    box-shadow: 0px 7px 7px -5px var(--base);
 }
 
 .expand-left {
-    fill: var(--sub-color);
-    cursor: pointer;
     display: none;
 }
 
@@ -54,11 +57,6 @@
     position: relative;
     display: flex;
     justify-content: center;
-    cursor: pointer;
-}
-
-.chat-options svg {
-    fill: var(--sub-color);
     cursor: pointer;
 }
 
@@ -102,6 +100,10 @@
 
 .chat-box::-webkit-scrollbar{
     display: none;
+}
+
+.chat-box svg {
+    fill : var(--primary-color);
 }
 
 .chat-profile {
@@ -325,7 +327,7 @@
     padding: 15px 24px;
     height: 62px;
     grid-gap: 0 12px;
-    box-shadow: 0px -9px 9px -2px var(--base);  
+    box-shadow: 0px -7px 9px -7px var(--base);
 }
 
 .input-box svg{

@@ -1,3 +1,4 @@
+import { handleOauth2 } from '../../utils/js/Oauth.js';
 import { displayFieldError, showAlert, authActions} from '../../utils/js/auth.js'
 
 function handleRegisterFormSubmission() {
@@ -53,4 +54,5 @@ function handleRegisterFormSubmission() {
 export function registerActions() {
     authActions();
     handleRegisterFormSubmission();
+    handleOauth2();
 }
