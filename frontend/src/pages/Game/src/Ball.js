@@ -69,6 +69,7 @@ export default class Ball extends EventDispatcher{
             tPos.x = (this.boundaries.x - this.radius + dx) * Math.sign(this.mesh.position.x)
             this.velocity.x *= -1;
             this.speed += 2.05;
+            this.velocity.normalize().multiplyScalar(this.speed);
         }
 
         /* goal scored here */
