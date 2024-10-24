@@ -224,7 +224,9 @@ function removeFieldError(element) {
         element = element.parentElement;
     if (element.classList.contains("has-error")) {
         element.classList.remove("has-error");
-        element.querySelector(".error-block").remove();
+        let errorBlock = element.querySelector(".error-block");
+        if (errorBlock)
+            errorBlock.remove();
         var inputs = element.querySelectorAll(".form-control");
         inputs.forEach((input, index) => {
 			input.value = "";

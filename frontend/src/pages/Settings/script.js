@@ -489,30 +489,124 @@ function twoFactorAuth() {
 }
 
 function addListenerSettings(){
-    const account = document.querySelector(".setting-header .btn-account");
-    const securty = document.querySelector(".setting-header .btn-securty");
+    const settingsChoice = document.querySelector(".setting-chooses");
+    const settingsForms = document.querySelector(".setting-form");
     
-    const formAccount = document.querySelector(".setting-form .setting-account");
-    const formSecurty = document.querySelector(".setting-form .setting-securty");
-
+    function removeActiveClass() {
+        Array.from(settingsChoice.children).forEach(
+            choice => choice.classList.remove('setting-active')
+        );
+        Array.from(settingsForms.children).forEach(
+            form => form.classList.remove('z-1000')
+        );
+    }
     
-    account.addEventListener('click', () => {
-        account.classList.add("setting-active");
-        securty.classList.remove("setting-active");
-        formAccount.classList.remove("d-none");
-        formSecurty.classList.add("d-none");
-    })
+    
+    for (let i = 0; i < settingsChoice.children.length - 1; i++) {
+        const element = settingsChoice.children[i];
+        const form = settingsForms.children[i];
 
-    securty.addEventListener('click', () => {
-        securty.classList.add("setting-active");
-        account.classList.remove("setting-active");
-        formSecurty.classList.remove("d-none");
-        formAccount.classList.add("d-none");
-    })
+        element.addEventListener('click', () => {
+            removeActiveClass()
+            element.classList.add("setting-active");
+            form.classList.add("z-1000");
+        })
+    }
+}
+
+function gamesettings() {
+    const optionsContent = document.querySelectorAll('.options-content');
+    const gameElementExplanations = [
+        `
+            <h4 class="mb-3">Camera position</h4>
+            <p>
+                <b>Default: </b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos debitis quis enim corporis assumenda pariatur autem numquam unde iste maiores.<br>
+                <b>Horizontal: </b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, facere dolorem. Quaerat?<br>
+                <b>Vertical: </b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, maxime.<br>
+            </p>
+        `,
+        `
+            <h4 class="mb-3">Field of view</h4>
+            <p>
+                <b>Narrow: </b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos debitis quis enim corporis assumenda pariatur autem numquam unde iste maiores.<br>
+                <b>Normal: </b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, facere dolorem. Quaerat?<br>
+                <b>Wide: </b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, maxime.<br>
+            </p>
+        `,
+        `
+            <h4 class="mb-3">Ball speed</h4>
+            <p>
+                <b>Slow: </b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos debitis quis enim corporis assumenda pariatur autem numquam unde iste maiores.<br>
+                <b>Medium: </b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, facere dolorem. Quaerat?<br>
+                <b>Fast: </b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, maxime.<br>
+            </p>
+        `,
+        `
+            <h4 class="mb-3">Tournament player number</h4>
+            <p>
+                <b>4 : </b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos debitis quis enim corporis assumenda pariatur autem numquam unde iste maiores.<br>
+                <b>8 : </b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, facere dolorem. Quaerat?<br>
+            </p>
+        `,
+    ];
+
+    function setActiveOptions(options, spans, optionsScroll) {
+        options.forEach((option, index) => {
+            if (option.classList.contains('active')) {
+                const optionWidth = option.offsetWidth;
+                optionsScroll.scrollTo({ left: optionWidth * index });
+                spans[index].classList.add('active');
+            }
+        });
+    }
+
+    function removeOptionActiveClass(spans, options) {
+        spans.forEach(span => span.classList.remove('active'));
+        options.forEach(option => option.classList.remove('active'));
+    }
+
+    function updateGameExplanation(index) {
+        document.querySelector(".game-setting-explantation").innerHTML = gameElementExplanations[index];
+    }
+
+    optionsContent.forEach((element, index) => {
+        const spans = element.querySelectorAll('.option-active span');
+        const options = element.querySelectorAll('.options-scroll .option');
+        const optionsScroll = element.querySelector('.options-scroll');
+
+        setActiveOptions(options, spans, optionsScroll);
+
+        spans.forEach((span, index) => {
+            span.addEventListener('click', () => { 
+                if (span.classList.contains('active')) return;
+                const optionWidth = options[0].offsetWidth;
+                optionsScroll.scrollTo({
+                    left: optionWidth * index,
+                    behavior: 'smooth'
+                });
+    
+                removeOptionActiveClass(spans, options);
+                span.classList.add('active');
+            });
+        });
+
+        
+        element.parentElement.addEventListener('click', function() {
+            if (this.classList.contains('active')) return;
+
+            const gameElements = document.querySelector(".game-elements");
+            Array.from(gameElements.children).forEach(gameElement => 
+                gameElement.firstElementChild.classList.remove('active')
+            );
+            updateGameExplanation(index);
+            this.classList.add('active');
+        });
+    });
 }
 
 export function settingsActions() {
     addListenerSettings();
     twoFactorAuth();
     attachInputFocusListeners();
+    gamesettings();
 }
