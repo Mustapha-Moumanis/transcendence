@@ -1,0 +1,148 @@
+.main-profile {
+	background-color: var(--base);
+	height: 100%;
+	width: 100%;
+}
+
+.profile-header {
+	height: 30%;
+	padding: 0 5px 5px;
+}
+
+.profile-content {
+	display: flex;
+	height: 100%;
+	background: var(--base-shade);
+	border-radius: 20px;
+	padding: 20px;
+}
+
+.user-content {
+	display: flex;
+	width: 50%;
+	gap : 15px;
+}
+
+/* ----------------------------- */
+
+.image-content {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+	padding: 20px;
+	height: 100%;
+}
+
+.gradient-container {
+	width: 170px;
+	height: 170px;
+}
+
+/* ----------------------------- */
+
+.user-info {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	padding: 20px;
+	gap: 10px;
+}
+
+.contry-username {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: 20px 0;
+}
+
+.contry-username p {
+	color: var(--title-color);
+	margin: 0;
+	font-size: x-large;
+	font-weight: bold;
+	letter-spacing: 1px;
+}
+
+.contry-username span{
+	color: var(--sub-color);
+	font-size: medium;
+}
+
+.profile-ptn {
+	display: flex;
+	justify-content: center;
+	gap: 15px;
+	padding: 10px 0;
+}
+
+.profile-ptn .btn {
+	text-align: center;
+	font-weight: bold;
+	padding: 5px 25px 5px 25px;
+	font-size: medium;
+	border-radius: 8px;
+	color: var(--title-color);
+	background: var(--base);
+}
+
+.btn-follow {
+	border: solid 1px var(--secondary-color);
+}
+
+.btn-block {
+	border: solid 1px rgb(217, 63, 63);
+}
+
+.btn-follow:hover {
+	color: var(--base--dark);
+	background: var(--primary-color);
+}
+
+.btn-block:hover{
+	color: var(--base--dark);
+	background: rgb(217, 63, 63);
+}
+
+/* ----------------------------- */
+
+.gaming-content {
+	display: flex;
+	height: 100%;
+	width: 50%;
+	justify-content: center;
+	align-items: center;
+}
+
+.gaming-profits {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 20px;
+	gap: 10px;
+}
+
+.gaming-profits .gaming {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	padding: 20px;
+	gap: 10px;
+}
+
+.gaming p {
+	color: var(--title-color);
+	margin: 0;
+	font-size: large;
+}
+
+.gaming span {
+	color: var(--primary-color);
+	font-size: large;
+	font-weight: bold;
+}
+
+.profile-history{
+	height: 70%;
+}
