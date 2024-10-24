@@ -1,82 +1,75 @@
 .main-profile {
-	background-color: var(--base);
+	display: flex;
+  	flex-direction: column;
+	background-color: var(--base-shade);
 	height: 100%;
 	width: 100%;
+	padding: 15px;
+	border-radius: 12px;
 }
 
 .profile-header {
-	height: 30%;
-	padding: 0 5px 5px;
+	padding: 0 10px 10px;
+  	border-bottom: 1px solid var(--base-hover);
 }
 
-.profile-content {
+.stat-profile {
 	display: flex;
-	height: 100%;
-	background: var(--base-shade);
-	border-radius: 20px;
-	padding: 20px;
-}
-
-.user-content {
-	display: flex;
-	width: 50%;
-	gap : 15px;
-}
-
-/* ----------------------------- */
-
-.image-content {
-	display: flex;
+	justify-content: space-between;
+	width: 100%;
 	align-items: center;
-	flex-direction: column;
-	justify-content: center;
-	padding: 20px;
-	height: 100%;
-}
-
-.gradient-container {
-	width: 170px;
-	height: 170px;
+	flex-wrap: wrap;
 }
 
 /* ----------------------------- */
 
-.user-info {
+.gaming-content {
 	display: flex;
-	flex-direction: column;
 	height: 100%;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.gaming-profits {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.gaming-profits .gaming {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
 	padding: 20px;
 	gap: 10px;
 }
 
-.contry-username {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	padding: 20px 0;
-}
-
-.contry-username p {
+.gaming p {
 	color: var(--title-color);
 	margin: 0;
-	font-size: x-large;
-	font-weight: bold;
-	letter-spacing: 1px;
-}
-
-.contry-username span{
-	color: var(--sub-color);
 	font-size: medium;
 }
 
-.profile-ptn {
+.gaming span {
+	color: var(--primary-color);
+	font-size: medium;
+	font-weight: bold;
+}
+
+/* --------------------------------------- */
+
+.profile-btn {
 	display: flex;
 	justify-content: center;
+	align-content: center;
+	flex-wrap: wrap;
 	gap: 15px;
+	height: 100%;
 	padding: 10px 0;
 }
 
-.profile-ptn .btn {
+.profile-btn .btn {
 	text-align: center;
 	font-weight: bold;
 	padding: 5px 25px 5px 25px;
@@ -104,43 +97,115 @@
 	background: rgb(217, 63, 63);
 }
 
-/* ----------------------------- */
+@media (max-width: 768px) {
+	.stat-profile {
+		justify-content: center;
+	}
 
-.gaming-content {
-	display: flex;
-	height: 100%;
-	width: 50%;
-	justify-content: center;
-	align-items: center;
 }
 
-.gaming-profits {
+@media (max-width: 480px) {
+	.gaming-profits .gaming {
+		padding: 10px;
+	}
+
+	.gaming p , .gaming span, .profile-btn .btn{
+        font-size: small;
+    }
+}
+
+/* --------------------------------------- */
+
+.profile-content {
 	display: flex;
 	justify-content: center;
-	align-items: center;
+	border-bottom: 1px solid var(--base-hover);
 	padding: 20px;
-	gap: 10px;
+	width: 100%;
 }
 
-.gaming-profits .gaming {
+.user-content {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.user-info {
 	display: flex;
 	justify-content: center;
+	padding: 20px;
+	width: 100%;
+}
+
+.div-profile-info {
+	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding: 20px;
-	gap: 10px;
+	text-align: center;
 }
 
-.gaming p {
+.div-profile-info p {
 	color: var(--title-color);
 	margin: 0;
-	font-size: large;
+	font-size: x-large;
+	font-weight: bold;
+	letter-spacing: 1px;
 }
 
-.gaming span {
-	color: var(--primary-color);
-	font-size: large;
-	font-weight: bold;
+.div-profile-info span{
+	color: var(--sub-color);
+	font-size: medium;
+}
+
+.image-content {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+	padding: 20px;
+}
+
+@media (max-width: 768px) {
+	.user-content {
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.image-content {
+		width: 100%;
+	}
+
+	.user-info {
+		width: 50%;
+		padding: 0;
+	}
+
+	.div-profile-info p {
+		font-size: medium;
+	}
+
+	.div-profile-info span {
+		font-size: small;
+	}
+}
+
+@media (max-width: 480px) {
+	.user-info {
+		width: 100%;
+	}
+
+	
+}
+
+/* ----------------------------- */
+
+.one-vs-one-history , .tournament-history{
+	background: none;
+}
+
+.match-history {
+    justify-content: center;
 }
 
 .profile-history{
