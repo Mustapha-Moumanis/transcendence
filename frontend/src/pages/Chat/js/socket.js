@@ -45,7 +45,7 @@ function startSocket(){
 
     chatSocket.onclose = (e) => {
         console.log("Something unexpected happened!" + e.code);
-        logout();
+        // logout();
     }
 
     chatSocket.onmessage = (event) => {
