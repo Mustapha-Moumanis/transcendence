@@ -4,18 +4,19 @@ import { getCookie } from '../../utils/js/utils.js'
 import { user } from '../Chat/js/socket.js';
 
 export function drawtheLevel(lvl, spinner) {
-
+	// if (lvl == 0) lvl = 1;
 	let rootStyles = getComputedStyle(document.documentElement);
- 	let color = rootStyles.getPropertyValue('--primary-color').trim();
+	let color = rootStyles.getPropertyValue('--primary-color').trim();
 	let bgcolor = rootStyles.getPropertyValue('--sub-color').trim();
-
+	
 	let ctx = spinner.getContext("2d");
 	let width = spinner.width;
 	let height = spinner.height;
 	let degrees = 0;
 	let new_degrees = (lvl/100)*280;
 	let animation_loop;
-
+	
+	
 	
 	function drawArc(degrees) {
 		ctx.clearRect(0, 0, width, height);
@@ -35,7 +36,7 @@ export function drawtheLevel(lvl, spinner) {
 	}
 
 	function animate() {
-		if (degrees < new_degrees) {
+		if (degrees <= new_degrees) {
 			degrees++;
 			drawArc(degrees);
 		}
@@ -49,19 +50,27 @@ export function drawtheLevel(lvl, spinner) {
 function homeData(){
 	const value = JSON.parse(localStorage.getItem('authTokens'));
     const userData = value.user;
-	console.log(userData);
+
+	// card
 	let profile = document.querySelector(".home-profile .div-info");
+	profile.parentElement.querySelector(".avatar").innerHTML = `<img src="${userData.avatar}" alt="Avatar">`
+	profile.parentElement.querySelector(".lvl-xp").innerHTML = `${userData.level}.${userData.exp} xp`;
 	profile.querySelector(".home-user-info p").innerHTML = `${userData.first_name}  ${userData.last_name}`;
 	profile.querySelector(".home-user-info span").innerHTML = `${userData.country}`;
+	profile.querySelector(".total-profits .wins span").innerHTML = `${userData.wins}`;
+	profile.querySelector(".total-profits .draws span").innerHTML = `${userData.draws}`;
+	profile.querySelector(".total-profits .losses span").innerHTML = `${userData.losses}`;
 
 	const spinner = document.getElementById("spinner");
-    drawtheLevel(20, spinner);
+    drawtheLevel(userData.exp, spinner);
+	
+	// game
+	document.querySelector(".home-start-playing .start-play").addEventListener('click', () => {
+		window.location.hash = '#game';
+	});
+	
 }
 
 export function homeActions() {
-	
 	homeData();
-	// mainActions();
-	// handleLogoutBtn();
-	// twoFactorAuth();
 }

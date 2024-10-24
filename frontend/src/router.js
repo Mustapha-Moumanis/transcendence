@@ -6,6 +6,7 @@ import ResetPassword from './pages/ResetPassword/ResetPassword.js';
 import Settings from './pages/Settings/settings.js';
 import Chat from './pages/Chat/chat.js';
 import Game from './pages/Game/game.js';
+import Profile from './pages/Profile/profile.js';
 import { isAuthenticated } from './utils/js/auth.js';
 import { showLoading, hideLoading} from './utils/js/utils.js';
 
@@ -22,6 +23,7 @@ const routes = {
   'settings' : Settings,
   'chat' : Chat,
   'game' : Game,
+  'profile' : Profile,
 };
 
 function Router() {
