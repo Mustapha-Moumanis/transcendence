@@ -64,6 +64,12 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 20px;
 }
 
+@media only screen and (min-device-width: 768) {
+    .home-content{
+        padding: 0 10px 10px;;
+    }
+}
+
 /* ---------- auth ---------- */
 
 #content {
@@ -623,33 +629,19 @@ p {
         height: 150px;
     }
 
-    .gradient-container svg,
-    #spinner {
-        width: 135px;
-        height: 135px;
+    .lvl-xp {
+        font-size: small;
     }
+}
 
-    .gradient-container .avatar {
-        width: 105px;
-        height: 105px;
+@media (max-width: 480px){
+    .gradient-container {
+        width: 100px;
+        height: 100px;
     }
 
     .lvl-xp {
         font-size: x-small;
-    }
-}
-
-@media (max-width: 480px) {
-
-    .gradient-container svg,
-    #spinner {
-        width: 90px;
-        height: 90px;
-    }
-
-    .gradient-container .avatar {
-        width: 50px;
-        height: 50px;
     }
 }
 
@@ -796,6 +788,7 @@ p {
 
     .match-card {
         flex-direction: column;
+        height: fit-content;
     }
 
     .match-score {
