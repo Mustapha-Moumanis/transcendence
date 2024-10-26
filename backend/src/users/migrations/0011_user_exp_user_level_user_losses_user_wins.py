@@ -12,11 +12,6 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='user',
-            name='draws',
-            field=models.IntegerField(default=0),
-        ),
-        migrations.AddField(
-            model_name='user',
             name='exp',
             field=models.IntegerField(default=0),
         ),
