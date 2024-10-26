@@ -690,15 +690,11 @@ p {
     background: linear-gradient(to right, rgba(217, 63, 63, 0.8), var(--base));
 }
 
-.rate {
-    background: linear-gradient(to right, rgba(247, 181, 0, 0.8), var(--base));
-}
-
 .match-card {
     display: flex;
     align-items: center;
     border-radius: 10px;
-    height: 100px;
+    height: fit-content;
 }
 
 .match-card span {
@@ -788,7 +784,6 @@ p {
 
     .match-card {
         flex-direction: column;
-        height: fit-content;
     }
 
     .match-score {
