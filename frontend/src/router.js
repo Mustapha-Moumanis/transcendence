@@ -28,7 +28,8 @@ const routes = {
 
 function Router() {
   const handleRouteChange = async () => {
-    let path = window.location.hash.slice(1) || (() => {
+    console.log(window.location.hash.slice(1).split('?')[0]);
+    let path = window.location.hash.slice(1).split('?')[0] || (() => {
       window.location.hash = '#home';
       return 'home';
     })();
@@ -43,8 +44,11 @@ function Router() {
         return window.location.hash = '#login';
       }
     }
+
+    const queryParams = new URLSearchParams(window.location.hash.split('?')[1]);
+    const id = queryParams.get('id');
     const component = routes[path] || NotFound;
-    await component();
+    await component(id);
 
     hideLoading();
   };

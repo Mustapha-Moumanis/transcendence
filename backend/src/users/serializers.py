@@ -140,7 +140,7 @@ from django.core.validators import URLValidator, ValidationError
 class MyUserDetailsSerializer(UserDetailsSerializer):
     class Meta:
         model = UserModel
-        extra_fields = ['username', 'email', 'first_name', 'last_name', 'avatar', 'status', 'date_of_birth', 'country_select', 'is2faActive', 'otpCheck', 'level', 'exp', 'wins', 'losses']
+        extra_fields = ['username', 'email', 'first_name', 'last_name', 'avatar', 'status', 'country_select', 'date_of_birth', 'is2faActive', 'otpCheck', 'level', 'exp', 'wins', 'losses']
         fields = ('pk', *extra_fields)
         read_only_fields = ('email', 'username', 'status', 'otpCheck', 'level', 'exp', 'wins', 'losses')
 
@@ -173,7 +173,7 @@ class ProfilesSerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'date_of_birth', 'country_select', 'status', 'avatar', 'is_friend')
+        fields = ('id', 'username', 'first_name', 'last_name', 'country_select', 'status', 'avatar', 'is_friend')
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)

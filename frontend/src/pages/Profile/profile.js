@@ -3,7 +3,7 @@ import { loadHTML, loadCSS } from '../../utils/js/utils.js';
 import { showLoading, hideLoading, HomeEffects } from '../../utils/js/utils.js';
 import { profileActions } from './script.js';
 
-async function Profile() {
+async function Profile(id) {
   const html = await loadHTML('./pages/Profile/profile.html');
   await HomeEffects();
 
@@ -11,7 +11,7 @@ async function Profile() {
   loadCSS(['./pages/Profile/profile.css']);
 
   setTimeout(() => {
-    profileActions();
+    profileActions(id);
   }, 300);
 }
 
