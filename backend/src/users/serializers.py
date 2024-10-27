@@ -167,13 +167,17 @@ class MyUserDetailsSerializer(UserDetailsSerializer):
 
 from .models import User
 from friends.models import Friend
+from game.models import LocalGame
+from game.serializers import LocalGameSerializer
 
-class ProfilesSerSerializer(serializers.ModelSerializer):
+class ProfilesSerializer(serializers.ModelSerializer):
     is_friend = serializers.SerializerMethodField()
-
+    state_request = serializers.SerializerMethodField()
+    game_history = serializers.SerializerMethodField()
+    
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'country_select', 'status', 'avatar', 'is_friend')
+        fields = ('id', 'username', 'first_name', 'last_name', 'country_select', 'status', 'avatar', 'level', 'exp', 'wins', 'losses', 'is_friend', 'state_request', 'game_history')
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
@@ -191,6 +195,14 @@ class ProfilesSerSerializer(serializers.ModelSerializer):
     def get_is_friend(self, obj):
         current_user = self.context['request'].user
         return Friend.objects.are_friends(current_user, obj)
+
+    def get_state_request(self, obj):
+        current_user = self.context['request'].user
+        return Friend.objects.friend_state_request(current_user, obj)
+
+    def get_game_history(self, obj):
+        games = LocalGame.objects.filter(user=obj)
+        return LocalGameSerializer(games, many=True).data
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
