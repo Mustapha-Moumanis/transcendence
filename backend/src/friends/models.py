@@ -40,6 +40,15 @@ class FriendManager(models.Manager):
 
         return True, "Friend removed successfully"
 
+    def friend_state_request(self, from_user, to_user):
+        """ Friend state request """
+
+        if self.filter(user=from_user, followedUser=to_user, isPending=False).exists():
+            return "request_sended"
+        elif self.filter(user=to_user, followedUser=from_user, isPending=False).exists():
+            return "request_received"
+        else :
+            return None
 
     def add_friend(self, from_user, to_user):
         """ Add friend """

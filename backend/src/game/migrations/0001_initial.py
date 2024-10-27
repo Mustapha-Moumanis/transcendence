@@ -18,10 +18,11 @@ class Migration(migrations.Migration):
             name='LocalGame',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('nickname', models.CharField(max_length=50)),
                 ('opponent', models.CharField(max_length=50)),
                 ('user_score', models.IntegerField()),
                 ('opponent_score', models.IntegerField()),
-                ('result', models.CharField(choices=[('Win', 'Win'), ('Loss', 'Loss'), ('Draw', 'Draw')], default='Draw', max_length=10)),
+                ('result', models.CharField(choices=[('Win', 'Win'), ('Loss', 'Loss')], default='Win', max_length=10)),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='local_games', to=settings.AUTH_USER_MODEL)),
             ],
         ),

@@ -1,13 +1,13 @@
 from rest_framework import serializers
 from .models import LocalGame
-from users.serializers import ProfilesSerSerializer
+# from users.serializers import ProfilesSerializer
 from django.core.validators import URLValidator, ValidationError
 
 class LocalGameSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = LocalGame
-        fields = ['opponent', 'user_score', 'opponent_score', 'result']
+        fields = ['nickname', 'opponent', 'user_score', 'opponent_score', 'result']
         read_only_fields = ['user', 'result']
 
     # def to_representation(self, instance):

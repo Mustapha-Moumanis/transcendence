@@ -149,7 +149,7 @@
 .setting-account, .setting-securty, .setting-game {
     position: absolute;
     background: var(--base-shade);
-    transition: none;
+    transition: none !important;
     z-index: -1;
     top: 0;
     height: 100%;

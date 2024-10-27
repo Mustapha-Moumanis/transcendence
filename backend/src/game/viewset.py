@@ -19,12 +19,9 @@ class LocalGameHistoryViewSet(viewsets.ModelViewSet):
         if user_score > opponent_score:
             local_game.result = "Win"
             self.request.user.wins += 1
-        elif user_score < opponent_score:
+        else:
             local_game.result = "Loss"
             self.request.user.losses += 1
-        else:
-            local_game.result = "Draw"
-            self.request.user.draws += 1
 
         local_game.save()
         self.request.user.save()
