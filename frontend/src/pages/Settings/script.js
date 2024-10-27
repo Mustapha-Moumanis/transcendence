@@ -2,7 +2,7 @@ import { attachInputFocusListeners, getUserData, logout, verifyToken } from '../
 import { displayFieldError, showAlert} from '../../utils/js/auth.js'
 import { getCookie } from '../../utils/js/utils.js';
 
-var countries = [
+export const countries = [
     { "text": "Afghanistan", "value": "AF"},
     { "text": "Albania", "value": "AL" },
     { "text": "Algeria", "value": "DZ" },

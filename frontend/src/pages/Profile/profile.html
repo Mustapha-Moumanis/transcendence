@@ -29,7 +29,7 @@
     </div>
     <div class="profile-content order-md-1">
         <div class="user-content">
-            <div class="user-info order-1">
+            <div id="fullName-profile" class="user-info order-1">
                 <div class="div-profile-info">
                     <p>Full Name</p>
                     <span>Username</span>
@@ -40,14 +40,14 @@
                     <div class="avatar">
                         <img src="/static/default/1.svg" alt="Avatar">
                     </div>
-                    <canvas id="spinner" width="150" height="150"></canvas>
+                    <canvas id="spinner" width="150" height="150" level_data="50"></canvas>
                     <svg viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M75 150C33.5786 150 0 116.421 0 75C0 33.5786 33.5786 0 75 0C116.421 0 150 33.5786 150 75C150 116.421 116.421 150 75 150ZM141.298 74.8417C141.298 72.9926 142.804 71.4937 144.662 71.4937C146.52 71.4937 148.026 72.9927 148.026 74.8417C148.026 94.1644 140.335 112.698 126.641 126.364C125.329 127.673 123.199 127.676 121.883 126.37C120.567 125.065 120.564 122.945 121.876 121.636C134.31 109.227 141.298 92.3946 141.298 74.8417ZM5.33798 71.4937C7.19607 71.4937 8.70234 72.9926 8.70235 74.8417C8.70238 92.3946 15.6896 109.227 28.1238 121.636C29.4358 122.945 29.4328 125.065 28.1171 126.37C26.8014 127.676 24.6712 127.673 23.3592 126.364C9.66518 112.698 1.97367 94.1644 1.97363 74.8417C1.97363 72.9927 3.4799 71.4937 5.33798 71.4937ZM111.686 19.7241C110.139 18.6988 109.721 16.6203 110.752 15.0815C111.782 13.5428 113.871 13.1266 115.417 14.1519C131.549 24.8485 142.759 41.5004 146.586 60.4424C146.952 62.2552 145.772 64.0201 143.95 64.3846C142.129 64.749 140.355 63.5749 139.989 61.7621C136.513 44.5558 126.331 29.435 111.686 19.7241ZM50.1318 13.5014C66.4289 6.91922 84.6781 7.06744 100.866 13.9135C102.576 14.6367 104.551 13.8435 105.278 12.1417C106.005 10.44 105.208 8.47417 103.498 7.75095C85.6632 0.208511 65.5564 0.045166 47.6013 7.29691C45.8797 7.99228 45.0504 9.94489 45.7492 11.6582C46.4479 13.3715 48.4101 14.1967 50.1318 13.5014ZM38.3143 19.7241C39.8605 18.6988 40.2788 16.6203 39.2485 15.0815C38.2182 13.5428 36.1294 13.1266 34.5832 14.1519C18.4515 24.8485 7.24096 41.5004 3.4143 60.4424C3.04809 62.2552 4.22794 64.0201 6.04957 64.3846C7.87121 64.749 9.64481 63.5749 10.011 61.7621C13.487 44.5558 23.6693 29.435 38.3143 19.7241Z"/>
                     </svg>
                 </div>
                 <span class="lvl-xp">2.250 xp</span>
             </div>
-            <div class="user-info order-1">
+            <div id="location-profile" class="user-info order-1">
                 <div class="div-profile-info">
                     <p>Location</p>
                     <span>Moroccoo</span>
@@ -58,7 +58,11 @@
     <div class="row m-0 g-0 profile-history order-2">
         <div class="col-12 col-md-6 h-100" style="padding: 5px 5px 0 5px;">
             <div class="one-vs-one-history">
-                <div class="match-history">
+                <div class="empty-one-vs-one">
+                    <img src="./images/oneVsOneHistory.png" alt="one-vs-one-history">
+                    <p>No 1v1 matches played yet!</p>
+                </div>
+                <!-- <div class="match-history">
                     <p>Match History</p>
                 </div>
                 <div class="match-cards">
@@ -118,12 +122,15 @@
                             <span>mmoumani</span>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="col-12 col-md-6 h-100" style="padding: 5px 5px 0 5px;">
             <div class="tournament-history">
-
+                <div class="empty-tournament">
+                    <img src="./images/tournamentHistory.png" alt="tournament-history">
+                    <p>No tournaments played yet!</p>
+                </div>
             </div>
         </div>
     </div>

@@ -44,7 +44,7 @@ export function themeAction() {
 
     let spinner = document.getElementById("spinner");
     if (spinner)
-      drawtheLevel(20, spinner);
+      drawtheLevel(spinner);
   });
 
   loadTheme(getCurrentTheme());
