@@ -74,12 +74,6 @@ class CustomRegisterSerializer(RegisterSerializer):
             'email': self.validated_data.get('email', ''),
         }
     
-    def save(self, request):
-        user = super().save(request)
-        name ="room_{}".format(user.username)
-        ChatRoom.objects.get_or_create(name=name, creator=user)
-        return user
-    
     class Meta:
         model = User
         fields = ["id", "first_name", "last_name", "email", "password", "password2"]
