@@ -17,11 +17,6 @@ class MySocialAccountAdapter(DefaultSocialAccountAdapter):
             user.otpCheck = False
             user.save()
 
-    def save_user(self, request, sociallogin, form=None):
-        user = super().save_user(request, sociallogin, form=None)
-        name ="room_{}".format(user.username)
-        ChatRoom.objects.get_or_create(name=name, creator=user)
-        return user
 
 class IntraOAuth2Adapter(OAuth2Adapter):
     provider_id = "intra"
