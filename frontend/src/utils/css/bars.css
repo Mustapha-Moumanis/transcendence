@@ -360,6 +360,7 @@
     display: flex;
     align-items: center;
     height: 25%;
+    top: 0%;
     left: -65%;
     width: 6px;
     transition: top 0.4s ease;

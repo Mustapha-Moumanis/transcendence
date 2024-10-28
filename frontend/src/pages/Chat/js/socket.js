@@ -2,12 +2,12 @@ import {startTyping, stopTyping, chatHeader,
     receiveMessage, respondMessage, updatestatuUsers,} from "./conversationChat.js"
 
 import {friendBlockedYou, updateHomeNotification, homeNotification,
-    searchHome, onlineFriendsHome, updateHomeUsers, startSearchAndNotif} from "./homeSocket.js"
+    searchHome, onlineFriendsHome, updateHomeUsers, startSearchAndNotif,
+    reqDelete, reqConfirm} from "./homeSocket.js"
 
 import {loadMoreContent, showAllMessages} from "./scrollHandler.js"
 import {showFriends, showUsers, handleChatResise} from "./listchat.js"
 import {sendToBackend} from "../script.js"
-import { logout } from "../../../utils/js/auth.js"
 
 // ------------------ Varaibles Of Chat ------------------
 export var chatSocket;
@@ -43,19 +43,16 @@ function startSocket(){
         sendToBackend("", "getDataHome", "");
     }
 
-    chatSocket.onclose = (e) => {
-        console.log("Something unexpected happened!" + e.code);
-        // logout();
-    }
+    chatSocket.onclose = (e) => {}
 
     chatSocket.onmessage = (event) => {
         const data = JSON.parse(event.data);
         if (data === null) return;
-
-        if (data.type === "Error") console.log(data.error);
+    
+        if (data.type === "Error") console.warn(data.error);
         else if (data.type === "Blocked") friendBlockedYou(data);
-        // else if (data.type === "reqConfirm") reqConfirm(data.listFriends);
-        // else if (data.type === "reqDelete") reqDelete(data);
+        else if (data.type === "reqConfirm") reqConfirm(data.listFriends);
+        else if (data.type === "reqDelete") reqDelete(data);
         else if (data.type === "getHomedata"){
             onlineFriendsHome(data["onlineFriendsHome"]);
             homeNotification(data["homeNotification"]);
@@ -91,50 +88,17 @@ function startSocket(){
 function startChat(){
 
     if (notifUser) {
+        setCurrentSendTo(notifUser);
         sendToBackend(notifUser, "showConversation", "");
         notifUser = null;
     }
+
     sendToBackend("", "showUsersFriend", "");
 
     window.addEventListener('resize', function() {
         if (document.querySelector("#chat-content"))
             handleChatResise();
     });
-
-
-    // let hasStartedTyping = false;
-    // const debouncedtypingValue = debounce(userStoppedTyping, 1000);
-    
-    // messageInput.onkeyup = function (e) {
-    //     if (!hasStartedTyping){
-    //         sendToBackend(currentSendto, "startTyping", "");
-    //         hasStartedTyping = true;
-    //     }
-
-    //     debouncedtypingValue();
-
-    //     if (e.keyCode === 13) {
-    //         hasStartedTyping = false;
-    //         sendToBackend(currentSendto, "stopTyping", "");
-    //         messageSendButton.dispatchEvent(new Event('click'));
-    //     }
-    // };
-
-    // function userStoppedTyping() {
-    //     hasStartedTyping = false;
-    //     sendToBackend(currentSendto, "stopTyping", "");
-    // }
-
-    // messageSendButton.addEventListener('click', () => {
-    //     const message = messageInput.value;
-    //     var emoji = document.querySelector(".list-emoji");
-    //     messageInput.value = "";
-    //     if (message.trim() != "") {
-    //         if (emoji)
-    //             emoji.classList.add("d-none");
-    //         sendToBackend(currentSendto, "message", message);
-    //     }
-    // });
 }
 
 export {
