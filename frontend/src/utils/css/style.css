@@ -6,6 +6,7 @@
     --title-font: "Oxanium", Helvetica, Arial, sans-serif;
     --body-font: "Manrope", Helvetica, Arial, sans-serif;
     outline: none !important;
+    scrollbar-width: none;
 }
 
 ::-webkit-scrollbar {
@@ -646,10 +647,10 @@ p {
 }
 
 /* ************************************** */
-/* **************** 1vs1 **************** */
+/* ********* 1vs1 | Tournament ********** */
 /* ************************************** */
 
-.one-vs-one-history {
+.one-vs-one-history, .tournament-history {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -802,12 +803,12 @@ p {
     height: 100%;
     color: var(--sub-color);
     font-weight: bold;
-    font-size: x-large;
+    font-size: large;
 }
 
 .empty-one-vs-one img, .empty-tournament img {
-    max-width: 300px;
-    max-height: 300px;
+    max-width: 250px;
+    max-height: 250px;
     width: 100%;
     height: 100%;
     object-fit: contain;

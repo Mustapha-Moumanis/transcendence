@@ -43,9 +43,11 @@
     background: var(--base-shade);
     display: flex;
     height: 100%;
-    /* grid-gap: 18px; */
     flex-direction: column;
     border-radius: 15px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
 }
 
 .setting-content label {
@@ -70,7 +72,6 @@
 
 .setting-header{
     border-bottom: solid 1px var(--base-hover);
-    /* height: 10%; */
     width: 100%;
     padding: 20px;
 }
@@ -138,8 +139,6 @@
 }
 
 .setting-form {
-    /* border: solid 1px var(--base-hover); */
-    /* border-radius: 20px; */
     position: relative;
     width: 100%;
     height: 100%;
@@ -187,7 +186,6 @@
 
 .setting-account button, .setting-securty button {
     transition: 0.2s;
-    /* max-width: 180px; */
     padding: 12px 20px 12px 20px;
 }
 
@@ -241,12 +239,6 @@
 .setting-game .game-element-content label {
     font-weight: 700;
 }
-
-/* .setting-game .row > :first-child,
-.setting-securty .row > :first-child, 
-.separator-border {
-    border-right: 1px solid var(--base-hover);
-}*/
 
 .options-content {
     width: 150px;

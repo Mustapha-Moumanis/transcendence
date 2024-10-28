@@ -1,6 +1,9 @@
 .form-home {
 	background-color: var(--base);
 	height: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
+	scrollbar-width: none;
 }
 
 .home-header, .home-history {
