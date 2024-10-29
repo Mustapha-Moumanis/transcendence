@@ -1,5 +1,5 @@
-import { showAlert } from "../../utils/js/auth.js";
-import { getCookie } from "../../utils/js/utils.js";
+import { logout, showAlert } from "../../utils/js/auth.js";
+import { getCookie, logoutFetch } from "../../utils/js/utils.js";
 import { SendMessage } from "../Chat/js/homeSocket.js";
 import { sendToBackend } from "../Chat/script.js";
 import { drawtheLevel, matchHistory } from "../Home/script.js";
@@ -22,6 +22,8 @@ function getProfileData(id){
     })
     .then(response => {
         if (!response.ok) {
+            if (response.status === 401)
+                logoutFetch();
             return response.json()
             .then(errorData => {
                 if (errorData.detail)

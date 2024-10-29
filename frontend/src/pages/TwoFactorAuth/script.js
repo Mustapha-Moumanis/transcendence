@@ -2,8 +2,10 @@ import {
 	displayFieldError,
 	showAlert,
 	authActions,
-	login
+	login,
+	logout
 } from '../../utils/js/auth.js'
+import { logoutFetch } from '../../utils/js/utils.js';
 // import { startSocket, } from '../chat/js/socket.js'
 
 function numbersInputsEffect(inputs) {
@@ -89,6 +91,8 @@ function handleConfirmTwoFactorFormSubmission(userData, inputs) {
 		})
 		.then(response => {
 			if (!response.ok) {
+				if (response.status === 401)
+					logoutFetch();
 				return response.json().then(errorData => {
 					if (errorData.key)
 						throw new Error("key :" + errorData.key[0]);

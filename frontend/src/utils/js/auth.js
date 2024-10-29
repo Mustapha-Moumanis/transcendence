@@ -1,6 +1,6 @@
 import { chatSocket } from '../../pages/Chat/js/socket.js';
 import { setmyIntervalID, myIntervalID } from '../../router.js';
-import { showLoading, hideLoading, HomeEffects, setCookie, getCookie, deleteCookie } from './utils.js';
+import { showLoading, hideLoading, HomeEffects, setCookie, getCookie, deleteCookie, logoutFetch } from './utils.js';
 import { debounce } from './utils.js';
 
 function isAuthenticated() {
@@ -30,6 +30,8 @@ function getUserData() {
         })
         .then(response => {
             if (!response.ok) {
+                if (response.status === 401)
+                    logoutFetch();
                 return response.json().then(errorData => {
                     if (errorData.non_field_errors)
                         reject(errorData.non_field_errors[0]);
@@ -115,11 +117,10 @@ function checkToken() {
         })
         .catch (error => {
             showAlert('error', error);
-            logout();
-            return false;
+            logoutFetch();
         })
     }
-    else logout();
+    else logoutFetch();
 }
 
 window.addEventListener('beforeunload', () => {
@@ -294,5 +295,6 @@ export {
     getUserData,
     checkToken,
     verifyToken,
+    verifyRefreshToken,
     attachInputFocusListeners,
 }

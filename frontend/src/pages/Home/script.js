@@ -1,4 +1,5 @@
-import { getCookie } from '../../utils/js/utils.js';
+import { logout, showAlert } from '../../utils/js/auth.js';
+import { getCookie, logoutFetch } from '../../utils/js/utils.js';
 import { countries } from '../Settings/script.js';
 
 export function drawtheLevel(spinner) {
@@ -107,6 +108,17 @@ function getGameHistory(avatar){
     })
     .then(response => {
         if (!response.ok) {
+			if (response.status === 401) {
+				logoutFetch()
+				.then(() => {
+					logout();
+					throw new Error('success', 'You have been successfully logged out!');
+				})
+				.catch(error => {
+					logout();
+					throw new Error('error', error.message);
+				})
+			}
             return response.json()
             .then(errorData => {
                 if (errorData.detail)
@@ -121,7 +133,6 @@ function getGameHistory(avatar){
     })
     .catch((error) => {
         showAlert('error', error);
-        window.location.hash = "#home";
     });
 }
 

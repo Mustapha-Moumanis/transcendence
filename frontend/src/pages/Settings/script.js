@@ -1,6 +1,6 @@
 import { attachInputFocusListeners, getUserData, logout, verifyToken } from '../../utils/js/auth.js'
 import { displayFieldError, showAlert} from '../../utils/js/auth.js'
-import { getCookie } from '../../utils/js/utils.js';
+import { getCookie, logoutFetch } from '../../utils/js/utils.js';
 
 export const countries = [
     { "text": "Afghanistan", "value": "AF"},
@@ -236,6 +236,8 @@ function generateQrCode() {
 			})
 			.then(response => {
 				if (!response.ok) {
+                    if (response.status === 401)
+                        logoutFetch();
 					return response.json().then(errorData => {
 						if (errorData.non_field_errors)
 							reject(errorData.non_field_errors[0]);
@@ -259,7 +261,7 @@ function generateQrCode() {
 	})
 	.catch (error => {
 		showAlert('error', error);
-		logout();
+		logoutFetch();
 	})
 }
 
@@ -349,6 +351,8 @@ function handle2faAction(inputs, btn) {
 			})
 			.then(response => {
 				if (!response.ok) {
+                    if (response.status === 401)
+                        logoutFetch();
 					return response.json()
 					.then(errorData => {
                         const numbersFields = document.querySelector('.numbers-field');
@@ -393,7 +397,7 @@ function handle2faAction(inputs, btn) {
 		})
 		.catch (error => {
 			showAlert('error', error);
-			logout();
+			logoutFetch();
 		})
 	}
 
@@ -431,6 +435,8 @@ function mode2faDisactive(btn) {
 			})
 			.then(response => {
 				if (!response.ok) {
+                    if (response.status === 401)
+                        logoutFetch();
 					return response.json()
 					.then(errorData => {
 						if (errorData.is2faActive[0])
@@ -468,7 +474,7 @@ function mode2faDisactive(btn) {
 		})
 		.catch (error => {
 			showAlert('error', error);
-			logout();
+			logoutFetch();
 		})
 	}
 
