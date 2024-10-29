@@ -222,15 +222,6 @@ def getUsername(user_id):
     return user.username
 
 @database_sync_to_async
-def getGamenotification(sendto):
-    sender = User.objects.get(username=sendto)
-    return ({
-        "id" : sender.id,
-        "user": sender.username,
-        "avatar": str(sender.avatar),
-    })
-
-@database_sync_to_async
 def addBlockUser(user, friend ,eventType):
 
     from_user = User.objects.get(username=user)
