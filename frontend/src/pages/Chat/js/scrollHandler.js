@@ -2,7 +2,6 @@ import {currentSendto, sendToBackend} from "./socket.js"
 import{removeNotif} from "./homeSocket.js"
 import {createMessageElement, createEndOfConv} from "./conversationChat.js"
 
-
 const handlerReference = (event) => scrollHandler(event);
 var scrollDisplay = false;
 var oldScrollHeight = 0;
@@ -16,23 +15,26 @@ function smoothScrollToBottom(container) {
     });
 }
 
+function loadingContent(){
+    const container = document.querySelector("#id_chat_item_container");
+    const div = document.createElement("div");
+    div.classList.add("chat-loading");
+    div.innerHTML = `
+            <div class="chat-line"></div>type="file"
+    `;
+    container.appendChild(div);
+    scrollnb++;
+    removeScroll();
+    sendToBackend(currentSendto, "loadMoreContent", scrollnb);
+}
+
 function scrollHandler() {
     const scrollelement = document.querySelector(".chat-box");
     oldScrollHeight = scrollelement.scrollHeight;
     var scrollPositionY = scrollelement.clientHeight- scrollelement.scrollTop;
 
-    if (scrollPositionY === oldScrollHeight && scrollDisplay === true) {
-        const container = document.querySelector("#id_chat_item_container");
-        const div = document.createElement("div");
-        div.classList.add("chat-loading");
-        div.innerHTML = `
-                <div class="chat-line"></div>type="file"
-        `;
-        container.appendChild(div);
-        scrollnb++;
-        removeScroll();
-        sendToBackend(currentSendto, "loadMoreContent", scrollnb);
-    }
+    if (scrollPositionY === oldScrollHeight && scrollDisplay === true)
+        loadingContent();
 }
 
 function focusScroll() {
@@ -56,36 +58,35 @@ function showAllMessages(data) {
         container.appendChild(createMessageElement(message));
         smoothScrollToBottom(container);
     });
+    document.querySelector("#id_message_send_input").value = "";
 
+    document.querySelector(".loading-chat").classList.add("d-none");
+    document.querySelector(".main-chat").classList.remove("d-none");
+    
+    scrollnb = 0;
+    oldScrollHeight = 0;
     scrollDisplay = data["scrollDisplay"];
     if (!scrollDisplay) {
         container.appendChild(createEndOfConv(data));
         removeScroll();
     }
-    document.querySelector("#id_message_send_input").value = "";
-
-    // ==> This part for hiddin the loading part & display conversation.
-    document.querySelector(".loading-chat").classList.add("d-none");
-    document.querySelector(".main-chat").classList.remove("d-none");
-    // =============================================== END OF THIS PART.
-
-    scrollnb = 0;
-    oldScrollHeight = 0;
-    if (scrollDisplay)
-        focusScroll();
+    else {
+        let height = window.innerHeight; 
+        if (height > 1000)
+            loadingContent();
+    }
+    focusScroll();
 }
 
 function loadMoreContent(data){
+
     var messages = data['messages'];
-    // --------- remove loading
-    const loading = document.querySelector(".chat-loading");
-    loading.remove();
-    // ------------------------
+    document.querySelector(".chat-loading").remove();
+
     const container = document.querySelector("#id_chat_item_container");
     messages.forEach(message => {
         container.appendChild(createMessageElement(message));
     });
-    document.querySelector("#id_message_send_input").value = "";
 
     scrollDisplay = data["scrollDisplay"];
     if (!scrollDisplay) {

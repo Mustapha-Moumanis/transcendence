@@ -41,9 +41,9 @@ function userCard(classes, activeClass) {
         card.addEventListener('click', function() {
 
             if (classes === ".friend-chat .chat-friend-card")
-                setCurrentSendTo(dataListFriends[index].user); 
+                setCurrentSendTo(dataListFriends[index].username);
             else
-                setCurrentSendTo(dataListUsers[index].user);
+                setCurrentSendTo(dataListUsers[index].username);
             
             document.querySelector(".welcome-chat").classList.add("d-none");
             handleChatResise();
@@ -78,7 +78,7 @@ function creatUserCard(listuser){
             <span class="chat-user-status"></span>
         </div>
         <div class="chat-user-content">
-            <h5>${listuser.user}</h5>
+            <h5>${listuser.username}</h5>
             <p>${listuser.lastMessage}</p>
             <div class="chat-list-typing d-none">
                 <div class="chat-list-dote-typing"></div>
@@ -105,7 +105,7 @@ function creatFriendCard(listuser){
         <img class="avatar" src="${listuser.avatar}">
         </div>
         <div class="chat-user-content">
-        <h5>${listuser.user}</h5>
+        <h5>${listuser.username}</h5>
         </div>
     `;
     return div
@@ -167,4 +167,5 @@ export {
     showUsers,
     activeBtn,
     handleChatResise,
+    creatFriendCard,
 }

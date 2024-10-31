@@ -1,6 +1,6 @@
 import { showAlert } from "../../utils/js/auth.js";
 import { getCookie } from "../../utils/js/utils.js";
-import { SendMessage } from "../Chat/js/homeSocket.js";
+import { SendMessage, removeNotif, reqConfirm } from "../Chat/js/homeSocket.js";
 import { sendToBackend } from "../Chat/script.js";
 import { drawtheLevel, matchHistory } from "../Home/script.js";
 import { countries } from "../Settings/script.js";
@@ -41,6 +41,8 @@ function getProfileData(id){
 }
 
 function handlleBtn(data){
+
+    // const btnBlock = document.querySelector(".profile-btn");
     const btnFriend = document.querySelector(".profile-btn .btn-follow");
 
     if (data.is_friend === true){
@@ -68,15 +70,19 @@ function handlleBtn(data){
             SendMessage(data.username);
         else if (request === "request_sended"){
             console.log(request);
-
+            // cancel ::
         }
         else if (request === "request_received"){
-            console.log(request);
+            sendToBackend(data.username, "reqConfirm", "");
+            reqConfirm(data);
+            btnFriend.setAttribute("id", "message");
+            btnFriend.innerHTML = "Send Message";
+            removeNotif(data.username,".notification-user-card .notifReqFriend");
         }
         else {
-            btnFriend.setAttribute("id", data.state_request);
-            btnFriend.innerHTML = "Cancel request";
             sendToBackend(data.username, "addFrindship", "");
+            btnFriend.setAttribute("id", "request_sended");
+            btnFriend.innerHTML = "Cancel request";
         }
     });
 }

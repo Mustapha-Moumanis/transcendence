@@ -1,15 +1,18 @@
 import { setCurrentSendTo, setnotifUser, user } from "./socket.js"
 import { sendToBackend } from "../script.js"
 import { debounce } from "../../../utils/js/utils.js";
+import { creatFriendCard } from "./listchat.js";
 
 function startSearchAndNotif() {
+    
+    const listnotification = document.querySelector(".show-notification");
+    const notificationButton = document.querySelector(".nav-buttons .notification");
+    const searchOverlay = document.querySelector(".search-overlay");
+    const searchInput = document.querySelector("#search-input");
+    const searchDiv = document.querySelector(".search-div");
 
     // --------------- Search Button ---------------
     const searchButton = document.querySelector(".nav-buttons .search");
-    const searchOverlay = document.querySelector(".search-overlay");
-    const searchDiv = document.querySelector(".search-div");
-
-    const searchInput = document.querySelector("#search-input");
     searchInput.focus();
 
     const debouncedSendValue = debounce(sendValue, 1000);
@@ -35,8 +38,6 @@ function startSearchAndNotif() {
     });
 
     // --------------- Notification Button ---------------
-    const notificationButton = document.querySelector(".nav-buttons .notification");
-    const listnotification = document.querySelector(".show-notification");
 
     notificationButton.addEventListener('click', (event) => {
         event.stopPropagation();
@@ -102,6 +103,10 @@ function onlineFriendsHome(data) {
 }
 
 function searchHome(data) {
+
+    const searchOverlay = document.querySelector(".search-overlay");
+    const searchDiv = document.querySelector(".search-div");
+    const searchInput = document.querySelector("#search-input");
     const searchContent = document.querySelector(".search-content");
     searchContent.innerHTML = "";
 
@@ -115,8 +120,7 @@ function searchHome(data) {
         `;
         searchContent.appendChild(div);
     }
-    
-    const searchOverlay = document.querySelector(".search-overlay");
+
     list.forEach(user => {
         const div = document.createElement("div");
         div.classList.add("col-xl-3", "col-lg-4", "col-md-6", "col-sm-6", "p-1");
@@ -128,6 +132,8 @@ function searchHome(data) {
         `;
         searchContent.appendChild(div);
         div.querySelector(".user-card").addEventListener('click', () => {
+            searchInput.value = "";
+            searchDiv.querySelector(".search-content").innerHTML = "";
             searchOverlay.classList.add("d-none");
             window.location.hash = `#profile?id=${user.id}`;
         });
@@ -142,9 +148,9 @@ function SendMessage(username) {
 }
 
 function checkNotif() {
-    const notificationButton = document.querySelector(".notification");
-    const listnotification = document.querySelector(".show-notification");
 
+    const listnotification = document.querySelector(".show-notification");
+    const notificationButton = document.querySelector(".nav-buttons .notification");
     const containerNotif = listnotification.querySelector(".list-notification");
     const notifications = listnotification.getElementsByClassName('notification-user-card');
 
@@ -169,7 +175,7 @@ function creatNotifReqFriend(data) {
             <img class="avatar" src=${data.avatar}>
         </div>
         <div class="notification-user-content">
-            <h5>${data.user}</h5>
+            <h5>${data.username}</h5>
             <p>Friend request</p>
         </div>
         <div class="notification-choices">
@@ -184,7 +190,7 @@ function creatNotifReqFriend(data) {
         </div>`;
 
     div.querySelector(".notification-choices #reqConfirm").addEventListener('click', () => {
-        sendToBackend(data.user, "reqConfirm", "");
+        sendToBackend(data.username, "reqConfirm", "");
         reqConfirm(data);
         document.querySelector(".show-notification").classList.add("d-none");
         div.remove();
@@ -192,7 +198,7 @@ function creatNotifReqFriend(data) {
     });
 
     div.querySelector(".notification-choices #reqDelete").addEventListener('click', () => {
-        sendToBackend(data.user, "reqDelete", "");
+        sendToBackend(data.username, "reqDelete", "");
         document.querySelector(".show-notification").classList.add("d-none");
         div.remove();
         checkNotif();
@@ -208,7 +214,7 @@ function creatNotifMessage(data) {
             <img class="avatar" src="${data.avatar}">
         </div>
         <div class="notification-user-content">
-            <h5>${data.user}</h5>
+            <h5>${data.username}</h5>
             <p>Message received</p>
         </div>
         <div class="notification-choices">
@@ -219,7 +225,7 @@ function creatNotifMessage(data) {
         </div>
     `;
     div.querySelector(".message-notification-btn").addEventListener('click', function () {
-        SendMessage(data.user);
+        SendMessage(data.username);
         document.querySelector(".show-notification").classList.add("d-none");
         div.remove();
         checkNotif();
@@ -232,8 +238,8 @@ function homeNotification(data) {
     let welcome = document.querySelector(".welcome h5");
     welcome.innerHTML = `Welcome ${user}`;
 
-    const listnotification = document.querySelector(".show-notification");
     const notification = document.querySelector(".notification span");
+    const listnotification = document.querySelector(".show-notification");
     const containerNotif = listnotification.querySelector(".list-notification");
 
     if (data.notification != 0) {
@@ -258,7 +264,7 @@ function homeNotification(data) {
 
 function creatNotification(data, classes, myfunction) {
     const listNotif = document.querySelector(".show-notification .list-notification");
-    const user = data.notificationlist.user;
+    const user = data.notificationlist.username;
 
     listNotif.querySelectorAll(classes).forEach(card => {
         const tmpUser = card.querySelector("h5").innerHTML;
@@ -324,7 +330,7 @@ function friendBlockedYou(data) {
         div.innerHTML = `
                 <div class="chat-warning-div">
                     <p class="chat-warning-content">
-                        Your Friendship with 
+                        Your Friendship with
                         <span>${data.username}</span> 
                         is no longer available as they have blocked you.
                     </p>
@@ -380,10 +386,6 @@ function blockClick(friend) {
 }
 
 // ----------------- Add Friendship ------------------
-
-function addFrindship(friend) {
-    sendToBackend(friend, "addFrindship", "");
-}
 
 function reqConfirm(data) {
 

@@ -98,8 +98,8 @@ function addEventListenerChatObtions(data){
     });
 
     document.querySelector("#chat-show-profile").addEventListener('click', () => {
-        console.log("show-profile");
         namelist.classList.add("d-none");
+        window.location.hash = `#profile?id=${data.id}`;
     });
     document.querySelector("#chat-block-friend").addEventListener('click', () => {
         namelist.classList.add("d-none");
