@@ -338,7 +338,8 @@
 }
 
 .menu hr {
-    color: var(--title-color);
+    color: var(--base-hover);
+    opacity: 1;
     width: 100%;
 }
 
@@ -359,6 +360,7 @@
     display: flex;
     align-items: center;
     height: 25%;
+    top: 0%;
     left: -65%;
     width: 6px;
     transition: top 0.4s ease;
@@ -419,10 +421,6 @@
     display: none;
 }
 
-/* .online-users .user {
-    padding: 10px;
-} */
-
 .user .avatar {
     width: 40px;
     height: 40px;
@@ -433,7 +431,7 @@
 
 
 
-@media only screen and (max-width: 720px){
+@media only screen and (max-width: 768px){
 
     .nav-bar {
         padding: 20px;
@@ -444,7 +442,7 @@
     }
 
     .welcome > h5 {
-        font-size: small;
+        font-size: medium;
     }
 
     .sidebar {

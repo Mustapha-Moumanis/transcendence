@@ -1,397 +1,151 @@
 .form-home {
-    background-color: var(--base);
-    height: 100%;
+	background-color: var(--base);
+	height: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
+	scrollbar-width: none;
 }
 
-.home-header {
-    height: 50%;
+.home-header, .home-history {
+	height: 50%;
 }
 
-.home-history{
-    height: 50%;
-}
-
-/* --------- Home Start Playing ---------*/
+/* Home Start Playing */
 
 .home-game {
-    padding: 0 5px 5px;
-    height: 100%;
+	padding: 0 5px 5px;
+	height: 100%;
 }
 
 .home-start-playing {
-    background-color: var(--base-shade);
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 20px;
-    height: 100%;
+	background-color: var(--base-shade);
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 20px;
+	height: 100%;
 }
 
 .banner-img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    content: var(--url--banner);
+	max-width: 100%;
+	max-height: 100%;
+	object-fit: cover;
+	content: var(--url--banner);
 }
 
 .start-play {
-    position: absolute;
-    bottom: 20px;
+	position: absolute;
+	bottom: 20px;
+	cursor: pointer;
 }
 
-/* --------- Home Profile ---------*/
+/* Home Profile */
 
 .home-profile {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-    background: var(--base-shade);
-    border-radius: 20px;
-    padding: 20px;
-    height: 100%;
-}
-
-.gradient-container {
-    width: 150px;
-    height: 150px;
-    position: relative;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    outline-offset: -1px;
-    outline: 2px solid var(--base);
-}
-
-.gradient-container svg {
-    fill: var(--base-shade);
-    height: 100%;
-    width: 100%;
-    z-index: 2;
-}
-
-.gradient-container .avatar {
-    position: absolute;
-    width: 70%;
-    height: 70%;
-    border-radius: 50%;
-    overflow: hidden;
-    z-index: 3;
-}
-
-.gradient-container .avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-#spinner {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    padding: 1px;
-    z-index: 1;
-}
-
-.lvl-xp {
-    color: var(--primary-color);
-    font-weight: bold;
-    font-size: small;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+	background: var(--base-shade);
+	border-radius: 20px;
+	padding: 20px;
+	height: 100%;
 }
 
 .div-info {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	gap: 15px;
 }
 
 .home-user-info {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
 }
 
 .home-user-info p {
-    color: var(--title-color);
-    margin: 0;
-    text-align: center;
-    font-size: x-large;
-    font-weight: bold;
+	color: var(--title-color);
+	margin: 0;
+	text-align: center;
+	font-size: x-large;
+	font-weight: bold;
+	text-transform: capitalize;
 }
 
-.home-user-info span{
-    color: var(--sub-color);
-    font-size: small;
+.home-user-info span {
+	text-transform: capitalize;
+	color: var(--sub-color);
+	font-size: small;
 }
 
 .total-profits {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 20px;
 }
 
-.total-profits .total{
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
+.total-profits .total {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	gap: 5px;
 }
 
 .total p {
-    color: var(--title-color);
-    margin: 0;
-    font-size: small;
+	color: var(--title-color);
+	margin: 0;
+	font-size: small;
 }
 
 .total span {
-    color: var(--primary-color);
-    font-size: medium;
-    font-weight: bold;
+	color: var(--primary-color);
+	font-size: medium;
+	font-weight: bold;
 }
 
-/* ---------- One Vs One History ---------- */
-
-.one-vs-one-history {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    background: var(--base-shade);
-    border-radius: 20px;
-    padding: 20px;
-    height: 100%;
-    gap: 10px;
-}
-
-.match-history {
-    display: flex;
-    justify-content: flex-start;
-    padding: 0 10px;
-    align-items: center;
-    color: var(--title-color);
-}
-
-.match-history p {
-    font-weight: bold;
-    margin: 0;
-}
-
-.match-cards {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-.win {
-    background: linear-gradient(to right, rgba(138, 201, 2, 0.8), var(--base));
-}
-
-.lose {
-    background: linear-gradient(to right, rgba(217, 63, 63, 0.8), var(--base));
-}
-
-.rate {
-    background: linear-gradient(to right, rgba(247, 181, 0, 0.8), var(--base));
-}
-
-.match-card {
-    display: flex;
-    align-items: center;
-    border-radius: 10px;
-    height: 120px;
-}
-
-.match-card span {
-    color: var(--title-color);
-    font-weight: bold;
-    text-align: center;
-}
-
-.match-user {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-    padding: 10px;
-    width: 100%;
-    gap: 10px;
-}
-
-.match-user-avatar {
-    width: 60px;
-    height: auto;
-    border-radius: 50%;
-}
-
-.match-user-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.match-friend {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    padding: 10px;
-    width: 100%;
-    gap: 10px;
-}
-
-.match-score {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-.match-score svg {
-    fill: var(--title-color);
-    width: 50px;
-    height: 100%;
-}
-
-.match-score span {
-    font-size: medium;
-}
-
-@media (max-width: 1200px) {
-    .match-user, .match-friend {
-        flex-direction: column;
-        justify-content: center;
-        gap: 5px;
-    }
-
-    .match-user span {
-        order: 2;
-    }
-
-    .match-user-avatar {
-        width: 40px;
-    }
-
-    .match-card span {
-        font-size: small;
-    }
-    
-    .match-score svg {
-        width: 30px;
-    }
-}
-
-
-@media (max-width: 340px) {
-    .one-vs-one-history{
-        padding: 15px;
-    }
-
-    .match-card {
-        flex-direction: column;
-    }
-
-    .match-score {
-        padding: 0;
-    }
-}
-
-
-/* -------- Tournament History --------*/
+/* Tournament History */
 
 .tournament-history {
-    background: var(--base-shade);
-    border-radius: 20px;
-    height: 100%;
+	background: var(--base-shade);
+	border-radius: 20px;
+	height: 100%;
 }
 
-
-
-
-
-
-
-
-
-
+/* Responsive Adjustments */
 
 @media (max-width: 768px) {
+	.home-header,
+	.home-history,
+	.home-game {
+		height: auto;
+	}
 
-    .home-header , .home-history, .home-game{
-        height: auto;
-    }
-    
-    .gradient-container {
-        width: 100px;
-        height: 100px;
-    }
+	.start-play {
+		bottom: 10px;
+	}
 
-    .start-play{
-        bottom: 10px;
-    }
-    
-    .btn-main{
-        padding: 5px 10px 5px 10px;
-        font-size: 10px;
-    }
+	.btn-main {
+		padding: 5px 10px;
+		font-size: 10px;
+	}
 
-    .gradient-container {
-        width: 150px;
-        height: 150px;
-    }
+	.div-info p {
+		font-size: medium;
+	}
 
-    .gradient-container svg,
-    #spinner {
-        width: 135px;
-        height: 135px;
-    }
-
-    .gradient-container .avatar {
-        width: 105px;
-        height: 105px;
-    }
-
-    .match-card {
-        height: 100%;
-    }
-
-    .div-info p {
-        font-size: medium;
-    }
-    
-    .div-info span {
-        font-size: small;
-    }
-
-    .lvl-xp {
-        font-size: x-small;
-    }
+	.div-info span {
+		font-size: small;
+	}
 }
 
 @media (max-width: 480px) {
-
-    .gradient-container svg,
-    #spinner {
-        width: 90px;
-        height: 90px;
-    } 
-    .gradient-container .avatar {
-        width: 50px;
-        height: 50px;
-    }
-
-    .total-profits {
-        flex-direction: column;
-    }
+	.total-profits {
+		flex-direction: column;
+	}
 }

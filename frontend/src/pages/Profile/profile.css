@@ -1,0 +1,206 @@
+.main-profile {
+	display: flex;
+	flex-direction: column;
+	background-color: var(--base-shade);
+	overflow-y: auto;
+	overflow-x: hidden;
+	scrollbar-width: none;
+	height: 100%;
+	width: 100%;
+	padding: 15px;
+	border-radius: 12px;
+}
+
+.profile-header {
+	padding: 0 10px 10px;
+	border-bottom: 1px solid var(--base-hover);
+}
+
+.stat-profile {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.gaming-content {
+	display: flex;
+	height: 100%;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.gaming-profits {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.gaming-profits .gaming {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	padding: 20px;
+	gap: 10px;
+}
+
+.gaming p {
+	color: var(--title-color);
+	margin: 0;
+	font-size: medium;
+}
+
+.gaming span {
+	color: var(--primary-color);
+	font-size: medium;
+	font-weight: bold;
+}
+
+.profile-btn {
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	flex-wrap: wrap;
+	gap: 15px;
+	height: 100%;
+	padding: 10px 0;
+}
+
+.profile-btn .btn {
+	text-align: center;
+	font-weight: bold;
+	padding: 5px 25px;
+	font-size: medium;
+	border-radius: 8px;
+	color: var(--title-color);
+	background: var(--base);
+}
+
+.btn-follow {
+	border: solid 1px var(--secondary-color);
+}
+
+.btn-block {
+	border: solid 1px rgb(217, 63, 63);
+}
+
+.btn-follow:hover {
+	color: var(--base--dark);
+	background: var(--primary-color);
+}
+
+.btn-block:hover {
+	color: var(--base--dark);
+	background: rgb(217, 63, 63);
+}
+
+/* Responsive Adjustments */
+
+@media (max-width: 768px) {
+	.stat-profile {
+		justify-content: center;
+	}
+
+	.user-content {
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.image-content {
+		width: 100%;
+	}
+
+	.user-info {
+		width: 50%;
+		padding: 0;
+	}
+
+	.div-profile-info p {
+		font-size: medium;
+	}
+
+	.div-profile-info span {
+		font-size: small;
+	}
+}
+
+@media (max-width: 480px) {
+	.gaming-profits .gaming {
+		padding: 10px;
+	}
+
+	.gaming p,
+	.gaming span,
+	.profile-btn .btn {
+		font-size: small;
+	}
+
+	.user-info {
+		width: 100%;
+	}
+}
+
+.profile-content {
+	display: flex;
+	justify-content: center;
+	border-bottom: 1px solid var(--base-hover);
+	padding: 20px;
+	width: 100%;
+}
+
+.user-content {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.user-info {
+	display: flex;
+	justify-content: center;
+	padding: 20px;
+	width: 100%;
+}
+
+.div-profile-info {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+.div-profile-info p {
+	color: var(--title-color);
+	margin: 0;
+	font-size: x-large;
+	font-weight: bold;
+	letter-spacing: 1px;
+}
+
+.div-profile-info span {
+	color: var(--sub-color);
+	font-size: medium;
+}
+
+.image-content {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+	padding: 20px;
+}
+
+.main-profile .one-vs-one-history,
+.main-profile .tournament-history {
+	background: none;
+}
+
+.match-history {
+	justify-content: center;
+}
+
+.profile-history {
+	height: 70%;
+}

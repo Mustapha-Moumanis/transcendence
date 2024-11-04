@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from friends.models import Friend
-from users.serializers import ProfilesSerSerializer
+from users.serializers import ProfilesSerializer
 from django.core.validators import URLValidator, ValidationError
 
 class FriendSerializer(serializers.ModelSerializer):

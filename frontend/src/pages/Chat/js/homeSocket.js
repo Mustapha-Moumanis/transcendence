@@ -1,19 +1,19 @@
-import {setnotifUser, user} from "./socket.js"
-import {sendToBackend} from "../script.js"
+import { setCurrentSendTo, setnotifUser, user } from "./socket.js"
+import { sendToBackend } from "../script.js"
 import { debounce } from "../../../utils/js/utils.js";
 
-function startSearchAndNotif(){
-    
+function startSearchAndNotif() {
+
     // --------------- Search Button ---------------
     const searchButton = document.querySelector(".nav-buttons .search");
     const searchOverlay = document.querySelector(".search-overlay");
     const searchDiv = document.querySelector(".search-div");
-    
+
     const searchInput = document.querySelector("#search-input");
     searchInput.focus();
-    
+
     const debouncedSendValue = debounce(sendValue, 1000);
-    
+
     searchInput.onkeyup = function () {
         debouncedSendValue();
     }
@@ -22,7 +22,7 @@ function startSearchAndNotif(){
         event.stopPropagation();
         searchOverlay.classList.remove("d-none");
     });
-    
+
     searchDiv.addEventListener('click', (event) => {
         event.stopPropagation();
     });
@@ -33,7 +33,7 @@ function startSearchAndNotif(){
         searchInput.value = "";
         searchOverlay.classList.add("d-none");
     });
-    
+
     // --------------- Notification Button ---------------
     const notificationButton = document.querySelector(".nav-buttons .notification");
     const listnotification = document.querySelector(".show-notification");
@@ -42,11 +42,11 @@ function startSearchAndNotif(){
         event.stopPropagation();
         listnotification.classList.remove("d-none");
     });
-    
+
     listnotification.addEventListener('click', (event) => {
         event.stopPropagation();
     });
-    
+
     document.body.addEventListener('click', () => {
         if (listnotification.classList.contains("d-none"))
             return;
@@ -65,24 +65,24 @@ function sendValue() {
 
 // --------------- Upadate Home ---------------
 
-function creatonlineUsers(listuser){
+function creatonlineUsers(listuser) {
     const div = document.createElement("div");
     div.classList.add("user");
-    div.innerHTML =`<img class="avatar" src="${listuser.avatar}" alt="${listuser.user}" user="${listuser.user}">`;
+    div.innerHTML = `<img class="avatar" src="${listuser.avatar}" alt="${listuser.user}" user="${listuser.user}">`;
     return div
 }
 
-function updateHomeUsers(data){
+function updateHomeUsers(data) {
 
     let userExists = false;
-    if (data.status === "Online"){
+    if (data.status === "Online") {
         document.querySelectorAll(".online-users .user").forEach(user => {
-            if (user.querySelector("img").getAttribute("user") === data.username){
+            if (user.querySelector("img").getAttribute("user") === data.username) {
                 userExists = true;
-                return; 
+                return;
             }
         });
-        if (!userExists){
+        if (!userExists) {
             const onlineList = document.querySelector(".sidebar-content .online");
             onlineList.classList.remove('d-none');
             onlineList.querySelector(".online-users").appendChild(creatonlineUsers(data.listuser));
@@ -92,16 +92,16 @@ function updateHomeUsers(data){
         removeOnlineFriend(data.username);
 }
 
-function onlineFriendsHome(data){
+function onlineFriendsHome(data) {
     const onlineUsers = document.querySelector(".sidebar-content .online");
-    if (data.listFriends.length != 0){
+    if (data.listFriends.length != 0) {
         onlineUsers.classList.remove('d-none');
         var users = onlineUsers.querySelector(".online-users")
         data.listFriends.forEach(listfriend => users.appendChild(creatonlineUsers(listfriend)));
     }
 }
 
-function searchHome(data){
+function searchHome(data) {
     const searchContent = document.querySelector(".search-content");
     searchContent.innerHTML = "";
 
@@ -115,8 +115,9 @@ function searchHome(data){
         `;
         searchContent.appendChild(div);
     }
-
-    list.forEach(user => { 
+    
+    const searchOverlay = document.querySelector(".search-overlay");
+    list.forEach(user => {
         const div = document.createElement("div");
         div.classList.add("col-xl-3", "col-lg-4", "col-md-6", "col-sm-6", "p-1");
         div.innerHTML = `
@@ -126,12 +127,16 @@ function searchHome(data){
             </div>
         `;
         searchContent.appendChild(div);
+        div.querySelector(".user-card").addEventListener('click', () => {
+            searchOverlay.classList.add("d-none");
+            window.location.hash = `#profile?id=${user.id}`;
+        });
     });
 }
 
 // --------------------------------------------------------------
 
-function checkNotif(){
+function checkNotif() {
     const notificationButton = document.querySelector(".notification");
     const listnotification = document.querySelector(".show-notification");
 
@@ -139,7 +144,7 @@ function checkNotif(){
     const notifications = listnotification.getElementsByClassName('notification-user-card');
 
     const notification = notificationButton.querySelector("span");
-    if (notifications.length === 0){
+    if (notifications.length === 0) {
         notification.style.backgroundColor = "";
         const div = document.createElement("div");
         div.classList.add("empty-notifications");
@@ -151,7 +156,7 @@ function checkNotif(){
     }
 }
 
-function creatNotifReqFriend(data){
+function creatNotifReqFriend(data) {
     const div = document.createElement("div");
     div.classList.add("notification-user-card", "notifReqFriend");
     div.innerHTML = `
@@ -178,7 +183,7 @@ function creatNotifReqFriend(data){
             </button>
         </div>`;
 
-    div.querySelector(".notification-choices #reqConfirm").addEventListener('click',() => {
+    div.querySelector(".notification-choices #reqConfirm").addEventListener('click', () => {
         console.log("Confirm");
         sendToBackend(data.user, "reqConfirm", "");
         reqConfirm(data);
@@ -187,7 +192,7 @@ function creatNotifReqFriend(data){
         checkNotif();
     });
 
-    div.querySelector(".notification-choices #reqDelete").addEventListener('click',() => {
+    div.querySelector(".notification-choices #reqDelete").addEventListener('click', () => {
         console.log("Delete");
         sendToBackend(data.user, "reqDelete", "");
         document.querySelector(".show-notification").classList.add("d-none");
@@ -197,7 +202,12 @@ function creatNotifReqFriend(data){
     return div;
 }
 
-function creatNotifMessage(data){
+function SendMessage(username) {
+    window.location.hash = '#chat';
+    setnotifUser(username);
+}
+
+function creatNotifMessage(data) {
     const div = document.createElement("div");
     div.classList.add("notification-user-card", "notifMessage");
     div.innerHTML = `
@@ -220,9 +230,8 @@ function creatNotifMessage(data){
             </button>
         </div>
     `;
-    div.querySelector(".message-notification-btn").addEventListener('click', function() {
-        window.location.hash = '#chat';
-        setnotifUser(data.user);
+    div.querySelector(".message-notification-btn").addEventListener('click', function () {
+        SendMessage(data.user);
         document.querySelector(".show-notification").classList.add("d-none");
         div.remove();
         checkNotif();
@@ -230,7 +239,7 @@ function creatNotifMessage(data){
     return div;
 }
 
-function homeNotification(data){
+function homeNotification(data) {
     // add username to sidebar:
     let welcome = document.querySelector(".welcome h5");
     welcome.innerHTML = `Welcome ${user}`;
@@ -239,7 +248,7 @@ function homeNotification(data){
     const notification = document.querySelector(".notification span");
     const containerNotif = listnotification.querySelector(".list-notification");
 
-    if (data.notification != 0){
+    if (data.notification != 0) {
         notification.style.backgroundColor = "#E51284";
         data.chatNotification.forEach(user => {
             containerNotif.prepend(creatNotifMessage(user));
@@ -259,7 +268,7 @@ function homeNotification(data){
     }
 }
 
-function creatNotification(data, classes, myfunction){
+function creatNotification(data, classes, myfunction) {
     const listNotif = document.querySelector(".show-notification .list-notification");
     const user = data.notificationlist.user;
 
@@ -271,7 +280,7 @@ function creatNotification(data, classes, myfunction){
     listNotif.prepend(myfunction(data.notificationlist));
 }
 
-function updateHomeNotification(data){
+function updateHomeNotification(data) {
     document.querySelector(".notification span").style.backgroundColor = "#E51284";
 
     let empty = document.querySelector(".show-notification .empty-notifications");
@@ -288,10 +297,10 @@ function updateHomeNotification(data){
 
 // -------------------- Warning -------------------
 
-function removeNotif(friend, myclass){
+function removeNotif(friend, myclass) {
     document.querySelectorAll(myclass).forEach(notif => {
         const username = notif.querySelector(".notification-user-content h5").innerHTML;
-        if (username === friend){
+        if (username === friend) {
             notif.remove();
             checkNotif();
             return;
@@ -299,7 +308,7 @@ function removeNotif(friend, myclass){
     });
 }
 
-function removeOnlineFriend(friend){
+function removeOnlineFriend(friend) {
 
     const users = document.querySelector(".online-users");
     var len = users.querySelectorAll(".user").length;
@@ -307,7 +316,7 @@ function removeOnlineFriend(friend){
     users.querySelectorAll(".user").forEach(user => {
         const username = user.querySelector("img").getAttribute("user");
         console.log(username, friend);
-        if (username === friend){
+        if (username === friend) {
             if (len == 1)
                 users.parentElement.classList.add("d-none");
             user.remove();
@@ -315,13 +324,13 @@ function removeOnlineFriend(friend){
     });
 }
 
-function closeWarning(){
+function closeWarning() {
     const warning = document.querySelector(".chat-warning");
     warning.remove();
 }
 
-function friendBlockedYou(data){
-    if (document.querySelector("#chat-content")){
+function friendBlockedYou(data) {
+    if (document.querySelector("#chat-content")) {
         const div = document.createElement("div");
         div.classList.add("chat-warning");
         div.innerHTML = `
@@ -347,7 +356,7 @@ function friendBlockedYou(data){
     removeNotif(data.username, ".notification-user-card");
 }
 
-function blockClick(friend){
+function blockClick(friend) {
 
     const div = document.createElement("div");
     div.classList.add("chat-warning");
@@ -369,7 +378,7 @@ function blockClick(friend){
     })
     document.querySelector(".chat-warning #chat-button-Block").addEventListener('click', () => {
         sendToBackend(friend, "blockUser", "");
-        if (document.querySelector("#chat-content")){
+        if (document.querySelector("#chat-content")) {
             document.querySelector(".main-chat").classList.add("d-none");
             document.querySelector(".welcome-chat").classList.remove("d-none");
             sendToBackend("", "showUsersFriend", "");
@@ -384,29 +393,27 @@ function blockClick(friend){
 
 // ----------------- Add Friendship ------------------
 
-function addFrindship(friend){
+function addFrindship(friend) {
     sendToBackend(friend, "addFrindship", "");
 }
 
-function reqConfirm(data){
-    console.log(data.user, "accept u");
+function reqConfirm(data) {
 
     if (data.status == "Online") {
         const onlineUsers = document.querySelector(".sidebar-content .online");
         onlineUsers.classList.remove('d-none');
         onlineUsers.querySelector(".online-users").appendChild(creatonlineUsers(data))
     }
-    if (document.querySelector("#chat-content")){
+    if (document.querySelector("#chat-content")) {
         const friendList = document.querySelector(".friend-chat");
         let emptylist = friendList.querySelector(".chat-friend-empty");
-        console.log(emptylist);
         if (emptylist) emptylist.remove();
         friendList.appendChild(creatFriendCard(data));
     }
 }
 
-function reqDelete(data){
-    console.log(data.username, "refuse ur req")   
+function reqDelete(data) {
+    console.log(data.username, "refuse ur req")
 }
 
 export {
@@ -419,4 +426,7 @@ export {
     onlineFriendsHome,
     updateHomeUsers,
     removeNotif,
+    SendMessage,
+    reqDelete,
+    reqConfirm,
 }
