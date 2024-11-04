@@ -33,9 +33,11 @@ function startSocket(){
     user = authTokens.user.username;
 
     // ------------------ Socket Connected ------------------
-
-    var channel_name = "/ws/" + user + "/";
-    chatSocket = new WebSocket(`${channel_name}`);
+    const protocol = 'ws://';
+    const wsUrl = `${protocol}${window.location.host}/ws/${user}/`;
+    chatSocket = new WebSocket(`${wsUrl}`);
+    // var channel_name = "/ws/" + user + "/";
+    // chatSocket = new WebSocket(`${channel_name}`);
 
     chatSocket.onopen = () => {
         console.log("The connection was setup successfully!");

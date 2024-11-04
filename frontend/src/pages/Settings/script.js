@@ -1,6 +1,6 @@
 import { attachInputFocusListeners, getUserData, logout, verifyToken } from '../../utils/js/auth.js'
 import { displayFieldError, showAlert} from '../../utils/js/auth.js'
-import { getCookie } from '../../utils/js/utils.js';
+import { logoutFetch } from '../../utils/js/utils.js';
 
 export const countries = [
     { "text": "Afghanistan", "value": "AF"},
@@ -220,47 +220,37 @@ function generateQrCode() {
 
 	const qrCodeContainer = document.getElementById("qr-code");
 	if (qrCodeContainer.querySelector("img")) return;
-
-	var token = getCookie('my-token');
-	var refreshToken = getCookie('my-refresh-token');
-
-	verifyToken(token, refreshToken)
-	.then(() => {
-		var qrcodePromise = new Promise(function(resolve, reject){
-			
-			fetch('api/2fa/generate_qr_code/', {
-				method: 'GET',
-				headers: {
-					'Authorization': `Bearer ${token}`
-				}
-			})
-			.then(response => {
-				if (!response.ok) {
-					return response.json().then(errorData => {
-						if (errorData.non_field_errors)
-							reject(errorData.non_field_errors[0]);
-						reject('Failed to generate QR code');
-					})
-				}
-				resolve(response.blob());
-			})
-		})
-		
-		qrcodePromise
-        .then(svgData => {
-            let img = document.createElement("img");
-            img.src = URL.createObjectURL(svgData);
-            img.alt = "QR Code";
-            qrCodeContainer.append(img);
+    var qrcodePromise = new Promise(function(resolve, reject){
+        fetch('api/2fa/generate_qr_code/', {
+            method: 'GET',
         })
-        .catch(error => {
-            showAlert('error', error);
-        });
-	})
-	.catch (error => {
-		showAlert('error', error);
-		logout();
-	})
+        .then(response => {
+            if (!response.ok) {
+                if (response.status === 401) {
+                    logoutFetch()
+                    .catch(() => {});
+                    reject("User is not authenticated");
+                }
+                return response.json().then(errorData => {
+                    if (errorData.non_field_errors)
+                        reject(errorData.non_field_errors[0]);
+                    reject('Failed to generate QR code');
+                })
+            }
+            resolve(response.blob());
+        })
+    })
+    
+    qrcodePromise
+    .then(svgData => {
+        let img = document.createElement("img");
+        img.src = URL.createObjectURL(svgData);
+        img.alt = "QR Code";
+        qrCodeContainer.append(img);
+    })
+    .catch(error => {
+        showAlert('error', error);
+    });
 }
 
 function numbersInputsEffect(inputs) {
@@ -335,20 +325,24 @@ function handle2faAction(inputs, btn) {
 		document.querySelector(".active2fa").classList.remove("d-none");
 	}
 
-	function active2fa(token, key) {
+	function active2fa(key) {
 		return new Promise(function(resolve, reject){
 			const data = { key };
 			
 			fetch('api/2fa/', {
 				method: 'POST',
-				headers: {
+                headers: {
 					'Content-Type': 'application/json',
-					'Authorization': `Bearer ${token}`
 				},
 				body: JSON.stringify(data)
 			})
 			.then(response => {
 				if (!response.ok) {
+                    if (response.status === 401) {
+                        logoutFetch()
+                        .catch(() => {});
+                        reject("User is not authenticated");
+                    }
 					return response.json()
 					.then(errorData => {
                         const numbersFields = document.querySelector('.numbers-field');
@@ -363,38 +357,27 @@ function handle2faAction(inputs, btn) {
 	}
 
 	function handleVerify2faKeyClick() {
-		var token = getCookie('my-token');
-		var refreshToken = getCookie('my-refresh-token');
-	
-		verifyToken(token, refreshToken)
-		.then(() => {
-			const key = [...inputs].map(input => input.value).join('');
-			if (key == "") {
-				const numbersFields = document.querySelector('.numbers-field');
-				displayFieldError(numbersFields.parentElement, "This field may not be blank.");
-			}
-			else {
-				token = getCookie('my-token');
-				active2fa(token, key)
-				.then(() => {
-					showAlert('success', '2FA Enabled');
-					mode2faDisactive(btn);
-					btn.removeEventListener('click', handleClick);
-					verify2faKey.removeEventListener('click', handleVerify2faKeyClick);
-					document.querySelector(".active2fa").classList.add("d-none");
-				})
-				.catch(error => showAlert('error', error));
-				// inputs.forEach((input, index) => {
-				// 	input.value = "";
-				// 	if (index == 0) input.focus();
-				// 	else input.disabled = true;
-				// });
-			}
-		})
-		.catch (error => {
-			showAlert('error', error);
-			logout();
-		})
+        const key = [...inputs].map(input => input.value).join('');
+        if (key == "") {
+            const numbersFields = document.querySelector('.numbers-field');
+            displayFieldError(numbersFields.parentElement, "This field may not be blank.");
+        }
+        else {
+            active2fa(key)
+            .then(() => {
+                showAlert('success', '2FA Enabled');
+                mode2faDisactive(btn);
+                btn.removeEventListener('click', handleClick);
+                verify2faKey.removeEventListener('click', handleVerify2faKeyClick);
+                document.querySelector(".active2fa").classList.add("d-none");
+            })
+            .catch(error => showAlert('error', error));
+            // inputs.forEach((input, index) => {
+            // 	input.value = "";
+            // 	if (index == 0) input.focus();
+            // 	else input.disabled = true;
+            // });
+        }
 	}
 
 	verify2faKey.addEventListener('click', handleVerify2faKeyClick);
@@ -417,7 +400,7 @@ function mode2faDisactive(btn) {
 	btn.classList.add("activeBtn");
 	btn.innerHTML = "Disable 2FA";
 
-	function disactive2fa(token) {
+	function disactive2fa() {
 		return new Promise(function(resolve, reject){
 			const data = { is2faActive: false };
 			
@@ -425,12 +408,16 @@ function mode2faDisactive(btn) {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json',
-					'Authorization': `Bearer ${token}`
 				},
 				body: JSON.stringify(data)
 			})
 			.then(response => {
 				if (!response.ok) {
+                    if (response.status === 401) {
+                        logoutFetch()
+                        .catch(() => {});
+                        reject("User is not authenticated");
+                    }
 					return response.json()
 					.then(errorData => {
 						if (errorData.is2faActive[0])
@@ -447,29 +434,18 @@ function mode2faDisactive(btn) {
 	}
 
 	function handleClick() {
-		var token = getCookie('my-token');
-		var refreshToken = getCookie('my-refresh-token');
-
-		verifyToken(token, refreshToken)
-		.then(() => {
-			token = getCookie('my-token');
-			disactive2fa(token)
-			.then(() => {
-				document.querySelector(".active2faIcon").innerHTML = "";
-				btn.classList.remove("activeBtn");
-				btn.innerHTML = "Enable 2FA";
-				mode2faActive(btn);
-				showAlert('success', '2FA Disabled');
-				btn.removeEventListener('click', handleClick);
-			})
-			.catch((error) => {
-				showAlert('error', error);
-			});
-		})
-		.catch (error => {
-			showAlert('error', error);
-			logout();
-		})
+        disactive2fa()
+        .then(() => {
+            document.querySelector(".active2faIcon").innerHTML = "";
+            btn.classList.remove("activeBtn");
+            btn.innerHTML = "Enable 2FA";
+            mode2faActive(btn);
+            showAlert('success', '2FA Disabled');
+            btn.removeEventListener('click', handleClick);
+        })
+        .catch((error) => {
+            showAlert('error', error);
+        });
 	}
 
 	btn.addEventListener('click', handleClick);
