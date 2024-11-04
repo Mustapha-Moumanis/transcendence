@@ -1,5 +1,5 @@
-import { logout, showAlert } from '../../utils/js/auth.js';
-import { getCookie, logoutFetch } from '../../utils/js/utils.js';
+import { showAlert } from '../../utils/js/auth.js';
+import { logoutFetch } from '../../utils/js/utils.js';
 import { countries } from '../Settings/script.js';
 
 export function drawtheLevel(spinner) {
@@ -99,25 +99,15 @@ export function matchHistory(game_history, avatar){
 }
 
 function getGameHistory(avatar){
-	const token = getCookie('my-token');
     fetch(`api/game-history/`, {
         method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
     })
     .then(response => {
         if (!response.ok) {
 			if (response.status === 401) {
 				logoutFetch()
-				.then(() => {
-					logout();
-					throw new Error('success', 'You have been successfully logged out!');
-				})
-				.catch(error => {
-					logout();
-					throw new Error('error', error.message);
-				})
+    			.catch(() => {});
+				throw new Error("User is not authenticated");
 			}
             return response.json()
             .then(errorData => {

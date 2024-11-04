@@ -91,8 +91,11 @@ function handleConfirmTwoFactorFormSubmission(userData, inputs) {
 		})
 		.then(response => {
 			if (!response.ok) {
-				if (response.status === 401)
-					logoutFetch();
+				if (response.status === 401) {
+					logoutFetch()
+					.catch(() => {});
+					throw new Error("User is not authenticated");
+				}
 				return response.json().then(errorData => {
 					if (errorData.key)
 						throw new Error("key :" + errorData.key[0]);

@@ -7,8 +7,8 @@ import Settings from './pages/Settings/settings.js';
 import Chat from './pages/Chat/chat.js';
 import Game from './pages/Game/game.js';
 import Profile from './pages/Profile/profile.js';
-import { isAuthenticated } from './utils/js/auth.js';
-import { showLoading, hideLoading} from './utils/js/utils.js';
+import { checkAuthentication, isAuthenticated } from './utils/js/auth.js';
+import { showLoading, hideLoading, logoutFetch} from './utils/js/utils.js';
 
 export var myIntervalID = null;
 export const setmyIntervalID = (newmyIntervalID) => {
@@ -35,14 +35,17 @@ function Router() {
     })();
     
     console.log(">> ", path);
-    if (isAuthenticated()) {
-      if (path === 'login' || path === 'register' || path === 'reset-password') {
-        return window.location.hash = '#home';
-      }
-    } else {
-      if (path !== 'login' && path !== 'register' && path !== 'reset-password') {
-        return window.location.hash = '#login';
-      }
+    if (!isAuthenticated() && !['login', 'register', 'reset-password'].includes(path)) {
+      window.location.hash = '#login';
+      return;
+    }
+    if (isAuthenticated() && ['login', 'register', 'reset-password'].includes(path)) {
+      window.location.hash = '#home';
+      return;
+    }
+    if (isAuthenticated() && !(await checkAuthentication())) {
+      window.location.hash = '#login';
+      return;
     }
 
     const queryParams = new URLSearchParams(window.location.hash.split('?')[1]);

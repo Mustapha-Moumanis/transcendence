@@ -97,7 +97,6 @@ export function getCookie(name) {
 		while (c.charAt(0) == ' ') c = c.substring(1, c.length);
 		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
 	}
-
 	return null;
 }
 
@@ -125,6 +124,7 @@ export function logoutFetch() {
 			},
 		})
 		.then(response => {
+			// reject('testing logout fetching!!!');
 			if (!response.ok) {
 				return response.json().then(errorData => {
 					if (errorData.non_field_errors)
@@ -144,8 +144,7 @@ export function handleLogoutBtn() {
 	document.getElementById('logout').addEventListener('click', function (e) {
 		logoutFetch()
 		.then(() => showAlert('success', 'You have been successfully logged out!'))
-		.catch(error => showAlert('error', error.message))
-		// .finally(() => logout())
+		.catch(error => showAlert('error', error))
 	});
 };
 
