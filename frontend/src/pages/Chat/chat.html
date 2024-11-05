@@ -57,7 +57,27 @@
     </div>
     <div class="d-none main-chat">
         <div class="chat-header">
-            <!-- Header chat -->
+            <svg class="expand-left" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M14.293 5.29297L15.7073 6.70718L10.4144 12.0001L15.7073 17.293L14.293 18.7072L7.58594 12.0001L14.293 5.29297Z"/>
+            </svg>
+            <div class="chat-user-img">
+                <img class="avatar" src="static/default/1.svg" alt="helena_hills">
+            </div>
+            <div class="chat-user-content">
+                <h5>Helena_hills</h5>
+                <p>Offline</p>
+            </div>
+            <div class="chat-options">
+                <svg id="id_chat-options" width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M20 9C20.5523 9 21 9.44772 21 10L21 30C21 30.5523 20.5523 31 20 31C19.4477 31 19 30.5523 19 30L19 10C19 9.44772 19.4477 9 20 9Z" />
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M31 20C31 20.5523 30.5523 21 30 21L10 21C9.44772 21 9 20.5523 9 20C9 19.4477 9.44772 19 10 19L30 19C30.5523 19 31 19.4477 31 20Z"/>
+                </svg>
+    
+                <div class="d-none chat-options-list">
+                    <div id="chat-show-profile" class="chat-option-element">Show Profile</div>
+                    <div id="chat-block-friend" class="chat-option-element" style="color: #D31010;">Block Friend</div>
+                </div>
+            </div>
         </div>
         <div class="chat-box" id="id_chat_item_container">
             <!-- Conversations -->

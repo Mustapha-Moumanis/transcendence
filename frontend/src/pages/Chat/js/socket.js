@@ -1,11 +1,10 @@
-import {startTyping, stopTyping, chatHeader,
-    receiveMessage, respondMessage, updatestatuUsers,} from "./conversationChat.js"
+import {startTyping, stopTyping, chatHeader,receiveMessage, respondMessage, 
+    updatestatuUsers,loadMoreContent, showAllMessages, stratChatBox } from "./conversationChat.js"
 
 import {friendBlockedYou, updateHomeNotification, homeNotification,
     searchHome, onlineFriendsHome, updateHomeUsers, startSearchAndNotif,
     reqDelete, reqConfirm} from "./homeSocket.js"
 
-import {loadMoreContent, showAllMessages} from "./scrollHandler.js"
 import {showFriends, showUsers, handleChatResise} from "./listchat.js"
 import {sendToBackend} from "../script.js"
 
@@ -51,7 +50,7 @@ function startSocket(){
         const data = JSON.parse(event.data);
         if (data === null) return;
     
-        if (data.type === "Error") console.warn(data.error);
+        if (data.type === "Error") console.error(data.error);
         else if (data.type === "Blocked") friendBlockedYou(data);
         else if (data.type === "reqConfirm") reqConfirm(data.listFriends);
         else if (data.type === "reqDelete") reqDelete(data);
@@ -59,7 +58,10 @@ function startSocket(){
             onlineFriendsHome(data["onlineFriendsHome"]);
             homeNotification(data["homeNotification"]);
         }
-        else if (data.type === "searchHome") searchHome(data);
+        else if (data.type === "searchHome") {
+            console.log(data);
+            searchHome(data);
+        }
         else if (data.type === "updateHomeUsers") updateHomeUsers(data);
         else if (data.type === 'CreatNotifChat' || data.type === "friendRequest") 
             updateHomeNotification(data);
@@ -73,6 +75,7 @@ function startSocket(){
                     showFriends(data["showFriends"]);
                 }
                 else if (data.type === "showConversation"){
+                    stratChatBox();
                     chatHeader(data["chat_header"]);
                     showAllMessages(data["show_messages"]);
                 }
@@ -94,7 +97,7 @@ function startChat(){
         sendToBackend(notifUser, "showConversation", "");
         notifUser = null;
     }
-
+    
     sendToBackend("", "showUsersFriend", "");
 
     window.addEventListener('resize', function() {

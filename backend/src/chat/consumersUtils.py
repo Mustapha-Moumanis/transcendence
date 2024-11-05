@@ -25,13 +25,13 @@ def showUsers(user, Friends):
     listFriends = []
     for userprofile in Friends:
         # ------> listFriends :
-        listFriends.append({"id": userprofile.id, "user": userprofile.username, "avatar": str(userprofile.avatar), "status": userprofile.status})
+        listFriends.append({"id": userprofile.id, "username": userprofile.username, "avatar": str(userprofile.avatar), "status": userprofile.status})
 
         message, timesort, notf = getTheLastMessage(user, userprofile)
         if message :
             listUsers.append({
                 "id" : userprofile.id,
-                "user" : userprofile.username,
+                "username" : userprofile.username,
                 "status" : userprofile.status,
                 "avatar":  str(userprofile.avatar),
                 "lastMessage": message.content,
@@ -56,7 +56,7 @@ def loadMoreContent(user, sendto, scrollnb):
 
     allMessages = Message.objects.filter(user__in=[user, sendto], chat_room__in=[send_room, user_room]).order_by('-timestamp')
 
-    p = Paginator(allMessages, 10)
+    p = Paginator(allMessages, 15)
     page = p.page(scrollnb + 1)
     Messages = page.object_list
 
@@ -75,7 +75,7 @@ def get_data(user, sendto):
 
     allMessages = Message.objects.filter(user__in=[user, sendto], chat_room__in=[send_room, user_room]).order_by('-timestamp')
 
-    p = Paginator(allMessages, 10)
+    p = Paginator(allMessages, 15)
     page = p.page(1)
     Messages = page.object_list
 
@@ -101,7 +101,7 @@ def getHomeData(user, Friends):
         if (message.count()) != 0 :
             chatNotification.append({
                 "id" : userprofile.id,
-                "user" : userprofile.username,
+                "username" : userprofile.username,
                 "avatar":  str(userprofile.avatar),
             })
 
@@ -109,7 +109,7 @@ def getHomeData(user, Friends):
             continue
         listFriends.append({
             "id" : userprofile.id,
-            "user" : userprofile.username,
+            "username" : userprofile.username,
             "avatar":  str(userprofile.avatar),
         })
 
@@ -119,7 +119,7 @@ def getHomeData(user, Friends):
         ReqNotification.append({
             "id" : userprofile.user.id,
             "status": userprofile.user.status,
-            "user" : userprofile.user.username,
+            "username" : userprofile.user.username,
             "avatar":  str(userprofile.user.avatar),
         })
     nbnotif = len(chatNotification) + len(ReqNotification)
@@ -137,9 +137,12 @@ def getlistFriends(user):
     return Friends
 
 def get_Search_Home(user, data):
-    blockList = BlockedUser.objects.filter(blocker=user).values_list('blocked', flat=True)
-    listsearch = User.objects.filter(username__icontains=data["message"]).exclude(id__in=blockList).exclude(id=user.id)
+    blockedList = BlockedUser.objects.filter(blocker=user).values_list('blocked', flat=True)
+    blockerList = BlockedUser.objects.filter(blocked=user).values_list('blocker', flat=True)
     
+    blockList = list(blockedList) + list(blockerList)
+    listsearch = User.objects.filter(username__icontains=data["message"]).exclude(id__in=blockList).exclude(id=user.id)
+
     search = [{'id': user.id, 'username': user.username,'avatar': str(user.avatar),'exp': "75",} for user in listsearch]
     return {"type": "searchHome", "listsearch": search}
 
@@ -147,7 +150,7 @@ def CreatNotifChat(sender):
     return ({
         "type": "CreatNotifChat", "notificationlist": {
             "id" : sender.id,
-            "user": sender.username,
+            "username": sender.username,
             "avatar": str(sender.avatar),
         }
     })
@@ -187,7 +190,7 @@ def checkFriend(sendto):
 @database_sync_to_async
 def updateHomeUsers(username):
     profile = User.objects.get(username=username)
-    return {"id": profile.id, "user" : profile.username, "status" : profile.status, "avatar" : str(profile.avatar)}
+    return {"id": profile.id, "username" : profile.username, "status" : profile.status, "avatar" : str(profile.avatar)}
 
 @database_sync_to_async
 def updateStatus(username, status):
@@ -222,15 +225,6 @@ def getUsername(user_id):
     return user.username
 
 @database_sync_to_async
-def getGamenotification(sendto):
-    sender = User.objects.get(username=sendto)
-    return ({
-        "id" : sender.id,
-        "user": sender.username,
-        "avatar": str(sender.avatar),
-    })
-
-@database_sync_to_async
 def addBlockUser(user, friend ,eventType):
 
     from_user = User.objects.get(username=user)
@@ -242,7 +236,7 @@ def addBlockUser(user, friend ,eventType):
         return "Blocked", ""
     else :
         Friend.objects.add_friend(from_user, to_user)
-        notificationlist = {"id" : from_user.id, "status": from_user.status, "user": from_user.username, "avatar": str(from_user.avatar)}
+        notificationlist = {"id" : from_user.id, "status": from_user.status, "username": from_user.username, "avatar": str(from_user.avatar)}
         return "friendRequest", notificationlist
 
 @database_sync_to_async
@@ -254,5 +248,5 @@ def ConfirmDeletReq(user, friend, eventType):
         Friend.objects.remove_friend(from_user, to_user)
     else :
         state, msg = Friend.objects.accept_friend(from_user, to_user)
-    return {"status": from_user.status, "id": from_user.id, "user": from_user.username, "avatar": str(from_user.avatar)}
+    return {"status": from_user.status, "id": from_user.id, "username": from_user.username, "avatar": str(from_user.avatar)}
     
