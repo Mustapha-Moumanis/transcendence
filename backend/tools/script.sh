@@ -24,8 +24,6 @@ user = User.objects.get(username='$DJANGO_SUPERUSER_USERNAME')
 user.first_name = '$DJANGO_SUPERUSER_FIRSTNAME'
 user.last_name = '$DJANGO_SUPERUSER_LASTNAME'
 user.save()
-name ='room_{}'.format(user.username)
-ChatRoom.objects.get_or_create(name=name, creator=user)
 "
 fi
 

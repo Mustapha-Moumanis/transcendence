@@ -1,6 +1,6 @@
 import { chatSocket } from '../../pages/Chat/js/socket.js';
 import { setmyIntervalID, myIntervalID } from '../../router.js';
-import { showLoading, hideLoading, HomeEffects, setCookie, getCookie, deleteCookie } from './utils.js';
+import {setCookie, getCookie, deleteCookie, logoutFetch } from './utils.js';
 import { debounce } from './utils.js';
 
 function isAuthenticated() {
@@ -8,9 +8,9 @@ function isAuthenticated() {
     const token = getCookie('my-token');
     const refreshToken = getCookie('my-refresh-token');
 
-    return !!userInfo && !!token && !!refreshToken;
+    return !(!userInfo && !token && !refreshToken);
 }
-
+    
 function clearTokenCheckInterval() {
     if (myIntervalID) {
         clearInterval(myIntervalID);
@@ -20,16 +20,16 @@ function clearTokenCheckInterval() {
 
 function getUserData() {
     return new Promise(function(resolve, reject){
-        var token = getCookie('my-token');
-    
         fetch('api/user/', {
             method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
         })
         .then(response => {
             if (!response.ok) {
+                if (response.status === 401) {
+                    logoutFetch()
+                    .catch(() => {});
+                    reject("User is not authenticated");
+                }
                 return response.json().then(errorData => {
                     if (errorData.non_field_errors)
                         reject(errorData.non_field_errors[0]);
@@ -43,14 +43,30 @@ function getUserData() {
     })
 } 
 
-function verifyRefreshToken(refresh) {
+async function checkAuthentication() {
+    return await verifyToken()
+	.then(() => {
+        getUserData()
+        .then(userData => {
+            localStorage.setItem('userData', JSON.stringify(userData));
+        })
+        .catch(error => {
+            showAlert('error', error);
+        })
+        return true;
+	})
+	.catch (error => {
+		showAlert('error', error);
+		logoutFetch()
+        .catch(() => {});
+        return false;
+	})
+}
+
+function verifyRefreshToken() {
     return new Promise(function(resolve, reject){
-        const data = { refresh };
-        
         fetch("/api/token/refresh/", {
             method: "POST",
-            headers: { "Content-Type": "application/json", },
-            body: JSON.stringify(data),
         })
         .then(response => {
             if (!response.ok) {
@@ -67,7 +83,6 @@ function verifyRefreshToken(refresh) {
         })
         .then (data => {
             if (data) {
-                setCookie('my-token', data.access);
                 resolve();
             }
             reject('Have no access');
@@ -75,8 +90,9 @@ function verifyRefreshToken(refresh) {
     })
 }
 
-function verifyToken(token, refresh) {
+function verifyToken() {
     return new Promise(function(resolve, reject){
+        const token = getCookie('my-token');
         const data = { token };
         
         fetch("/api/token/verify/", {
@@ -88,7 +104,7 @@ function verifyToken(token, refresh) {
             if (!response.ok) {
                 return response.json()
                     .then(() => {
-                        verifyRefreshToken(refresh)
+                        verifyRefreshToken()
                         .then (() => {
                             resolve();
                         })
@@ -107,19 +123,16 @@ function verifyToken(token, refresh) {
 }
 
 function checkToken() {
-    const refreshToken = getCookie('my-refresh-token');
-    if (refreshToken){
-        verifyRefreshToken(refreshToken)
-        .then(() => {
-            if (!myIntervalID) setmyIntervalID(setInterval(checkToken, 25*60*1000));
-        })
-        .catch (error => {
-            showAlert('error', error);
-            logout();
-            return false;
-        })
-    }
-    else logout();
+    console.log("checkToken");
+    verifyRefreshToken()
+    .then(() => {
+        if (!myIntervalID) setmyIntervalID(setInterval(checkToken, 25*60*1000));
+    })
+    .catch (error => {
+        showAlert('error', error);
+        logoutFetch()
+        .catch(() => {});
+    })
 }
 
 window.addEventListener('beforeunload', () => {
@@ -133,8 +146,10 @@ function login(authTokens) {
 }
 
 function logout() {
-    chatSocket.close();
+    if (chatSocket)
+        chatSocket.close();
     localStorage.removeItem('authTokens');
+    localStorage.removeItem('userData');
     deleteCookie('my-token');
     deleteCookie('my-refresh-token');
     deleteCookie('sessionid');
@@ -284,6 +299,7 @@ async function mainActions() {
 
 export {
     isAuthenticated,
+    checkAuthentication,
     login,
     logout,
     showAlert,
@@ -294,5 +310,6 @@ export {
     getUserData,
     checkToken,
     verifyToken,
+    verifyRefreshToken,
     attachInputFocusListeners,
 }

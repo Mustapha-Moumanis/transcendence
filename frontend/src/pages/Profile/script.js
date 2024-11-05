@@ -1,6 +1,6 @@
 import { showAlert } from "../../utils/js/auth.js";
-import { getCookie } from "../../utils/js/utils.js";
 import { SendMessage, blockClick, removeNotif, reqConfirm } from "../Chat/js/homeSocket.js";
+import { logoutFetch } from "../../utils/js/utils.js";
 import { sendToBackend } from "../Chat/script.js";
 import { drawtheLevel, matchHistory } from "../Home/script.js";
 import { countries } from "../Settings/script.js";
@@ -29,15 +29,16 @@ function getProfileData(id){
         return ;
     }
 
-    const token = getCookie('my-token');
     fetch(`api/profiles/${id}/`, {
         method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
     })
     .then(response => {
         if (!response.ok) {
+            if (response.status === 401) {
+                logoutFetch()
+    			.catch(() => {});
+				throw new Error("User is not authenticated");
+            }
             return response.json()
             .then(errorData => {
                 if (errorData.detail)

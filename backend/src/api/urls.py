@@ -3,10 +3,12 @@ from django.contrib import admin
 
 from django.urls import path, re_path, include
 from dj_rest_auth.registration.views import RegisterView, VerifyEmailView, ResendEmailVerificationView
-from dj_rest_auth.views import LoginView, LogoutView, UserDetailsView, PasswordChangeView, PasswordResetView, PasswordResetConfirmView
+from dj_rest_auth.views import LoginView, UserDetailsView, PasswordChangeView, PasswordResetView, PasswordResetConfirmView
 
 from rest_framework_simplejwt.views import TokenVerifyView
 from dj_rest_auth.jwt_auth import get_refresh_view
+
+from users.viewset import customLogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -14,7 +16,7 @@ urlpatterns = [
     # Authentication
     path("register/", RegisterView.as_view(), name="rest_register"),
     path("login/", LoginView.as_view(), name="rest_login"),
-    path("logout/", LogoutView.as_view(), name="rest_logout"),
+    path("logout/", customLogoutView.as_view(), name="rest_logout"),
     path("user/", UserDetailsView.as_view(), name="rest_user_details"),
     path("password/change/", PasswordChangeView.as_view(), name="rest_password_change"),
     path('resend-email/', ResendEmailVerificationView.as_view(),

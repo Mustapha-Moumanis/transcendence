@@ -15,4 +15,14 @@ class ProfilesViewSet(viewsets.ReadOnlyModelViewSet):
     def destroy(self, request, *args, **kwargs):
         pass
 
-    
+from dj_rest_auth.views import LogoutView
+from django.http import HttpResponseRedirect
+
+class customLogoutView(LogoutView):
+
+    def logout(self, request):
+        response = super().logout(request) 
+        cookies_to_clear = ['my-token', 'my-refresh-token', 'messages', 'sessionid']
+        for cookie in cookies_to_clear:
+            response.delete_cookie(cookie)
+        return response
