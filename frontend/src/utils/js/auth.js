@@ -8,7 +8,7 @@ function isAuthenticated() {
     const token = getCookie('my-token');
     const refreshToken = getCookie('my-refresh-token');
 
-    return !!userInfo && !!token && !!refreshToken;
+    return !(!userInfo && !token && !refreshToken);
 }
     
 function clearTokenCheckInterval() {
