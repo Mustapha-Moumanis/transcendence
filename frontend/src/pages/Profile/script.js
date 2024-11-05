@@ -1,9 +1,25 @@
 import { showAlert } from "../../utils/js/auth.js";
+import { SendMessage, blockClick, removeNotif, reqConfirm } from "../Chat/js/homeSocket.js";
 import { logoutFetch } from "../../utils/js/utils.js";
-import { SendMessage } from "../Chat/js/homeSocket.js";
 import { sendToBackend } from "../Chat/script.js";
 import { drawtheLevel, matchHistory } from "../Home/script.js";
 import { countries } from "../Settings/script.js";
+
+var profileId;
+
+export function profileBtnState(btn, attribute, btnState, data){
+    console.log(profileId,data.id)
+
+    if (profileId == data.id && document.querySelector(".main-profile")) {
+        if (btn === "follow"){
+            const btnFriend = document.querySelector(".profile-btn .btn-follow");
+            btnFriend.setAttribute("id", attribute);
+            btnFriend.innerHTML = btnState;
+        }
+        else
+            window.location.hash = "#home";
+    }
+}
 
 function getProfileData(id){
 
@@ -42,8 +58,11 @@ function getProfileData(id){
 }
 
 function handlleBtn(data){
-    const btnFriend = document.querySelector(".profile-btn .btn-follow");
 
+    const btnBlock = document.querySelector(".profile-btn .btn-block");
+    btnBlock.addEventListener('click', () => blockClick(data.username));
+
+    const btnFriend = document.querySelector(".profile-btn .btn-follow");
     if (data.is_friend === true){
         btnFriend.setAttribute("id", "message");
         btnFriend.innerHTML = "Send Message";
@@ -51,15 +70,15 @@ function handlleBtn(data){
     else {
         if (data.state_request === "request_sended"){
             btnFriend.setAttribute("id", data.state_request);
-            btnFriend.innerHTML = "Cancel request";
+            btnFriend.innerHTML = "Cancel Request";
         }
         else if (data.state_request === "request_received"){
             btnFriend.setAttribute("id", data.state_request);
-            btnFriend.innerHTML = "Confirm request";
+            btnFriend.innerHTML = "Confirm Request";
         }
         else {
             btnFriend.setAttribute("id", "add_friend");
-            btnFriend.innerHTML = "Add friend";
+            btnFriend.innerHTML = "Add Friend";
         }
     }
 
@@ -69,15 +88,22 @@ function handlleBtn(data){
             SendMessage(data.username);
         else if (request === "request_sended"){
             console.log(request);
-
+            btnFriend.setAttribute("id", "add_friend");
+            btnFriend.innerHTML = "Add Friend";
+            sendToBackend(data.username, "reqDelete", "");
+            removeNotif(data.username, ".notification-user-card");
         }
         else if (request === "request_received"){
-            console.log(request);
+            sendToBackend(data.username, "reqConfirm", "");
+            reqConfirm(data);
+            btnFriend.setAttribute("id", "message");
+            btnFriend.innerHTML = "Send Message";
+            removeNotif(data.username,".notification-user-card");
         }
         else {
-            btnFriend.setAttribute("id", data.state_request);
-            btnFriend.innerHTML = "Cancel request";
             sendToBackend(data.username, "addFrindship", "");
+            btnFriend.setAttribute("id", "request_sended");
+            btnFriend.innerHTML = "Cancel Request";
         }
     });
 }
@@ -111,5 +137,6 @@ function setProfileData(data){
 }
 
 export function profileActions(id) {
+    profileId = id;
     getProfileData(id);
 }

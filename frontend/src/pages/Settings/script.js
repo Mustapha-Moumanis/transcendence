@@ -210,6 +210,18 @@ export const countries = [
 	{ "text": "Zimbabwe", "value": "ZW" }
 ];
 
+function setCountries(actualCountry){
+    const selectCountry = document.querySelector("#country");
+    for(const country of countries){
+        const obt = document.createElement("option");
+        obt.setAttribute("value", country.value);
+        obt.innerHTML = country.text;
+        if (actualCountry === country.value)
+            obt.setAttribute("selected", "");
+        selectCountry.append(obt);
+    }
+}
+
 function close2fa() {
 	document.querySelector(".close2fa").addEventListener("click", () => {
 		document.querySelector(".active2fa").classList.add("d-none");
@@ -580,9 +592,140 @@ function gamesettings() {
 	});
 }
 
+function setDataSetting(userData){
+
+    setCountries(userData.country_select);
+    const userImage = document.querySelector(".user-picture");
+    userImage.innerHTML = `<img class="avatar" src="${userData.avatar}" alt="${userData.username}">
+                            <h5>${userData.username}</h5>`;
+    const inputSettings = document.querySelector(".user-info");
+    inputSettings.querySelector("#first-name").setAttribute("value", userData.first_name);
+    inputSettings.querySelector("#last-name").setAttribute("value", userData.last_name);
+    inputSettings.querySelector("#date-of-birth").setAttribute("value", userData.date_of_birth);
+}
+
+function changPassword(){
+    const old_password = document.querySelector("#old_password");
+    const new_password1 = document.querySelector("#new_password1");
+    const new_password2 = document.querySelector("#new_password2");
+    
+    document.querySelector("#save_set_pass").addEventListener('click', () =>{
+
+        if (old_password.value === "")
+            displayFieldError(old_password.parentElement, 'This field may not be blank.');
+        if (new_password1.value === "")
+            displayFieldError(new_password1.parentElement, 'This field may not be blank.');
+        if (new_password2.value === "")
+            displayFieldError(new_password2.parentElement, 'This field may not be blank.');
+
+        let data = {
+            "old_password": old_password.value,
+            "new_password1": new_password1.value,
+            "new_password2": new_password2.value
+        }
+
+        fetch('api/password/change/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(errorData => {
+                    if (errorData.old_password) displayFieldError(old_password.parentElement, errorData.old_password[0]);
+                    if (errorData.new_password1) displayFieldError(new_password1.parentElement, errorData.new_password1[0]);
+                    if (errorData.new_password2) displayFieldError(new_password2.parentElement, errorData.new_password2[0]);
+                    throw new Error("Faild To change password");
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            showAlert('success', 'Password changed successful!');
+            old_password.value = "";
+            new_password1.value = "";
+            new_password2.value = "";
+        })
+        .catch(error => {
+            showAlert('error', error);
+        });
+    })
+}
+
+function postData(userData){
+
+    var dataImage = null;
+
+    const uploadimage = document.querySelector(".upload-pic");
+    uploadimage.querySelector("button").addEventListener('click', () => {
+        uploadimage.querySelector("#my_image").click();
+    })
+
+    uploadimage.querySelector("#my_image").addEventListener('change', function(){
+        if (this.files && this.files[0])
+            dataImage = this.files[0];
+    });
+
+    document.querySelector("#save-changes").addEventListener('click', () => {
+
+        const firstName = document.querySelector("#first-name");
+        const lastName = document.querySelector("#last-name");
+        const country = document.querySelector("#country");
+        const dateOfBirth = document.querySelector("#date-of-birth");
+
+        if (firstName.value === "")
+            displayFieldError(firstName.parentElement, 'This field may not be blank.');
+        if (lastName.value === "")
+            displayFieldError(lastName.parentElement, 'This field may not be blank.');
+
+        let data = new FormData();
+        if (dataImage && dataImage !== userData.avatar) data.append("avatar", dataImage);
+        if (firstName.value !== userData.first_name) data.append("first_name", firstName.value);
+        if (lastName.value !== userData.last_name) data.append("last_name", lastName.value);
+        if (country.value !== userData.country_select) data.append("country_select", country.value);
+        if (dateOfBirth.value !== userData.date_of_birth) data.append("date_of_birth", dateOfBirth.value);
+
+        if ([...data.entries()].length > 0) {
+            fetch('api/user/', {
+                method: 'PUT',
+                body: data
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errorData => {
+                        if (errorData.first_name) displayFieldError(firstName.parentElement, errorData.first_name[0]);
+                        if (errorData.last_name) displayFieldError(lastName.parentElement, errorData.last_name[0]);
+                        if (errorData.avatar) throw new Error(errorData.avatar[0]);
+                        throw new Error(errorData.detail);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                showAlert('success', 'Data saved successful!');
+                setDataSetting(data);
+                // localStorage.setItem('authTokens', JSON.stringify(data));
+                userData = data;
+            })
+            .catch(error => {
+                showAlert('error', error);
+            });
+        }
+        else
+            showAlert('error', "No changes to update.");
+    });
+}
+
 export function settingsActions() {
-	addListenerSettings();
-	twoFactorAuth();
-	attachInputFocusListeners();
-	gamesettings();
+    const value = JSON.parse(localStorage.getItem('authTokens'));
+    var userData = value.user;
+    setDataSetting(userData);
+    postData(userData);
+    changPassword();
+    addListenerSettings();
+    twoFactorAuth();
+    attachInputFocusListeners();
+    gamesettings();
 }

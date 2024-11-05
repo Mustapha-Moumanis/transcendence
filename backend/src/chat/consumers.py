@@ -13,7 +13,6 @@ from .consumersUtils import (
     updateHomeUsers,
     getFriendsRooms,
     getUsername,
-    getGamenotification,
     addBlockUser,
     ConfirmDeletReq,
 )
@@ -134,10 +133,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                         'time' : time,
                         "sendto" : room,
                     }))
-                elif data_json["type"] == "ToPlayPingPong":
-                    notificationlist = await getGamenotification(data_json["sendto"])
-                    room = data_json["sendto"]
-                    await self.channel_layer.group_send(room,{'data' : notificationlist, 'type': 'ToPlayPingPong'})
                 elif data_json["type"] == "startTyping" or data_json["type"] == "stopTyping":
                     room = data_json["sendto"]
                     await self.channel_layer.group_send(room,{
@@ -199,13 +194,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             "username" : event["user"],
             "type" : event["type"],
         }))
-
-    async def ToPlayPingPong(self, event):
-        send = {
-            "notificationlist" : event["data"],
-            "type" :event["type"],
-        }
-        await self.send(text_data=json.dumps(send))
 
     async def friendRequest(self, event):
         await self.send(text_data=json.dumps({

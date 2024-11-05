@@ -116,16 +116,6 @@
     position: relative;
 }
 
-.notification-user-img .notification-user-status{
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 25px;
-    height: 25px;
-    background-color: var(--base);
-    border-radius: 6px 0;
-}
-
 .notification-user-content {
     flex-grow: 1;
     overflow: hidden;
@@ -158,22 +148,28 @@
 
 
 .notification-btn{
-    background-color: var(--base-tint);
+    background-color: var(--base-shade);
     grid-gap: 0 4px;
     padding-left: 8px;
     padding-right: 5px;
     min-width: 70px;
     font-size: 10px;
+    color: var(--title-color);
 }
 
 .message-notification-btn{
-    background-color: var(--base-tint);
+    background-color: var(--base-shade);
     grid-gap: 0 4px;
     padding-left: 8px;
     padding-right: 5px;
     min-width: 120px;
     height: 25px;
     font-size: 10px;
+    color: var(--title-color);
+}
+
+.message-notification-btn:hover, .notification-btn:hover{
+    border: 1px solid var(--primary-color);
 }
 
 /* -------- Search  -------- */
