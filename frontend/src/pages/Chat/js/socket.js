@@ -1,11 +1,10 @@
-import {startTyping, stopTyping, chatHeader,
-    receiveMessage, respondMessage, updatestatuUsers,} from "./conversationChat.js"
+import {startTyping, stopTyping, chatHeader,receiveMessage, respondMessage, 
+    updatestatuUsers,loadMoreContent, showAllMessages, stratChatBox } from "./conversationChat.js"
 
 import {friendBlockedYou, updateHomeNotification, homeNotification,
     searchHome, onlineFriendsHome, updateHomeUsers, startSearchAndNotif,
     reqDelete, reqConfirm} from "./homeSocket.js"
 
-import {loadMoreContent, showAllMessages} from "./scrollHandler.js"
 import {showFriends, showUsers, handleChatResise} from "./listchat.js"
 import {sendToBackend} from "../script.js"
 
@@ -74,6 +73,7 @@ function startSocket(){
                     showFriends(data["showFriends"]);
                 }
                 else if (data.type === "showConversation"){
+                    stratChatBox();
                     chatHeader(data["chat_header"]);
                     showAllMessages(data["show_messages"]);
                 }
@@ -95,7 +95,7 @@ function startChat(){
         sendToBackend(notifUser, "showConversation", "");
         notifUser = null;
     }
-
+    
     sendToBackend("", "showUsersFriend", "");
 
     window.addEventListener('resize', function() {

@@ -1,5 +1,5 @@
 import {setCurrentSendTo, currentSendto, dataListFriends, dataListUsers} from "./socket.js"
-import {removeScroll} from "./scrollHandler.js"
+import {removeScroll} from "./conversationChat.js"
 import {sendToBackend} from "../script.js"
 
 // ------------------ Chat/Friends List ------------------

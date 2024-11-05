@@ -2,6 +2,7 @@ import { setCurrentSendTo, setnotifUser, user } from "./socket.js"
 import { sendToBackend } from "../script.js"
 import { debounce } from "../../../utils/js/utils.js";
 import { creatFriendCard } from "./listchat.js";
+import { profileBtnState } from "../../Profile/script.js";
 
 function startSearchAndNotif() {
     
@@ -199,10 +200,13 @@ function creatNotifReqFriend(data) {
 
     div.querySelector(".notification-choices #reqDelete").addEventListener('click', () => {
         sendToBackend(data.username, "reqDelete", "");
+        profileBtnState("follow", "add_friend", "Add Friend", data);
         document.querySelector(".show-notification").classList.add("d-none");
         div.remove();
         checkNotif();
     });
+
+    profileBtnState("follow", "request_received", "Confirm Request", data);
     return div;
 }
 
@@ -306,10 +310,8 @@ function removeOnlineFriend(friend) {
 
     const users = document.querySelector(".online-users");
     var len = users.querySelectorAll(".user").length;
-    console.log(users);
     users.querySelectorAll(".user").forEach(user => {
         const username = user.querySelector("img").getAttribute("user");
-        console.log(username, friend);
         if (username === friend) {
             if (len == 1)
                 users.parentElement.classList.add("d-none");
@@ -346,6 +348,7 @@ function friendBlockedYou(data) {
         })
         sendToBackend("", "showUsersFriend", "");
     }
+    profileBtnState("block", "", "", data);
     removeOnlineFriend(data.username);
     removeNotif(data.username, ".notification-user-card");
 }
@@ -394,6 +397,10 @@ function reqConfirm(data) {
         onlineUsers.classList.remove('d-none');
         onlineUsers.querySelector(".online-users").appendChild(creatonlineUsers(data))
     }
+
+    profileBtnState("follow", "message", "Send Message", data);
+    removeNotif(data.username,".notification-user-card");
+
     if (document.querySelector("#chat-content")) {
         const friendList = document.querySelector(".friend-chat");
         let emptylist = friendList.querySelector(".chat-friend-empty");
@@ -403,7 +410,8 @@ function reqConfirm(data) {
 }
 
 function reqDelete(data) {
-    console.log(data.username, "refuse ur req")
+    profileBtnState("follow", "add_friend", "Add Friend", data);
+    removeNotif(data.username, ".notification-user-card");
 }
 
 export {

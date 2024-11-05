@@ -34,6 +34,7 @@
                 </div>
                 <div class="upload-pic">
                     <button class="btn-main">Upload new picture</button>
+                    <input type="file" id="my_image" style="display: none;" />
                 </div>
             </div>
             <div class="row user-info">
@@ -48,7 +49,6 @@
                 <div class="col-md-6 py-3">
                     <label for="country" class="mb-2">Country</label><br>
                     <select id="country" name="country" class="form-control p-3">
-                        <option value="">--Please choose an option--</option>
                     </select>
                 </div>
                 <div class="col-md-6 py-3">
@@ -56,7 +56,7 @@
                     <input type="date" id="date-of-birth" name="date-of-birth"  class="form-control p-3" value="2016-12-31" min="1700-01-01" max="2016-12-31"/>
                 </div>
                 <div class="col-md-2 py-3">
-                    <button class="btn-main">Save Changes</button>
+                    <button id="save-changes" class="btn-main">Save Changes</button>
                 </div>
             </div>
         </div>

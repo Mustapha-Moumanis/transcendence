@@ -1,14 +1,107 @@
-import {user, currentSendto} from "./socket.js"
+import {user, currentSendto, sendToBackend} from "./socket.js"
 import {activeBtn} from "./listchat.js"
-import {smoothScrollToBottom} from "./scrollHandler.js"
-import {blockClick} from "./homeSocket.js"
-import {sendToBackend} from "../script.js"
+import {blockClick, removeNotif} from "./homeSocket.js"
 import {setEmojies} from "./emoji.js"
 import { debounce } from "../../../utils/js/utils.js"
 
+const handlerReference = (event) => scrollHandler(event);
+var scrollDisplay = false;
+var oldScrollHeight = 0;
+var scrollnb = 0;
+
+// ------------- Scroll Handler -------------
+function smoothScrollToBottom(container) {
+    container.scroll({
+        top: container.scrollHeight,
+        behavior: 'smooth'
+    });
+}
+
+function loadingContent(){
+    const container = document.querySelector("#id_chat_item_container");
+    const div = document.createElement("div");
+    div.classList.add("chat-loading");
+    div.innerHTML = `
+            <div class="chat-line"></div>type="file"
+    `;
+    container.appendChild(div);
+    scrollnb++;
+    removeScroll();
+    sendToBackend(currentSendto, "loadMoreContent", scrollnb);
+}
+
+function scrollHandler() {
+    const scrollelement = document.querySelector(".chat-box");
+    oldScrollHeight = scrollelement.scrollHeight;
+    var scrollPositionY = scrollelement.clientHeight- scrollelement.scrollTop;
+
+    if (scrollPositionY === oldScrollHeight && scrollDisplay === true)
+        loadingContent();
+}
+
+function focusScroll() {
+    const scrollelement = document.querySelector(".chat-box");
+    scrollelement.addEventListener('scroll', handlerReference);
+}
+
+function removeScroll() {
+    const scrollelement = document.querySelector(".chat-box");
+    scrollelement.removeEventListener('scroll', handlerReference);
+}
+
+// ---------------------- Chat Box --------------------
+function showAllMessages(data) {
+
+    removeNotif(data.sendto, ".notifMessage");
+
+    var messages = data['messages'];
+    const container = document.querySelector("#id_chat_item_container");
+    container.innerHTML = '';
+    messages.forEach(message => {
+        container.appendChild(createMessageElement(message));
+        smoothScrollToBottom(container);
+    });
+    document.querySelector("#id_message_send_input").value = "";
+
+    document.querySelector(".loading-chat").classList.add("d-none");
+    document.querySelector(".main-chat").classList.remove("d-none");
+    
+    scrollnb = 0;
+    oldScrollHeight = 0;
+    scrollDisplay = data["scrollDisplay"];
+    if (!scrollDisplay) {
+        container.appendChild(createEndOfConv(data));
+        removeScroll();
+    }
+    else {
+        let height = window.innerHeight; 
+        if (height > 1000)
+            loadingContent();
+    }
+    focusScroll();
+}
+
+function loadMoreContent(data){
+
+    var messages = data['messages'];
+    document.querySelector(".chat-loading").remove();
+
+    const container = document.querySelector("#id_chat_item_container");
+    messages.forEach(message => {
+        container.appendChild(createMessageElement(message));
+    });
+
+    scrollDisplay = data["scrollDisplay"];
+    if (!scrollDisplay) {
+        container.appendChild(createEndOfConv(data));
+        removeScroll();
+    }
+    focusScroll();
+}
+
 // ------------------ Upadate chat------------------
 
-function updateNotification(data){
+function updateNotification(data) {
     const messageBtn = document.querySelector(".chat-msg-btn");
     activeBtn(messageBtn, ".chat-friend-btn", ".chat-list", ".friend-chat");
     document.querySelectorAll(".chat-list .chat-user-card").forEach(cardUser => {
@@ -23,8 +116,7 @@ function updateNotification(data){
     });
 }
 
-function updatestatuUsers(data){
-
+function updatestatuUsers(data) {
     document.querySelectorAll(".chat-list .chat-user-card").forEach(userCardstatus => {
         const username = userCardstatus.querySelector(".chat-user-content h5").innerHTML;
         if (username === data.username) {
@@ -57,7 +149,6 @@ function respondMessage(data) {
 }
 
 function receiveMessage(data) {
-
     const messageBtn = document.querySelector(".chat-msg-btn");
     activeBtn(messageBtn, ".chat-friend-btn", ".chat-list", ".friend-chat");
 
@@ -76,8 +167,7 @@ function CloseMainChat() {
     mainChat.style.zIndex = "0";
 }
 
-function addEventListenerChatObtions(data){
-
+function addEventListenerChatObtions(data) {
     const namelist = document.querySelector(".chat-options-list");
     document.querySelector("#id_chat-options").addEventListener('click', (event) => {
         event.stopPropagation();
@@ -110,6 +200,7 @@ function addEventListenerChatObtions(data){
 function stratChatBox(){
 
     setEmojies();
+    const emoji = document.querySelector(".list-emoji");
     const messageInput = document.querySelector("#id_message_send_input");
     const messageSendButton = document.querySelector("#id_message_send_button");
     messageInput.focus();
@@ -122,9 +213,7 @@ function stratChatBox(){
             sendToBackend(currentSendto, "startTyping", "");
             hasStartedTyping = true;
         }
-
         debouncedtypingValue();
-
         if (e.keyCode === 13) {
             hasStartedTyping = false;
             sendToBackend(currentSendto, "stopTyping", "");
@@ -138,47 +227,25 @@ function stratChatBox(){
     }
 
     messageSendButton.addEventListener('click', () => {
-        const message = messageInput.value;
-        var emoji = document.querySelector(".list-emoji");
-        messageInput.value = "";
-        if (message.trim() != "") {
-            if (emoji)
-                emoji.classList.add("d-none");
-            sendToBackend(currentSendto, "message", message);
+        if (messageInput.trim() != "") {
+            if (emoji) emoji.classList.add("d-none");
+            sendToBackend(currentSendto, "message", messageInput);
         }
+        messageInput.value = "";
     });
 }
 
 function chatHeader(data) {
 
-    stratChatBox();
-    // This part for hiding the welcome state & displaying loading.
     document.querySelector(".welcome-chat").classList.add("d-none");
     document.querySelector(".loading-chat").classList.remove("d-none");
 
-    const header =  document.querySelector('.chat-header');
-    header.innerHTML = `
-        <svg class="expand-left" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M14.293 5.29297L15.7073 6.70718L10.4144 12.0001L15.7073 17.293L14.293 18.7072L7.58594 12.0001L14.293 5.29297Z"/>
-        </svg>
-        <div class="chat-user-img">
-            <img class="avatar" src="${data.avatar}" alt="${data.sendto}">
-        </div>
-        <div class="chat-user-content">
-            <h5>${data.sendto}</h5>
-            <p>${data.status}</p>
-        </div>
-        <div class="chat-options">
-            <svg id="id_chat-options" width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M20 9C20.5523 9 21 9.44772 21 10L21 30C21 30.5523 20.5523 31 20 31C19.4477 31 19 30.5523 19 30L19 10C19 9.44772 19.4477 9 20 9Z" />
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M31 20C31 20.5523 30.5523 21 30 21L10 21C9.44772 21 9 20.5523 9 20C9 19.4477 9.44772 19 10 19L30 19C30.5523 19 31 19.4477 31 20Z"/>
-            </svg>
+    const headerImage =  document.querySelector('.main-chat .chat-user-img');
+    headerImage.innerHTML = `<img class="avatar" src="${data.avatar}" alt="${data.sendto}">`;
 
-            <div class="d-none chat-options-list">
-                <div id="chat-show-profile" class="chat-option-element">Show Profile</div>
-                <div id="chat-block-friend" class="chat-option-element" style="color: #D31010;">Block Friend</div>
-            </div>
-        </div>`;
+    const headerImageContent =  document.querySelector('.main-chat .chat-user-content');
+    headerImageContent.innerHTML = ` <h5>${data.sendto}</h5> <p>${data.status}</p>`;
+
     header.querySelector(".expand-left").addEventListener('click', () => {
         CloseMainChat();
     })
@@ -204,14 +271,8 @@ function createMessageElement(message) {
 function createEndOfConv(data){
     const div = document.createElement("div");
     div.classList.add("chat-profile");
-    div.innerHTML = `
-        <div> 
-            <img class="avatar-chat-profile" src="${data.avatar}" alt="${data.sendto}">
-        </div>
-        <div class="chat-profile-content">
-            <h5>${data.sendto}</h5>
-        </div>
-    `;
+    div.innerHTML = `<div><img class="avatar-chat-profile" src="${data.avatar}" alt="${data.sendto}"></div>
+        <div class="chat-profile-content"> <h5>${data.sendto}</h5></div>`;
     return div;
 }
 
@@ -265,12 +326,14 @@ function createTypingDiv(){
 }
 
 export {
+    stratChatBox,
+    removeScroll,
+    loadMoreContent,
+    showAllMessages,
     startTyping,
     stopTyping,
     chatHeader,
     receiveMessage,
     respondMessage,
     updatestatuUsers,
-    createEndOfConv,
-    createMessageElement,
 }
