@@ -227,11 +227,13 @@ function stratChatBox(){
     }
 
     messageSendButton.addEventListener('click', () => {
-        if (messageInput.trim() != "") {
-            if (emoji) emoji.classList.add("d-none");
-            sendToBackend(currentSendto, "message", messageInput);
-        }
+        const message = messageInput.value;
         messageInput.value = "";
+        if (message.trim() != "") {
+            if (emoji)
+                emoji.classList.add("d-none");
+            sendToBackend(currentSendto, "message", message);
+        }
     });
 }
 
@@ -246,13 +248,14 @@ function chatHeader(data) {
     const headerImageContent =  document.querySelector('.main-chat .chat-user-content');
     headerImageContent.innerHTML = ` <h5>${data.sendto}</h5> <p>${data.status}</p>`;
 
-    header.querySelector(".expand-left").addEventListener('click', () => {
+    document.querySelector(".main-chat .expand-left").addEventListener('click', () => {
         CloseMainChat();
     })
     addEventListenerChatObtions(data);
 }
 
 function createMessageElement(message) {
+
     const div = document.createElement("div");
     if (message.username === user) div.classList.add("message", "sent");
     else div.classList.add("message", "received");

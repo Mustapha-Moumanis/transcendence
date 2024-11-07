@@ -8,7 +8,7 @@ import { countries } from "../Settings/script.js";
 var profileId;
 
 export function profileBtnState(btn, attribute, btnState, data){
-    console.log(profileId,data.id)
+    console.log(profileId, data.id)
 
     if (profileId == data.id && document.querySelector(".main-profile")) {
         if (btn === "follow"){

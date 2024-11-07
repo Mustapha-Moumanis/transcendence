@@ -697,7 +697,10 @@ function postData(userData){
                     return response.json().then(errorData => {
                         if (errorData.first_name) displayFieldError(firstName.parentElement, errorData.first_name[0]);
                         if (errorData.last_name) displayFieldError(lastName.parentElement, errorData.last_name[0]);
-                        if (errorData.avatar) throw new Error(errorData.avatar[0]);
+                        if (errorData.avatar) {
+							dataImage = null;
+							throw new Error(errorData.avatar[0]);
+						}
                         throw new Error(errorData.detail);
                     });
                 }
@@ -706,7 +709,7 @@ function postData(userData){
             .then(data => {
                 showAlert('success', 'Data saved successful!');
                 setDataSetting(data);
-                // localStorage.setItem('authTokens', JSON.stringify(data));
+                // localStorage.setItem('userData', JSON.stringify(data));
                 userData = data;
             })
             .catch(error => {
@@ -719,8 +722,7 @@ function postData(userData){
 }
 
 export function settingsActions() {
-    const value = JSON.parse(localStorage.getItem('authTokens'));
-    var userData = value.user;
+    var userData = JSON.parse(localStorage.getItem('userData'));
     setDataSetting(userData);
     postData(userData);
     changPassword();

@@ -17,8 +17,8 @@ from .consumersUtils import (
     ConfirmDeletReq,
 )
 
-async def checkToken(self):
-    token = self.scope['cookies'].get('my-token')
+async def checkToken(self, token):
+
     if not token:
         raise DenyConnection("No token provided")
     
@@ -35,7 +35,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         try:
             # check token from cookies
-            username = await checkToken(self)
+            token = self.scope['cookies'].get('my-token')
+            username = await checkToken(self, token)
           
             self.roomUser = username
             await self.channel_layer.group_add(self.roomUser, self.channel_name)
@@ -49,12 +50,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
             for room in rooms:
                 await self.channel_layer.group_send(room, {
                     'data': status,
-                    'user': username,
+                    'username': username,
                     'type': 'update_userlist_status',
                 })
                 await self.channel_layer.group_send(room, {
                     'data': home,
-                    'user': username,
+                    'username': username,
                     'type': 'updateHomeUsers',
                 })
 
@@ -64,7 +65,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self , close_code):
         try :
-            username = await checkToken(self)
+            username = str(self.scope['url_route']['kwargs']['channel_name'])
             # Send to Friends :
             rooms = await getFriendsRooms(username)
             status = await updateStatus(username, "Offline")
@@ -72,12 +73,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
             for room in rooms:
                 await self.channel_layer.group_send(room,{
                     'data' : status,
-                    'user': username,
+                    'username': username,
                     'type': 'update_userlist_status',
                 })
                 await self.channel_layer.group_send(room,{
                     'data' : home,
-                    'user': username,
+                    'username': username,
                     'type': 'updateHomeUsers',
                 })
             
@@ -91,13 +92,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         try :
             data_json = json.loads(text_data)
-            username = await checkToken(self)
+            username = await checkToken(self, data_json["token"])
 
             if data_json["type"] == "addFrindship" or data_json["type"] == "blockUser":
                 room = data_json["sendto"]
                 eventType, notificationlist = await addBlockUser(username, room, data_json["type"])
                 await self.channel_layer.group_send(room,{
-                    'user': username,
+                    'username': username,
                     'data': notificationlist,
                     'type': eventType,
                 })
@@ -105,7 +106,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 room = data_json["sendto"]
                 notificationlist = await ConfirmDeletReq(username, room, data_json["type"])
                 await self.channel_layer.group_send(room,{
-                    'user': username,
+                    'username': username,
                     'list': notificationlist,
                     'type': data_json["type"],
                 })
@@ -120,14 +121,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     time = strftime("%Y-%m-%d %H:%M", gmtime())
                     await self.channel_layer.group_send(room,{
                         'data' : data_json,
-                        'user': username,
+                        'username': username,
                         'time' : time,
                         'message' : message,
                         'type': 'private_message',
                     })
                     await self.send(text_data=json.dumps({
                         "type" : "private_message_sendIt",
-                        'user': username,
+                        'username': username,
                         "message" : message,
                         "username" : username,
                         'time' : time,
@@ -137,7 +138,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     room = data_json["sendto"]
                     await self.channel_layer.group_send(room,{
                         'data' : data_json,
-                        'user': username,
+                        'username': username,
                         'type': 'typingEvent',
                     })
                 else :
@@ -155,7 +156,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         data = event["data"]
         send = {
             "message" : event["message"],
-            "username" : event["user"],
+            "username" : event["username"],
             "sendto" : data["sendto"],
             'time' : event['time'],
             "type" : "private_message_received",
@@ -165,7 +166,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def update_userlist_status(self , event):
         data = event["data"]
         send = {
-            "username" : event["user"],
+            "username" : event["username"],
             "status" : data["status"],
             "type" : "update_userlist_status",
         }
@@ -174,7 +175,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def updateHomeUsers(self , event):
         data = event["data"]
         send = {
-            "username" : event["user"],
+            "username" : event["username"],
             "status" : data["status"],
             "listuser" : data,
             "type" : "updateHomeUsers",
@@ -184,14 +185,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def typingEvent(self, event):
         data = event["data"]
         send = {
-            "username" : event["user"],
+            "username" : event["username"],
             "type" :data["type"],
         }
         await self.send(text_data=json.dumps(send))
 
     async def Blocked(self, event):
         await self.send(text_data=json.dumps({
-            "username" : event["user"],
+            "username" : event["username"],
             "type" : event["type"],
         }))
 
@@ -209,6 +210,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def reqDelete(self, event):
         await self.send(text_data=json.dumps({
-            "username" : event["user"],
+            "username" : event["username"],
             "type" : event["type"],
         }))
