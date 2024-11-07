@@ -1,6 +1,7 @@
 import { logout, showAlert, attachRouterListeners, checkToken } from './auth.js'
 import { themeAction } from './theme.js'
 import { startSocket } from '../../pages/Chat/js/socket.js'
+import { startSearchAndNotif } from '../../pages/Chat/js/homeSocket.js';
 
 export async function loadHTML(url) {
 	try {
@@ -189,8 +190,8 @@ export async function HomeEffects() {
 			attachRouterListeners();
 			updateSidebar();
 			checkToken();
-			console.log("hello from Socket");
 			startSocket();
+			startSearchAndNotif();
 		}, 0);
 
 		const themeButton = document.querySelector('.themeButton');

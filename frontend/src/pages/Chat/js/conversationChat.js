@@ -255,8 +255,8 @@ function chatHeader(data) {
 }
 
 function createMessageElement(message) {
+
     const div = document.createElement("div");
-    console.log(message.username, user);
     if (message.username === user) div.classList.add("message", "sent");
     else div.classList.add("message", "received");
     div.setAttribute("dir", "auto");

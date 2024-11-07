@@ -156,7 +156,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         data = event["data"]
         send = {
             "message" : event["message"],
-            "username" : event["user"],
+            "username" : event["username"],
             "sendto" : data["sendto"],
             'time' : event['time'],
             "type" : "private_message_received",
@@ -166,7 +166,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def update_userlist_status(self , event):
         data = event["data"]
         send = {
-            "username" : event["user"],
+            "username" : event["username"],
             "status" : data["status"],
             "type" : "update_userlist_status",
         }
@@ -175,7 +175,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def updateHomeUsers(self , event):
         data = event["data"]
         send = {
-            "username" : event["user"],
+            "username" : event["username"],
             "status" : data["status"],
             "listuser" : data,
             "type" : "updateHomeUsers",
@@ -185,14 +185,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def typingEvent(self, event):
         data = event["data"]
         send = {
-            "username" : event["user"],
+            "username" : event["username"],
             "type" :data["type"],
         }
         await self.send(text_data=json.dumps(send))
 
     async def Blocked(self, event):
         await self.send(text_data=json.dumps({
-            "username" : event["user"],
+            "username" : event["username"],
             "type" : event["type"],
         }))
 
@@ -210,6 +210,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def reqDelete(self, event):
         await self.send(text_data=json.dumps({
-            "username" : event["user"],
+            "username" : event["username"],
             "type" : event["type"],
         }))

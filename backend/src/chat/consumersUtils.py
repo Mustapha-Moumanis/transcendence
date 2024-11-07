@@ -90,7 +90,7 @@ def get_data(user, sendto):
     "chat_header": {"id" : sendto.id, "sendto" : sendto.username,"status" : sendto.status,"avatar" : str(sendto.avatar)}, 
     "show_messages": {"id" : sendto.id, "sendto" : sendto.username, "avatar" : str(sendto.avatar), 'messages' : messages_data, 'scrollDisplay':scrollDisplay}}
 
-def getHomeData(user, Friends):
+def getDataHome(user, Friends):
 
     user_room = ChatRoom.objects.get(name="room_{}".format(user.username))
     
@@ -123,7 +123,7 @@ def getHomeData(user, Friends):
             "avatar":  str(userprofile.user.avatar),
         })
     nbnotif = len(chatNotification) + len(ReqNotification)
-    return ({"type": "getHomedata", 
+    return ({"type": "getDataHome",
             "homeNotification": {"notification" : nbnotif,
                                 "chatNotification" : chatNotification, 
                                 "ReqNotification": ReqNotification},
@@ -163,7 +163,7 @@ def parseEvents(data, username):
     Friends = getlistFriends(user)
 
     if data ["type"] == "showUsersFriend": return showUsers(user, Friends)
-    elif data ["type"] == "getDataHome": return getHomeData(user, Friends)
+    elif data["type"] == "getDataHome": return getDataHome(user, Friends)
     elif data["type"] == "searchHome": return get_Search_Home(user, data)
     else:
         room = User.objects.get(username=data["sendto"])
@@ -172,7 +172,7 @@ def parseEvents(data, username):
         elif data["type"] == "showConversation":
             update_seen_message(user, room)
             return get_data(user, room)
-        else: return loadMoreContent(user, room, int(data ["message"]))
+        else: return loadMoreContent(user, room, int(data["message"]))
 
 # ------------- Check Username if exists -------------
 @database_sync_to_async

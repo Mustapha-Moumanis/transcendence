@@ -238,9 +238,6 @@ function creatNotifMessage(data) {
 }
 
 function homeNotification(data) {
-    // Navbar:
-    let welcome = document.querySelector(".welcome h5");
-    welcome.innerHTML = `Welcome ${user}`;
 
     const notification = document.querySelector(".notification span");
     const listnotification = document.querySelector(".show-notification");
@@ -406,6 +403,7 @@ function reqConfirm(data) {
         let emptylist = friendList.querySelector(".chat-friend-empty");
         if (emptylist) emptylist.remove();
         friendList.appendChild(creatFriendCard(data));
+        sendToBackend("", "showUsersFriend", "");
     }
 }
 
