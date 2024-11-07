@@ -127,8 +127,7 @@ function getGameHistory(avatar){
 }
 
 function homeData(){
-	const value = JSON.parse(localStorage.getItem('authTokens'));
-    const userData = value.user;
+	const userData = JSON.parse(localStorage.getItem('userData'));
 	const country = countries.find(c => c.value === userData.country_select);
 
 	// card

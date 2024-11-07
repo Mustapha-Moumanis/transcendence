@@ -6,7 +6,9 @@ import {friendBlockedYou, updateHomeNotification, homeNotification,
     reqDelete, reqConfirm} from "./homeSocket.js"
 
 import {showFriends, showUsers, handleChatResise} from "./listchat.js"
-import {sendToBackend} from "../script.js"
+import {lastCmd, sendToBackend} from "../script.js"
+import { showAlert, verifyRefreshToken } from "../../../utils/js/auth.js";
+import { getCookie, logoutFetch } from "../../../utils/js/utils.js";
 
 // ------------------ Varaibles Of Chat ------------------
 export var chatSocket;
@@ -25,32 +27,84 @@ export const setCurrentSendTo = (newSendTo) => {
 };
 
 
-function startSocket(){
+function setupWebSocket() {
     // ------------------ Get User ------------------
-    const value = localStorage.getItem('authTokens');
-    const authTokens = JSON.parse(value);
-    user = authTokens.user.username;
-
-    // ------------------ Socket Connected ------------------
+    const userData = JSON.parse(localStorage.getItem('userData'));
+    user = userData.username;
+    console.log(user);
+    console.log(getCookie('my-token'));
     const protocol = 'ws://';
     const wsUrl = `${protocol}${window.location.host}/ws/${user}/`;
-    chatSocket = new WebSocket(`${wsUrl}`);
-    // var channel_name = "/ws/" + user + "/";
-    // chatSocket = new WebSocket(`${channel_name}`);
+    return new WebSocket(wsUrl);
+}
+
+function restartWebsocket(){
+    if (chatSocket)
+        chatSocket.close();
+    startSocket();
+    // waitForSocketConnection(chatSocket, ()=> {
+
+    // })
+}
+
+function waitForSocketConnection(socket, callback){
+    setTimeout(function () {
+        if (socket.readyState === 1) {
+            if (callback)
+                callback();
+        } else {
+            console.log("wait for connection...")
+            waitForSocketConnection(socket, callback);
+        } }, 5);
+}
+
+function startSocket(){
+    chatSocket = setupWebSocket();
+    waitForSocketConnection(chatSocket, getData);
 
     chatSocket.onopen = () => {
         console.log("The connection was setup successfully!");
-        startSearchAndNotif();
+    }
+
+    chatSocket.onclose = (e) => {
+        console.log("The Websocket was Closed!");
+    }
+
+    function getData(){
         sendToBackend("", "getDataHome", "");
     }
 
-    chatSocket.onclose = (e) => {}
+    chatSocket.onmessage = handleMessageFromSocket;
+}
 
+function handleMessageFromSocket(event){
     chatSocket.onmessage = (event) => {
         const data = JSON.parse(event.data);
         if (data === null) return;
-    
-        if (data.type === "Error") console.error(data.error);
+        console.log("=======>", data.type);
+
+        if (data.type !== "Error"){
+            console.log("=======>",lastCmd);
+            
+            lastCmd.splice(0,1);
+
+        }
+        console.log(lastCmd);
+
+        if (data.type === "Error"){
+            chatSocket.close();
+            console.warn(data.error);
+            verifyRefreshToken()
+                .then(() => {
+                    restartWebsocket();
+                })
+                .catch (error => {
+                    showAlert('error', error);
+                    logoutFetch()
+                    .catch(() => {});
+                })
+        }
+            
         else if (data.type === "Blocked") friendBlockedYou(data);
         else if (data.type === "reqConfirm") reqConfirm(data.listFriends);
         else if (data.type === "reqDelete") reqDelete(data);
@@ -58,10 +112,7 @@ function startSocket(){
             onlineFriendsHome(data["onlineFriendsHome"]);
             homeNotification(data["homeNotification"]);
         }
-        else if (data.type === "searchHome") {
-            console.log(data);
-            searchHome(data);
-        }
+        else if (data.type === "searchHome")searchHome(data);
         else if (data.type === "updateHomeUsers") updateHomeUsers(data);
         else if (data.type === 'CreatNotifChat' || data.type === "friendRequest") 
             updateHomeNotification(data);
@@ -87,7 +138,6 @@ function startSocket(){
             }
         }
     }
-
 }
 
 function startChat(){

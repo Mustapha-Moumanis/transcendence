@@ -1,13 +1,14 @@
 import { handleOauth2 } from '../../utils/js/Oauth.js';
 import { displayFieldError, showAlert, authActions, login} from '../../utils/js/auth.js'
-import { deleteCookie } from '../../utils/js/utils.js';
+import { debounce, deleteCookie } from '../../utils/js/utils.js';
 import TwoFactorAuth from '../TwoFactorAuth/TwoFactorAuth.js'
 // import { startSocket, sendToBackend, startChat } from '../chat/js/socket.js'
 
 function handleLoginFormSubmission() {
     document.getElementById('form_login').addEventListener('submit', function(e) {
         e.preventDefault();
-
+        const btn = document.getElementById("send_message");
+        btn.setAttribute('disabled', "");
         const name = document.getElementById('name');
         const password = document.getElementById('password');
 
@@ -46,11 +47,16 @@ function handleLoginFormSubmission() {
                 else {
                     showAlert('success', 'Login successful!');
                     login(data);
-                    window.location.hash = '#home';
                 }
             })
-            .catch(error => showAlert('error', error));
+            .catch(error => {
+                showAlert('error', error);
+            
+            });
         }
+        setTimeout(() => {
+            btn.removeAttribute('disabled');
+        }, 1000);
     });
 };
 

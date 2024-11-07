@@ -109,8 +109,6 @@ function handleConfirmTwoFactorFormSubmission(userData, inputs) {
 		.then(data => {
 			showAlert('success', 'Login successful!');
 			login(userData);
-			// startSocket();
-			setTimeout(() => { window.location.hash = '#home' }, 1000);
 		})
 		.catch(error => {
 			showAlert('error', error.message);

@@ -23,7 +23,6 @@ function ouathAction(url, authCode) {
         else {
             showAlert('success', 'Login successful!'); 
             login(data);
-            window.location.hash = '#home';
         }
     })
     .catch(error => showAlert('error', error))

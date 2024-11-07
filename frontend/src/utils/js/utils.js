@@ -187,9 +187,10 @@ export async function HomeEffects() {
 			themeAction();
 			handleLogoutBtn();
 			attachRouterListeners();
-			startSocket();
 			updateSidebar();
 			checkToken();
+			console.log("hello from Socket");
+			startSocket();
 		}, 0);
 
 		const themeButton = document.querySelector('.themeButton');
