@@ -7,10 +7,10 @@ from .permissions import ProfilePermissions
 class ProfilesViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ProfilesSerializer
     permission_classes = [IsAuthenticated, ProfilePermissions]
-    lookup_field = 'id'
+    lookup_field = 'username'
 
     def get_queryset(self):
-        return User.objects.exclude(id=self.request.user.id)
+        return User.objects.exclude(username=self.request.user.username)
     
     def destroy(self, request, *args, **kwargs):
         pass
