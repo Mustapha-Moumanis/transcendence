@@ -3,7 +3,7 @@ import { loadHTML, loadCSS } from '../../utils/js/utils.js';
 import { showLoading, hideLoading, HomeEffects } from '../../utils/js/utils.js';
 import { profileActions } from './script.js';
 
-async function Profile(id) {
+async function Profiles(id) {
   const html = await loadHTML('./pages/Profile/profile.html');
   await HomeEffects();
 
@@ -15,4 +15,4 @@ async function Profile(id) {
   }, 300);
 }
 
-export default Profile;
+export default Profiles;
