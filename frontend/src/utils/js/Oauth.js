@@ -1,10 +1,13 @@
+import TwoFactorAuth from "../../pages/TwoFactorAuth/TwoFactorAuth.js";
 import { login, showAlert } from "./auth.js";
+import { deleteCookie } from "./utils.js";
 
 function ouathAction(url, authCode) {
     var oauthPromise = new Promise(function(resolve, reject){
         fetch(url, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            credentials: "omit",
+            headers: { 'Content-Type': 'application/json', },
             body: JSON.stringify({ 'code' : authCode })
         })
         .then(response => {

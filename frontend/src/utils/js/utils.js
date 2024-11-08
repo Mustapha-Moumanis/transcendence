@@ -166,6 +166,7 @@ export async function HomeEffects() {
 	const root = document.getElementById('root');
 	if (root.querySelector('.nav-bar') == null) {
 		showLoading("body");
+		checkToken();
 		const nav = await loadHTML('../components/nav/navBar.html');
 		const sidebar = await loadHTML('../components/sidebar/sidebar.html');
 
@@ -189,7 +190,6 @@ export async function HomeEffects() {
 			handleLogoutBtn();
 			attachRouterListeners();
 			updateSidebar();
-			checkToken();
 			startSocket();
 			startSearchAndNotif();
 		}, 0);

@@ -47,15 +47,17 @@ function Router() {
       window.location.hash = '#login';
       return;
     }
-    let profileName = window.location.hash.match(/#profiles\/+([a-zA-Z0-9_]+)/);
-    var username = null;
-    if (path === "profiles" && profileName) username = profileName[1];
-    else path = window.location.hash.slice(1);
+    else {
+      let profileName = window.location.hash.match(/#profiles\/+([a-zA-Z0-9_]+)/);
+      var username = null;
+      if (path === "profiles" && profileName) username = profileName[1];
+      else path = window.location.hash.slice(1);
+  
+      const component = routes[path] || NotFound;
+      await component(username);
 
-    const component = routes[path] || NotFound;
-    await component(username);
-
-    hideLoading();
+      hideLoading();
+    }
   };
 
   window.addEventListener('hashchange', handleRouteChange);
