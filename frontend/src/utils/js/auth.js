@@ -140,7 +140,7 @@ window.addEventListener('beforeunload', () => {
 });
 
 function login(data) {
-    localStorage.setItem('userData', JSON.stringify(data));
+    localStorage.setItem('userData', JSON.stringify(data.user));
     setCookie('my-token', data.access, 30);
     setCookie('my-refresh-token', data.refresh, 30);
     setTimeout(() => { window.location.hash = '#home' }, 500);

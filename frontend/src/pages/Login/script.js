@@ -26,6 +26,7 @@ function handleLoginFormSubmission() {
             var loginPromise = new Promise(function(resolve, reject){
                 fetch('api/login/', {
                     method: 'POST',
+                    credentials: "omit",
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
                 })
