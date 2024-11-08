@@ -93,7 +93,6 @@ export function matchHistory(game_history, avatar){
 	`;
 	const matchCards = history.querySelector(".match-cards");
 	game_history.forEach(card => {
-		console.log(card);
 		matchCards.appendChild(creatMatchCard(card, avatar));
 	});
 }

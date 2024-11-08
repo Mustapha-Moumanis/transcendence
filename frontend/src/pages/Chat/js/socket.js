@@ -1,5 +1,5 @@
 import {startTyping, stopTyping, chatHeader,receiveMessage, respondMessage, 
-    updatestatuUsers,loadMoreContent, showAllMessages, stratChatBox } from "./conversationChat.js"
+    updatestatuUsers,loadMoreContent, showAllMessages, startChatBox } from "./conversationChat.js"
 
 import {friendBlockedYou, updateHomeNotification, homeNotification,
     searchHome, onlineFriendsHome, updateHomeUsers, startSearchAndNotif,
@@ -35,7 +35,6 @@ function setupWebSocket() {
     welcome.innerHTML = `Welcome ${user}`;
 
     console.log(user);
-    console.log(getCookie('my-token'));
     const protocol = 'ws://';
     const wsUrl = `${protocol}${window.location.host}/ws/${user}/`;
     return new WebSocket(wsUrl);
@@ -127,7 +126,6 @@ function handleMessageFromSocket(event){
                 showFriends(data["showFriends"]);
             }
             else if (data.type === "showConversation"){
-                stratChatBox();
                 chatHeader(data["chat_header"]);
                 showAllMessages(data["show_messages"]);
             }
@@ -154,6 +152,7 @@ function startChat(){
         if (document.querySelector("#chat-content"))
             handleChatResise();
     });
+    startChatBox();
 }
 
 export {
