@@ -6,7 +6,7 @@ import ResetPassword from './pages/ResetPassword/ResetPassword.js';
 import Settings from './pages/Settings/settings.js';
 import Chat from './pages/Chat/chat.js';
 import Game from './pages/Game/game.js';
-import Profile from './pages/Profile/profile.js';
+import Profiles from './pages/Profile/profile.js';
 import { checkAuthentication, isAuthenticated } from './utils/js/auth.js';
 import { showLoading, hideLoading, logoutFetch} from './utils/js/utils.js';
 
@@ -23,13 +23,13 @@ const routes = {
   'settings' : Settings,
   'chat' : Chat,
   'game' : Game,
-  'profile' : Profile,
+  'profiles' : Profiles,
 };
 
 function Router() {
   const handleRouteChange = async () => {
-    console.log(window.location.hash.slice(1).split('?')[0]);
-    let path = window.location.hash.slice(1).split('?')[0] || (() => {
+    console.log(window.location.hash.slice(1).split('/')[0]);
+    let path = window.location.hash.slice(1).split('/')[0] || (() => {
       window.location.hash = '#home';
       return 'home';
     })();
@@ -47,13 +47,17 @@ function Router() {
       window.location.hash = '#login';
       return;
     }
+    else {
+      let profileName = window.location.hash.match(/#profiles\/+([a-zA-Z0-9_]+)/);
+      var username = null;
+      if (path === "profiles" && profileName) username = profileName[1];
+      else path = window.location.hash.slice(1);
+  
+      const component = routes[path] || NotFound;
+      await component(username);
 
-    const queryParams = new URLSearchParams(window.location.hash.split('?')[1]);
-    const id = queryParams.get('id');
-    const component = routes[path] || NotFound;
-    await component(id);
-
-    hideLoading();
+      hideLoading();
+    }
   };
 
   window.addEventListener('hashchange', handleRouteChange);

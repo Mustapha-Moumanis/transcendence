@@ -1,6 +1,7 @@
 import { logout, showAlert, attachRouterListeners, checkToken } from './auth.js'
 import { themeAction } from './theme.js'
 import { startSocket } from '../../pages/Chat/js/socket.js'
+import { startSearchAndNotif } from '../../pages/Chat/js/homeSocket.js';
 
 export async function loadHTML(url) {
 	try {
@@ -165,6 +166,7 @@ export async function HomeEffects() {
 	const root = document.getElementById('root');
 	if (root.querySelector('.nav-bar') == null) {
 		showLoading("body");
+		checkToken();
 		const nav = await loadHTML('../components/nav/navBar.html');
 		const sidebar = await loadHTML('../components/sidebar/sidebar.html');
 
@@ -187,9 +189,9 @@ export async function HomeEffects() {
 			themeAction();
 			handleLogoutBtn();
 			attachRouterListeners();
-			startSocket();
 			updateSidebar();
-			checkToken();
+			startSocket();
+			startSearchAndNotif();
 		}, 0);
 
 		const themeButton = document.querySelector('.themeButton');

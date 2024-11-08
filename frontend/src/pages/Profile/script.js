@@ -8,9 +8,8 @@ import { countries } from "../Settings/script.js";
 var profileId;
 
 export function profileBtnState(btn, attribute, btnState, data){
-    console.log(profileId,data.id)
 
-    if (profileId == data.id && document.querySelector(".main-profile")) {
+    if (profileId == data.username && document.querySelector(".main-profile")) {
         if (btn === "follow"){
             const btnFriend = document.querySelector(".profile-btn .btn-follow");
             btnFriend.setAttribute("id", attribute);
@@ -49,7 +48,7 @@ function getProfileData(id){
         return response.json();
     })
     .then(data => {
-        setProfileData(data)
+        setProfileData(data);
     })
     .catch((error) => {
         showAlert('error', error);
@@ -87,7 +86,6 @@ function handlleBtn(data){
         if (request === "message")
             SendMessage(data.username);
         else if (request === "request_sended"){
-            console.log(request);
             btnFriend.setAttribute("id", "add_friend");
             btnFriend.innerHTML = "Add Friend";
             sendToBackend(data.username, "reqDelete", "");

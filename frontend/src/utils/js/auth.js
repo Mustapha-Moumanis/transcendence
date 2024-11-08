@@ -4,7 +4,7 @@ import {setCookie, getCookie, deleteCookie, logoutFetch } from './utils.js';
 import { debounce } from './utils.js';
 
 function isAuthenticated() {
-    const userInfo = localStorage.getItem('authTokens');
+    const userInfo = localStorage.getItem('userData');
     const token = getCookie('my-token');
     const refreshToken = getCookie('my-refresh-token');
 
@@ -139,16 +139,16 @@ window.addEventListener('beforeunload', () => {
     clearTokenCheckInterval();
 });
 
-function login(authTokens) {
-    localStorage.setItem('authTokens', JSON.stringify(authTokens));
-    setCookie('my-token', authTokens.access, 30);
-    setCookie('my-refresh-token', authTokens.refresh, 30);
+function login(data) {
+    localStorage.setItem('userData', JSON.stringify(data.user));
+    setCookie('my-token', data.access, 30);
+    setCookie('my-refresh-token', data.refresh, 30);
+    setTimeout(() => { window.location.hash = '#home' }, 500);
 }
 
 function logout() {
     if (chatSocket)
         chatSocket.close();
-    localStorage.removeItem('authTokens');
     localStorage.removeItem('userData');
     deleteCookie('my-token');
     deleteCookie('my-refresh-token');

@@ -136,7 +136,7 @@ function searchHome(data) {
             searchInput.value = "";
             searchDiv.querySelector(".search-content").innerHTML = "";
             searchOverlay.classList.add("d-none");
-            window.location.hash = `#profile?id=${user.id}`;
+            window.location.hash = `#profiles/${user.username}`;
         });
     });
 }
@@ -238,9 +238,6 @@ function creatNotifMessage(data) {
 }
 
 function homeNotification(data) {
-    // Navbar:
-    let welcome = document.querySelector(".welcome h5");
-    welcome.innerHTML = `Welcome ${user}`;
 
     const notification = document.querySelector(".notification span");
     const listnotification = document.querySelector(".show-notification");
@@ -401,12 +398,8 @@ function reqConfirm(data) {
     profileBtnState("follow", "message", "Send Message", data);
     removeNotif(data.username,".notification-user-card");
 
-    if (document.querySelector("#chat-content")) {
-        const friendList = document.querySelector(".friend-chat");
-        let emptylist = friendList.querySelector(".chat-friend-empty");
-        if (emptylist) emptylist.remove();
-        friendList.appendChild(creatFriendCard(data));
-    }
+    if (document.querySelector("#chat-content"))
+        sendToBackend("", "showUsersFriend", "");
 }
 
 function reqDelete(data) {

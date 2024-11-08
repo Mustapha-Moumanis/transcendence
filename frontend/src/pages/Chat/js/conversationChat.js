@@ -167,14 +167,13 @@ function CloseMainChat() {
     mainChat.style.zIndex = "0";
 }
 
-function addEventListenerChatObtions(data) {
+function addEventListenerChatObtions() {
     const namelist = document.querySelector(".chat-options-list");
+    
     document.querySelector("#id_chat-options").addEventListener('click', (event) => {
         event.stopPropagation();
-        if (namelist.classList.contains("d-none"))
-            namelist.classList.remove("d-none");
-        else
-            namelist.classList.add("d-none");
+        if (namelist.classList.contains("d-none")) namelist.classList.remove("d-none");
+        else namelist.classList.add("d-none");
     });
 
     namelist.addEventListener('click', (event) => {
@@ -189,17 +188,18 @@ function addEventListenerChatObtions(data) {
 
     document.querySelector("#chat-show-profile").addEventListener('click', () => {
         namelist.classList.add("d-none");
-        window.location.hash = `#profile?id=${data.id}`;
+        window.location.hash = `#profiles/${currentSendto}`;
     });
     document.querySelector("#chat-block-friend").addEventListener('click', () => {
         namelist.classList.add("d-none");
-        blockClick(data.sendto);
+        blockClick(currentSendto);
     });
 }
 
-function stratChatBox(){
+function startChatBox(){
 
     setEmojies();
+    addEventListenerChatObtions();
     const emoji = document.querySelector(".list-emoji");
     const messageInput = document.querySelector("#id_message_send_input");
     const messageSendButton = document.querySelector("#id_message_send_button");
@@ -227,11 +227,13 @@ function stratChatBox(){
     }
 
     messageSendButton.addEventListener('click', () => {
-        if (messageInput.trim() != "") {
-            if (emoji) emoji.classList.add("d-none");
-            sendToBackend(currentSendto, "message", messageInput);
-        }
+        const message = messageInput.value;
         messageInput.value = "";
+        if (message.trim() != "") {
+            if (emoji)
+                emoji.classList.add("d-none");
+            sendToBackend(currentSendto, "message", message);
+        }
     });
 }
 
@@ -244,15 +246,15 @@ function chatHeader(data) {
     headerImage.innerHTML = `<img class="avatar" src="${data.avatar}" alt="${data.sendto}">`;
 
     const headerImageContent =  document.querySelector('.main-chat .chat-user-content');
-    headerImageContent.innerHTML = ` <h5>${data.sendto}</h5> <p>${data.status}</p>`;
+    headerImageContent.innerHTML = `<h5>${data.sendto}</h5> <p>${data.status}</p>`;
 
-    header.querySelector(".expand-left").addEventListener('click', () => {
+    document.querySelector(".main-chat .expand-left").addEventListener('click', () => {
         CloseMainChat();
     })
-    addEventListenerChatObtions(data);
 }
 
 function createMessageElement(message) {
+
     const div = document.createElement("div");
     if (message.username === user) div.classList.add("message", "sent");
     else div.classList.add("message", "received");
@@ -326,7 +328,7 @@ function createTypingDiv(){
 }
 
 export {
-    stratChatBox,
+    startChatBox,
     removeScroll,
     loadMoreContent,
     showAllMessages,

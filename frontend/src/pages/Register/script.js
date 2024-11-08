@@ -21,6 +21,7 @@ function handleRegisterFormSubmission() {
         var registerPromise = new Promise(function(resolve, reject){
             fetch('api/register/', {
                 method: 'POST',
+                credentials: "omit",
                 headers: {
                     'Content-Type': 'application/json'
                 },
