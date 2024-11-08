@@ -12,8 +12,7 @@ export function sendToBackend(sendto, type, message){
 			message: message,
 		});
 	}
-	
-	console.log(type);
+
 	chatSocket.send(JSON.stringify({
 		token: myToken,
 		type: type,
