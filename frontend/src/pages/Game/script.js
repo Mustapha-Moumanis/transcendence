@@ -1,5 +1,10 @@
 import * as THREE from './lib/three.js-master/build/three.module.js'
 import { OrbitControls } from './lib/three.js-master/examples/jsm/controls/OrbitControls.js'
+// import { EffectComposer } from './lib/three.js-master/examples/jsm/postprocessing/EffectComposer.js';
+// import { RenderPass } from './lib/three.js-master/examples/jsm/postprocessing/RenderPass.js';
+// import { ShaderPass } from './lib/three.js-master/examples/jsm/postprocessing/ShaderPass.js';
+// import { HorizontalBlurShader } from './lib/three.js-master/examples/jsm/shaders/HorizontalBlurShader.js';
+// import { VerticalBlurShader } from './lib/three.js-master/examples/jsm/shaders/VerticalBlurShader.js';
 // import * as dat from 'lil-gui'
 import Ball from './src/Ball.js'
 import Paddle from './src/Paddle.js'
@@ -11,11 +16,13 @@ import lights from './src/Lighting.js'
 
 
 let gameRunning = false;
+let composer, hBlurPass, vBlurPass;
 
 
 export function gameActions(data) {
 
     console.log(data);
+
     gameRunning = true;
     let countDownStarted = false;
     let gamePaused = false;
@@ -103,27 +110,11 @@ rightBound.position.x *= -1;
 scene.add(leftBound, rightBound)
 
 /**
- * Meshes
- */
-
-const playerPaddle = new Paddle(scene, new THREE.Vector3(0, 0, 15), boundaries);
-const player2Paddle = new Paddle(scene, new THREE.Vector3(0, 0, -15), boundaries);
-const ball = new Ball(scene, boundaries, [playerPaddle, player2Paddle]);
-
-ball.addEventListener('ongoal', (e) => {
-    // console.log('goal', e.message)
-
-    score[e.message] += 1;
-    updateScore();
-    // console.log(score);
-});
-
-/**
  * render sizes
  */
 const sizes = {
-	width: window.innerWidth,
-	height: window.innerHeight,
+    width: window.innerWidth,
+    height: window.innerHeight,
 }
 /**
  * Camera
@@ -143,6 +134,75 @@ camera.lookAt(new THREE.Vector3(0, 2.5, 0))
  * renderer
  */
 const renderer = new THREE.WebGLRenderer()
+// composer = new EffectComposer(renderer);
+// const renderPass = new RenderPass(scene, camera);
+// composer.addPass(renderPass);
+
+// hBlurPass = new ShaderPass(HorizontalBlurShader);
+// hBlurPass.uniforms['h'].value = 1 / window.innerWidth;
+// composer.addPass(hBlurPass);
+
+// vBlurPass = new ShaderPass(VerticalBlurShader);
+// vBlurPass.uniforms['v'].value = 1 / window.innerHeight;
+// composer.addPass(vBlurPass);
+
+/**
+ * Meshes
+ */
+
+const playerPaddle = new Paddle(scene, new THREE.Vector3(0, 0, 15), boundaries);
+const player2Paddle = new Paddle(scene, new THREE.Vector3(0, 0, -15), boundaries);
+const ball = new Ball(scene, boundaries, [playerPaddle, player2Paddle], data);
+
+ball.addEventListener('ongoal', (e) => {
+    console.log('goal', e.message)
+
+    if (data.player1 === e.message) {
+        score['player1'] += 1;
+    }
+    else if (data.player2 === e.message) {
+        score['player2'] += 1;
+    }
+    // console.log(e.message);
+    if (score['player1'] >= 3 || score['player2'] >= 3) {
+        // hBlurPass.uniforms['h'].value = 50 / window.innerWidth; // Adjust the blur intensity as needed
+        // vBlurPass.uniforms['v'].value = 5 / window.innerHeight; // Adjust the blur intensity as needed
+        // composer.render();
+
+        document.querySelector('canvas').classList.add('blur');
+        let gameFinalResult = document.createElement('div');
+        gameFinalResult.classList.add('gameFinalResult');  
+        gameFinalResult.innerHTML = `<h1>Game Over</h1>`
+        document.querySelector('#root').appendChild(gameFinalResult);
+
+        gamePaused = true;
+        let postData = {
+            "nickname": data.player1,
+            "opponent": data.player2,
+            "user_score": score['player1'],
+            "opponent_score": score['player2']
+        }
+
+        fetch('api/game-history/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+    updateScore();
+    // console.log(score);
+});
+
+
 // document.body.appendChild(renderer.domElement)
 document.querySelector('#root').innerHTML = `<div class="gameInterface">
 			                                 <div id="score-player1" class="score">0</div>
@@ -222,6 +282,7 @@ scene.add(ambientLight, directionalLight)
 /**
  * Score
  */
+
 const score = {
     player2: 0,
     player1: 0,
