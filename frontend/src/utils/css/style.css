@@ -241,7 +241,7 @@ a.btn-sc svg {
     width: 100%;
 }
 
-.btn-main {
+.btn-main, .btn-sec {
     display: inline-block;
     font-family: var(--title-font);
     text-align: center;
@@ -261,6 +261,7 @@ a.btn-sc svg {
     border: 1px solid var(--base);
 }
 .btn-main,
+.btn-sec,
 .form-border * {
     -o-transition: 0.5s;
     -ms-transition: 0.5s;
@@ -271,7 +272,7 @@ a.btn-sc svg {
 }
 
 .btn-main:hover,
-.btn-main:active,numbers-fieldu
+.btn-main:active,
 .activeBtn {
     -webkit-box-shadow: 2px 2px 20px 0px rgba(var(--primary-color-rgb), 0.5);
     -moz-box-shadow: 2px 2px 20px 0px rgba(var(--primary-color-rgb), 0.5);
@@ -281,9 +282,23 @@ a.btn-sc svg {
     border: 1px solid rgba(var(--primary-color-rgb), 0.6);
 }
 
-.btn-main:disabled {
+.btn-main:disabled, .btn-sec:disabled {
     pointer-events: none;
     opacity: 0.65;
+}
+
+.btn-sec {
+    background-color: var(--sub-color);
+}
+
+.btn-sec:hover,
+.btn-sec:active {
+    -webkit-box-shadow: 2px 2px 20px 0px rgba(var(--sub-color-rgb), 0.5);
+    -moz-box-shadow: 2px 2px 20px 0px rgba(var(--sub-color-rgb), 0.5);
+    box-shadow: 2px 2px 20px 0px rgba(var(--sub-color-rgb), 0.5);
+    color: var(--title-color);
+    background-color: var(--base);
+    border: 1px solid rgba(var(--sub-color-rgb), 0.6);
 }
 
 .title-line {
