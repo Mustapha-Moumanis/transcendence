@@ -4,6 +4,8 @@ import { displayFieldError, showAlert, authActions} from '../../utils/js/auth.js
 function handleRegisterFormSubmission() {
     document.getElementById('form_register').addEventListener('submit', function(e) {
         e.preventDefault();
+        const btn = document.getElementById("send_message");
+        btn.setAttribute('disabled', "");
 
         const firstName = document.getElementById('first-name');
         const lastName = document.getElementById('last-name');
@@ -49,6 +51,9 @@ function handleRegisterFormSubmission() {
             window.location.hash = "login";
         })
         .catch(error => showAlert('error', error));
+        setTimeout(() => {
+			btn.removeAttribute('disabled');
+		}, 1000);
     });
 }
 

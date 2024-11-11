@@ -4,17 +4,19 @@ import {
 	showAlert,
 	authActions
 } from '../../utils/js/auth.js'
+import ResetPassword from '../ResetPassword/ResetPassword.js';
+import { ResetPasswordPromise } from '../ResetPassword/script.js';
 
 function passResetActions(email) {
 	const inputs = document.querySelectorAll(".numbers-field > input");
 	const button = document.querySelector(".btn-main");
 	const pass = document.querySelector("#password");
 	const re_pass = document.querySelector("#re-password");
-	const emailElem = document.querySelector(".email");
+	const emailElem = document.querySelector("#email");
 
 	window.addEventListener("load", () => inputs[0].focus());
 	button.setAttribute("disabled", "disabled");
-	emailElem.innerHTML = email
+	emailElem.value = email
 
 	const checkFields = () => {
 		const allFieldsFilled = [...inputs].every(input => input.value !== "") && pass.value !== "" && re_pass.value !== "" && email.value !== "";
@@ -82,6 +84,8 @@ function passResetActions(email) {
 function handleConfirmResetFormSubmission(email) {
 	document.getElementById('form_reset_password_confirm').addEventListener('submit', function(e) {
 		e.preventDefault();
+		const btn = document.getElementById("send_message");
+        btn.setAttribute('disabled', "");
 		const numbersFields = document.querySelector('.numbers-field');
 		const inputs = numbersFields.querySelectorAll("input");
 		const token = [...inputs].map(input => input.value).join('');
@@ -125,6 +129,9 @@ function handleConfirmResetFormSubmission(email) {
 			window.location.hash = "login";
 		})
 		.catch(error => showAlert('error', error));
+		setTimeout(() => {
+			btn.removeAttribute('disabled');
+		}, 1000);
 		// inputs.forEach((input, index) => {
 		// 	input.value = "";
 		// 	if (index == 0) input.focus();
@@ -133,8 +140,41 @@ function handleConfirmResetFormSubmission(email) {
 	});
 }
 
+function resetPasswordAgain() {
+	const requestAgainBtn = document.getElementById("request-again");
+	var counter = document.getElementById("counter");
+	let active = true;
+	let fullTime = 90;
+	requestAgainBtn.addEventListener("click", function(event) {
+		event.preventDefault();
+
+		if (active) {
+			active = false;
+			const email = document.querySelector("#email");
+			ResetPasswordPromise(email)
+			.then(data => showAlert('success', data.detail))
+			.catch(error => showAlert('error', error));
+			var counterInterval = setInterval(() => {
+				fullTime--;
+				const minutes = Math.floor(fullTime / 60);
+				let seconds = fullTime % 60;
+				seconds = seconds < 10 ? '0' + seconds : seconds;
+				counter.innerHTML = `${minutes}:${seconds}`;
+
+				if (fullTime == 0) {
+					active = true;
+					fullTime = 90;
+					counter.innerHTML = "";
+					clearInterval(counterInterval);
+				}
+			}, 1000);
+		}
+	});
+}
+
 export function ResetPasswordConfirmActions(email) {
 	authActions();
-	passResetActions(email)
+	passResetActions(email);
 	handleConfirmResetFormSubmission(email);
+	resetPasswordAgain();
 }
