@@ -13,33 +13,6 @@ class LocalGameSerializer(serializers.ModelSerializer):
 		fields = ['nickname', 'opponent', 'user_score', 'opponent_score', 'result']
 		read_only_fields = ['user', 'result']
 
-	# def to_representation(self, instance):
-	#     representation = super().to_representation(instance)
-
-	#     if instance.user_score > instance.opponent_score:
-	#         representation['result'] = "Win"
-	#     elif instance.user_score < instance.opponent_score:
-	#         representation['result'] = "Loss"
-	#     return representation
-
-# class MatchSerializer(serializers.Serializer):
-# 	player1 = serializers.CharField(max_length=100)
-# 	player2 = serializers.CharField(max_length=100)
-# 	winner = serializers.CharField(max_length=100)
-# 	player1_score = serializers.IntegerField()
-# 	player2_score = serializers.IntegerField()
-
-# 	class Meta:
-# 		model = Match
-
-# class BracketDataSerializer(serializers.Serializer):
-# 	# bracket01 = MatchSerializer()
-# 	# bracket02 = MatchSerializer()
-# 	# bracketFinal = MatchSerializer()
-
-# 	class Meta:
-# 		model = LocalTournament
-
 class PlayersDataSerializer(serializers.Serializer):
 	player1 = serializers.CharField(max_length=100)
 	player2 = serializers.CharField(max_length=100)
@@ -74,7 +47,7 @@ class PlayerSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Player
 		fields = ['name', 'avatar']
-
+	
 class MatchSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Match
@@ -108,8 +81,9 @@ class bracketSerializer(serializers.Serializer):
 	def validate_player2(self, value):
 		return self.validate_name(value, "player2")
 
+
+
 class EventsTournamentSerializer(serializers.ModelSerializer):
-	# key = serializers.IntegerField()
 	key = serializers.UUIDField(
 		default=uuid.uuid4, 
 		error_messages={
@@ -120,26 +94,56 @@ class EventsTournamentSerializer(serializers.ModelSerializer):
 	bracket02 = bracketSerializer()
 	bracketFinal = bracketSerializer()
 
+	def validate_key(self, value):
+		if not LocalTournament.objects.filter(key = value):
+			raise serializers.ValidationError(f'Invalid Key')
+		return value
+
+	def validate_players(self, bracket_data, tournament):
+		player1_exists = tournament.players.filter(name=bracket_data['player1']).exists()
+		player2_exists = tournament.players.filter(name=bracket_data['player2']).exists()
+
+		if not player1_exists or not player2_exists:
+			raise serializers.ValidationError({"detail" : "Some players must be part of the tournament."})
+
+	def create(self, data):
+		bracket01_data = data.pop('bracket01')
+		bracket02_data = data.pop('bracket02')
+		bracketFinal_data = data.pop('bracketFinal')
+
+		tournament = LocalTournament.objects.get(key=data['key'], user=self.context['request'].user)
+		
+		if tournament.matchs.count() != 0:
+			raise serializers.ValidationError({"detail" : "This tournament already has matches and cannot be modified."})
+
+		for bracket_data in [bracket01_data, bracket02_data, bracketFinal_data]:
+			self.validate_players(bracket_data, tournament)
+
+		def create_match(bracket_data):
+			player1 = tournament.players.get(name=bracket_data['player1'])
+			player2 = tournament.players.get(name=bracket_data['player2'])
+
+			winner = player1 if bracket_data['player1_score'] > bracket_data['player2_score'] else player2
+
+			match = Match.objects.create(
+				player1=player1,
+				player2=player2,
+				winner=winner,
+				player1_score=bracket_data['player1_score'],
+				player2_score=bracket_data['player2_score']
+			)
+			return match
+
+		bracket01 = create_match(bracket01_data)
+		bracket02 = create_match(bracket02_data)
+		bracketFinal = create_match(bracketFinal_data)
+
+		tournament.matchs.add(bracket01, bracket02, bracketFinal)
+
+		tournament.champion = tournament.players.get(name=bracketFinal.winner)
+		tournament.save()
+		return data
+
 	class Meta:
 		model = LocalTournament
 		fields = ['key', 'bracket01', 'bracket02', 'bracketFinal'] 
-
-	# def validate(self, attrs):
-	# 	players = [
-	# 		attrs['bracket01']['player1'],
-	# 		attrs['bracket01']['player2'],
-	# 		attrs['bracket02']['player1'],
-	# 		attrs['bracket02']['player2'],
-	# 		attrs['bracketFinal']['player1'],
-	# 		attrs['bracketFinal']['player2'],
-	# 	]
-
-	# 	pattern = r'^[a-zA-Z][a-zA-Z_-]{0,19}$'
-	# 	for player in players:
-	# 		if not re.match(pattern, player):
-	# 			raise serializers.ValidationError({"detail": f"Invalid player name: {player}"})
-
-	# 	if len(players) != len(set(players)):
-	# 		raise serializers.ValidationError({"detail": "Duplicate player names are not allowed."})
-
-	# 	return attrs

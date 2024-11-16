@@ -38,7 +38,7 @@ class CreateTournamentPlayersViewSet(viewsets.ModelViewSet):
 		if serializer.is_valid():
 			tournament = LocalTournament.objects.create(user = request.user)
 			res = {}
-			res["tournament_id"] = tournament.key
+			res["key"] = tournament.key
 			players = []
 			for key, value in serializer.data.items():
 				if key == "player1":
@@ -50,8 +50,6 @@ class CreateTournamentPlayersViewSet(viewsets.ModelViewSet):
 				res[key]["avatar"] = f'{player.avatar}'
 				players.append(player)
 			tournament.players.set(players)
-			print(">>>>> ", list(tournament.players.all()), flush=True)
-			print(">> ", res)
 			return Response(res, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -61,9 +59,9 @@ class EventsTournamentPlayersViewSet(viewsets.ModelViewSet):
 	http_method_names = ['post', 'head', 'options']
 
 	def create(self, request, *args, **kwargs):
-		data = request.data
-		serializer = self.get_serializer(data=data)
+		serializer = self.get_serializer(data=request.data)
 		if serializer.is_valid():
+			serializer.save()
 			return Response({"message": "Tournament saved successfully."}, status=status.HTTP_200_OK)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -73,7 +71,4 @@ class LocalTournamentViewSet(viewsets.ReadOnlyModelViewSet):
 	permission_classes = [ IsAuthenticated ]
 
 	def get_queryset(self):
-		return LocalTournament.objects.tournament_list(self.request.user)
-
-	# def create(self, request, *args, **kwargs):
-	#     return Response({"message": "Tournament saved successfully."}, status=status.HTTP_200_OK)
+		return LocalTournament.objects.filter(user = self.request.user)
