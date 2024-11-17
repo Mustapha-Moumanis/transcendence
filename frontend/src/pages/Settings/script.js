@@ -504,6 +504,8 @@ function addListenerSettings(){
 
 function gamesettings() {
 	const optionsContent = document.querySelectorAll('.options-content');
+	let gameData = JSON.parse(localStorage.getItem("gameData"));
+	if (!gameData) gameData = { "camPos": 0, "FOV": 1, "ballSpeed": 1, "tournamentNum": 1 };
 	const gameElementExplanations = [
 		`
 			<h4 class="mb-3">Camera position</h4>
@@ -538,14 +540,15 @@ function gamesettings() {
 		`,
 	];
 
-	function setActiveOptions(options, spans, optionsScroll) {
-		options.forEach((option, index) => {
-			if (option.classList.contains('active')) {
-				const optionWidth = option.offsetWidth;
-				optionsScroll.scrollTo({ left: optionWidth * index });
-				spans[index].classList.add('active');
-			}
-		});
+	function setActiveOptions(element, options, spans, optionsScroll) {
+		const gameOption = element.getAttribute("game-option");
+		const activeIndex = gameData[gameOption];
+		const activeOption = options[activeIndex];
+		if (activeOption) {
+			activeOption.classList.add('active');
+			spans[activeIndex].classList.add('active');
+			optionsScroll.scrollTo({ left: activeOption.offsetWidth * activeIndex });
+		}
 	}
 
 	function removeOptionActiveClass(spans, options) {
@@ -556,13 +559,13 @@ function gamesettings() {
 	function updateGameExplanation(index) {
 		document.querySelector(".game-setting-explantation").innerHTML = gameElementExplanations[index];
 	}
-
 	optionsContent.forEach((element, index) => {
 		const spans = element.querySelectorAll('.option-active span');
 		const options = element.querySelectorAll('.options-scroll .option');
 		const optionsScroll = element.querySelector('.options-scroll');
 
-		setActiveOptions(options, spans, optionsScroll);
+		removeOptionActiveClass(spans, options);
+		setActiveOptions(element, options, spans, optionsScroll);
 
 		spans.forEach((span, index) => {
 			span.addEventListener('click', () => { 
@@ -574,7 +577,9 @@ function gamesettings() {
 				});
 	
 				removeOptionActiveClass(spans, options);
+				gameData[element.attributes["game-option"].value] = index;
 				span.classList.add('active');
+				localStorage.setItem('gameData', JSON.stringify({...gameData}));
 			});
 		});
 
