@@ -5,9 +5,10 @@ export default class Ball extends EventDispatcher{
     speed = 25;
     velocity = new Vector3(1, 0, 0.5);
 
-    constructor(scene, boundaries, paddles) {        
+    constructor(scene, boundaries, paddles, data) {        
     
         super()
+        this.nameData = data;
         this.isPaused = false;
         this.scene = scene
         this.boundaries = boundaries;
@@ -75,7 +76,7 @@ export default class Ball extends EventDispatcher{
         /* goal scored here */
         if (dz < 0){
             const z = this.mesh.position.z
-            const message = z > 0 ? 'player2' : 'player1'
+            const message = z > 0 ? this.nameData.player2 : this.nameData.player1
             this.dispatchEvent({type: 'ongoal', message: message})
             tPos.set(0, 0, 0)
             this.resetBallVelocity();
