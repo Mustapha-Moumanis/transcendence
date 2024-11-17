@@ -165,3 +165,9 @@
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 2001;
 }
+
+.finalText {
+    font-family: var(--title-font);
+    font-size: 100px;
+
+}
