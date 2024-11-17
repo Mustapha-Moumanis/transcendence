@@ -260,6 +260,7 @@ function loadLogic(data, mode, tournament) {
                     tournament.final.winner_name = winner;
                     document.querySelector('#root').appendChild(gameFinalResult);
                     let endGameButton = document.getElementById('end-game');
+                    //post here
                     cleanupScene();
                     setTimeout(() => {
                     window.location.hash = '#home';
@@ -503,7 +504,7 @@ function gameStart(data, mode) {
     else if (mode === 'tournament') {
         let names = [data.player1, data.player2, data.player3, data.player4];
         let tournament = new Tournament(names);
-        // console.log(tournament);
+        // create here
         startTournament(data, tournament);
     }
 }
