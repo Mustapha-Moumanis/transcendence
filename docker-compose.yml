@@ -23,6 +23,7 @@ services:
         networks:
             - transcendence-network
         volumes:
+            - ./frontend/src/:/var/www/html/
             - media:/var/www/html/static
 
     web:
@@ -36,6 +37,7 @@ services:
         networks:
             - transcendence-network
         volumes:
+            - ./backend/src/:/code/
             - media:/code/static
 
 networks:
