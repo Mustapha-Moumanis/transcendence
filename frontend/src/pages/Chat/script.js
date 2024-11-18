@@ -1,5 +1,5 @@
 import { getCookie } from "../../utils/js/utils.js";
-import { startChat, chatSocket } from "./js/socket.js";
+import { startChat, chatSocket, waitForSocketConnection} from "./js/socket.js";
 
 export var lastCmd = [];
 
@@ -22,5 +22,5 @@ export function sendToBackend(sendto, type, message){
 }
 
 export function chatActions() {
-	startChat();
+	waitForSocketConnection(chatSocket, startChat);
 }
