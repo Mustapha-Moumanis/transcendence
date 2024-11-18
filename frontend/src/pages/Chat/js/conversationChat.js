@@ -1,4 +1,4 @@
-import {user, currentSendto, sendToBackend} from "./socket.js"
+import {user, currentSendto, sendToBackend, dataListUsers, setCurrentSendTo} from "./socket.js"
 import {activeBtn} from "./listchat.js"
 import {blockClick, removeNotif} from "./homeSocket.js"
 import {setEmojies} from "./emoji.js"
@@ -101,21 +101,6 @@ function loadMoreContent(data){
 
 // ------------------ Upadate chat------------------
 
-function updateNotification(data) {
-    const messageBtn = document.querySelector(".chat-msg-btn");
-    activeBtn(messageBtn, ".chat-friend-btn", ".chat-list", ".friend-chat");
-    document.querySelectorAll(".chat-list .chat-user-card").forEach(cardUser => {
-        const username = cardUser.querySelector(".chat-user-content h5").innerHTML;
-        if (username === data.username) {
-            var notf = cardUser.querySelector('.chat-notification');
-            notf.classList.remove('d-none');
-            cardUser.querySelector('.chat-notification').innerHTML = Number(notf.innerHTML) + 1;
-            cardUser.querySelector('.chat-user-content p').innerHTML = data.message;
-            return;
-        }
-    });
-}
-
 function updatestatuUsers(data) {
     document.querySelectorAll(".chat-list .chat-user-card").forEach(userCardstatus => {
         const username = userCardstatus.querySelector(".chat-user-content h5").innerHTML;
@@ -134,9 +119,7 @@ function updatestatuUsers(data) {
 
 function respondMessage(data) {
     if (document.querySelector("#chat-content")){
-        const room = document.querySelector(".chat-card-active .chat-user-content h5");
-        if (room == null || room.innerHTML != data.username) updateNotification(data);
-        else {
+        if (currentSendto === data.username){
             const container = document.querySelector("#id_chat_item_container");
             container.prepend(createMessageElement(data));
             smoothScrollToBottom(container);
@@ -161,9 +144,14 @@ function receiveMessage(data) {
 }
 
 function CloseMainChat() {
+    document.querySelectorAll(".chat-list .chat-user-card").forEach(card => card.classList.remove("chat-card-active"));
+    document.querySelectorAll(".friend-chat .chat-friend-card").forEach(card => card.classList.remove("chat-card-active"));
+    
     var chatUsersList = document.querySelector(".chat-sidebar");
     var mainChat = document.querySelector(".main-chat");
     chatUsersList.removeAttribute('style');
+    mainChat.classList.add("d-none");
+    document.querySelector(".welcome-chat").classList.remove("d-none");
     mainChat.style.zIndex = "0";
 }
 
@@ -249,6 +237,7 @@ function chatHeader(data) {
     headerImageContent.innerHTML = `<h5>${data.sendto}</h5> <p>${data.status}</p>`;
 
     document.querySelector(".main-chat .expand-left").addEventListener('click', () => {
+        setCurrentSendTo(null);
         CloseMainChat();
     })
 }
@@ -281,39 +270,27 @@ function createEndOfConv(data){
 // ------------ Typing ------------
 
 function stopTyping(data){
-    document.querySelectorAll(".chat-list .chat-user-card .chat-user-content").forEach(user => {
-        const name = user.querySelector("h5").innerHTML;
-        if (name === data.username){
-            user.querySelector("p").classList.remove("d-none");
-            user.querySelector(".chat-list-typing").classList.add("d-none");
-            return;
-        }
-    });
+    var index = dataListUsers.findIndex(name => name.username === data.username);
+    const listUserCards = document.querySelectorAll(".chat-list .chat-user-card");
+    const userContent = listUserCards[index].querySelector(".chat-user-content");
+    userContent.querySelector("p").classList.remove("d-none");
+    userContent.querySelector(".chat-list-typing").classList.add("d-none");
+
     var typing = document.querySelector(".chat-typing");
-    if (typing)
-        typing.remove();
+    if (typing) typing.remove();
 }
 
 function startTyping(data){
-    const room = document.querySelector(".chat-card-active .chat-user-content h5");
-    if (room == null || room.innerHTML != data.username){
-        creatTypingInList(data.username);
+    if (currentSendto !== data.username){
+        var index = dataListUsers.findIndex(name => name.username === data.username);
+        const listUserCards = document.querySelectorAll(".chat-list .chat-user-card");
+        const userContent = listUserCards[index].querySelector(".chat-user-content");
+        userContent.querySelector("p").classList.add("d-none");
+        userContent.querySelector(".chat-list-typing").classList.remove("d-none");
         return;
     }
-    const container = document.querySelector("#id_chat_item_container");
     if (!document.querySelector(".chat-typing"))
-        container.prepend(createTypingDiv());
-}
-
-function creatTypingInList(username){
-    document.querySelectorAll(".chat-list .chat-user-card .chat-user-content").forEach(user => {
-        const name = user.querySelector("h5").innerHTML;
-        if (name === username){
-            user.querySelector("p").classList.add("d-none");
-            user.querySelector(".chat-list-typing").classList.remove("d-none");
-            return;
-        }
-    });
+        document.querySelector("#id_chat_item_container").prepend(createTypingDiv());
 }
 
 function createTypingDiv(){

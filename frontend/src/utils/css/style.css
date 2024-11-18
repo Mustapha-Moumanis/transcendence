@@ -687,7 +687,7 @@ p {
     background: linear-gradient(to right, rgba(138, 201, 2, 0.8), var(--base));
 }
 
-.lose {
+.loss {
     background: linear-gradient(to right, rgba(217, 63, 63, 0.8), var(--base));
 }
 
@@ -716,14 +716,14 @@ p {
 
 .match-user-avatar {
     width: 60px;
-    height: auto;
-    border-radius: 50%;
+    height: 60px;
 }
 
 .match-user-avatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 50%;
 }
 
 .match-friend {
@@ -762,10 +762,6 @@ p {
 
     .match-user span {
         order: 2;
-    }
-
-    .match-user-avatar {
-        width: 40px;
     }
 
     .match-card span {

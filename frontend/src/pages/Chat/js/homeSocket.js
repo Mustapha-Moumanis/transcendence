@@ -1,7 +1,6 @@
-import { setCurrentSendTo, setnotifUser, user } from "./socket.js"
+import { setCurrentSendTo, setnotifUser} from "./socket.js"
 import { sendToBackend } from "../script.js"
 import { debounce } from "../../../utils/js/utils.js";
-import { creatFriendCard } from "./listchat.js";
 import { profileBtnState } from "../../Profile/script.js";
 
 function startSearchAndNotif() {
@@ -157,6 +156,7 @@ function checkNotif() {
 
     const notification = notificationButton.querySelector("span");
     if (notifications.length === 0) {
+        console.log("hiiiiiii notifaction");
         notification.style.backgroundColor = "";
         const div = document.createElement("div");
         div.classList.add("empty-notifications");
@@ -242,7 +242,10 @@ function homeNotification(data) {
     const notification = document.querySelector(".notification span");
     const listnotification = document.querySelector(".show-notification");
     const containerNotif = listnotification.querySelector(".list-notification");
-
+    if (document.querySelector("#chat-content")) {
+        data.notification = data.notification - data.chatNotification.length;
+        data.chatNotification = [];
+    }
     if (data.notification != 0) {
         notification.style.backgroundColor = "#E51284";
         data.chatNotification.forEach(user => {
@@ -269,8 +272,7 @@ function creatNotification(data, classes, myfunction) {
 
     listNotif.querySelectorAll(classes).forEach(card => {
         const tmpUser = card.querySelector("h5").innerHTML;
-        if (tmpUser === user)
-            card.parentElement.remove();
+        if (tmpUser === user) card.parentElement.remove();
     })
     listNotif.prepend(myfunction(data.notificationlist));
 }
@@ -279,9 +281,12 @@ function updateHomeNotification(data) {
     document.querySelector(".notification span").style.backgroundColor = "#E51284";
 
     let empty = document.querySelector(".show-notification .empty-notifications");
-    if (empty)
+    if (empty){
+        console.log("empty should be true => ", empty);
         empty.remove();
-
+    }
+    else
+        console.log("empty should be null => ", empty);
     if (data.type === "CreatNotifChat")
         creatNotification(data, ".notifMessage .notification-user-content", creatNotifMessage)
 
@@ -337,6 +342,7 @@ function friendBlockedYou(data) {
                 </div>
             `;
         document.querySelector(".chat-container").appendChild(div);
+        setCurrentSendTo(null);
         document.querySelector(".main-chat").classList.add("d-none");
         document.querySelector(".welcome-chat").classList.remove("d-none");
 
@@ -374,6 +380,7 @@ function blockClick(friend) {
         sendToBackend(friend, "blockUser", "");
         if (document.querySelector("#chat-content")) {
             document.querySelector(".main-chat").classList.add("d-none");
+            setCurrentSendTo(null);
             document.querySelector(".welcome-chat").classList.remove("d-none");
             sendToBackend("", "showUsersFriend", "");
         }
