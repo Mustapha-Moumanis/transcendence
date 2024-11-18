@@ -11,7 +11,7 @@ COPY /src/. var/www/html/
 
 COPY conf/nginx.conf /etc/nginx/sites-available/default
 
-COPY tools/script.sh .
-RUN chmod +x ./script.sh
+# COPY tools/script.sh .
+# RUN chmod +x ./script.sh
 
 ENTRYPOINT ["nginx" , "-g", "daemon off;"]
