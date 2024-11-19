@@ -49,7 +49,7 @@ export function drawtheLevel(spinner) {
 function creatMatchCard(data, avatar){
 	const div = document.createElement('div');
 	div.classList.add("match-card");
-	if (data.result === "loss") div.classList.add("match-card", "lose");
+	if (data.result === "Loss") div.classList.add("match-card", "loss");
 	else div.classList.add("match-card", "win");
 	div.innerHTML = `<div class="match-user">
 			<span>${data.nickname}</span>
@@ -93,7 +93,7 @@ export function matchHistory(game_history, avatar){
 	`;
 	const matchCards = history.querySelector(".match-cards");
 	game_history.forEach(card => {
-		matchCards.appendChild(creatMatchCard(card, avatar));
+		matchCards.prepend(creatMatchCard(card, avatar));
 	});
 }
 

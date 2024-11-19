@@ -18,6 +18,7 @@ function friendMessagBtn(){
     document.querySelectorAll(".chat-nav-sidebar .chat-btn").forEach(btn => {
         btn.addEventListener('click', function() {
     
+            setCurrentSendTo(null);
             document.querySelector(".main-chat").classList.add("d-none");
             document.querySelector(".welcome-chat").classList.remove("d-none");
 
@@ -61,7 +62,7 @@ function userCard(classes, activeClass) {
             
             document.querySelector(".loading-chat").classList.remove("d-none");
             document.querySelector(".main-chat").classList.add("d-none");
-            
+
             removeScroll();
             document.querySelector('#id_chat_item_container').innerHTML = "";
             sendToBackend(currentSendto, "showConversation", "");
@@ -126,14 +127,12 @@ function showUsers(data) {
         container.appendChild(div);
     }
     else {
-        data.listUsers.forEach(listuser => container.appendChild(creatUserCard(listuser)));
-        var sendto = document.querySelector(".chat-header .chat-user-content h5");
-        if (sendto) {
-            document.querySelectorAll(".chat-list .chat-user-card").forEach(card => {
-                var username = card.querySelector(".chat-user-content h5");
-                if (sendto.innerHTML === username.innerHTML) card.classList.add("chat-card-active");
-            })
-        }
+        data.listUsers.forEach(listuser => {
+            const div = creatUserCard(listuser);
+            if (currentSendto === listuser.username)
+                div.classList.add("chat-card-active");
+            container.appendChild(div);
+        });
     }
     
     friendMessagBtn();

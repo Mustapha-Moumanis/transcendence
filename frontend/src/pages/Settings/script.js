@@ -610,12 +610,14 @@ function setDataSetting(userData){
 }
 
 function changPassword(){
+	const btnToChangePassword = document.querySelector("#save_set_pass");
+
     const old_password = document.querySelector("#old_password");
     const new_password1 = document.querySelector("#new_password1");
     const new_password2 = document.querySelector("#new_password2");
     
-    document.querySelector("#save_set_pass").addEventListener('click', () =>{
-
+    btnToChangePassword.addEventListener('click', () =>{
+		btnToChangePassword.setAttribute('disabled', "");
         if (old_password.value === "")
             displayFieldError(old_password.parentElement, 'This field may not be blank.');
         if (new_password1.value === "")
@@ -656,11 +658,14 @@ function changPassword(){
         .catch(error => {
             showAlert('error', error);
         });
+		setTimeout(() => {
+            btnToChangePassword.removeAttribute('disabled');
+        }, 1000);
     })
 }
 
 function postData(userData){
-
+	const btnToSaveData = document.querySelector("#save-changes");
     var dataImage = null;
 
     const uploadimage = document.querySelector(".upload-pic");
@@ -673,8 +678,8 @@ function postData(userData){
             dataImage = this.files[0];
     });
 
-    document.querySelector("#save-changes").addEventListener('click', () => {
-
+    btnToSaveData.addEventListener('click', () => {
+		btnToSaveData.setAttribute('disabled', "");
         const firstName = document.querySelector("#first-name");
         const lastName = document.querySelector("#last-name");
         const country = document.querySelector("#country");
@@ -723,6 +728,9 @@ function postData(userData){
         }
         else
             showAlert('error', "No changes to update.");
+		setTimeout(() => {
+			btnToSaveData.removeAttribute('disabled');
+		}, 1000);
     });
 }
 

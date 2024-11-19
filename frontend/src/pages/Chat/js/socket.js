@@ -8,7 +8,7 @@ import {friendBlockedYou, updateHomeNotification, homeNotification,
 import {showFriends, showUsers, handleChatResise} from "./listchat.js"
 import {lastCmd, sendToBackend} from "../script.js"
 import { showAlert, verifyRefreshToken } from "../../../utils/js/auth.js";
-import { getCookie, logoutFetch } from "../../../utils/js/utils.js";
+import { logoutFetch } from "../../../utils/js/utils.js";
 
 // ------------------ Varaibles Of Chat ------------------
 export var chatSocket;
@@ -34,25 +34,24 @@ function setupWebSocket() {
     let welcome = document.querySelector(".welcome h5");
     welcome.innerHTML = `Welcome ${user}`;
 
-    console.log(user);
     const protocol = 'ws://';
     const wsUrl = `${protocol}${window.location.host}/ws/${user}/`;
     return new WebSocket(wsUrl);
 }
 
 function restartWebsocket(){
-    if (chatSocket)
-        chatSocket.close();
+    if (chatSocket) chatSocket.close();
     startSocket();
 }
 
 function waitForSocketConnection(socket, callback){
     setTimeout(function () {
-        if (socket.readyState === 1) {
+        if (socket.readyState === WebSocket.OPEN) {
             if (callback)
                 callback();
-        } else {
-            console.log("wait for connection...")
+        } 
+        else {
+            console.log("wait for connection...");
             waitForSocketConnection(socket, callback);
         } 
     }, 5);
@@ -62,6 +61,7 @@ function callLastCmds(){
     let arrayCmds =  Array.from(lastCmd);
     for (let index = 0; index < arrayCmds.length; index++) {
         const cmd = arrayCmds[index];
+        console.log(cmd);
         sendToBackend(cmd.sendto, cmd.type, cmd.message);
     }
 }
@@ -75,7 +75,7 @@ function startSocket(){
     }
 
     chatSocket.onclose = (e) => {
-        console.log("The Websocket was Closed!");
+        console.log("The Websocket was Closed!", e);
     }
 
     function getData(){
@@ -101,11 +101,10 @@ function handleMessageFromSocket(event){
     const data = JSON.parse(event.data);
     if (data === null) return;
 
-    if (data.type !== "Error")
-        lastCmd.splice(0,1);
-
     if (data.type === "Error") handleRefrshTocken();
-    else if (data.type === "Blocked") friendBlockedYou(data);
+    else lastCmd.splice(0,1);
+
+    if (data.type === "Blocked") friendBlockedYou(data);
     else if (data.type === "reqConfirm") reqConfirm(data.listFriends);
     else if (data.type === "reqDelete") reqDelete(data);
     else if (data.type === "getDataHome"){
@@ -126,6 +125,7 @@ function handleMessageFromSocket(event){
                 showFriends(data["showFriends"]);
             }
             else if (data.type === "showConversation"){
+                handleChatResise();
                 chatHeader(data["chat_header"]);
                 showAllMessages(data["show_messages"]);
             }
@@ -139,12 +139,12 @@ function handleMessageFromSocket(event){
 }
 
 function startChat(){
-
     if (notifUser) {
         setCurrentSendTo(notifUser);
         sendToBackend(notifUser, "showConversation", "");
         notifUser = null;
     }
+    else setCurrentSendTo(null);
     
     sendToBackend("", "showUsersFriend", "");
 
@@ -156,6 +156,7 @@ function startChat(){
 }
 
 export {
+    waitForSocketConnection,
     startSocket,
     sendToBackend,
     startChat,
