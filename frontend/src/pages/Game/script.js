@@ -26,7 +26,8 @@ function reset_game(camera, playerPaddle, player2Paddle, ball) {
     ball.resetBallVelocity();
 }
 
-function loadLogic(data, mode, tournament) {
+function loadLogic(data, mode, tournament, tournamentKey) {
+    // console.log("tournament key: ", tournamentKey);
     gameRunning = true;
     let countDownStarted = false;
     let gamePaused = false;
@@ -262,7 +263,42 @@ function loadLogic(data, mode, tournament) {
                     document.querySelector('#root').appendChild(gameFinalResult);
                     // let endGameButton = document.getElementById('end-game');
                     //post here
-
+                    let postData = {
+                        "key": tournamentKey,
+                        "bracket01": {
+                            "player1": tournament.Match1.player1,
+                            "player2": tournament.Match1.player2,
+                            "player1_score": tournament.Match1.player1_score,
+                            "player2_score": tournament.Match1.player2_score,
+                        },
+                        "bracket02": {
+                            "player1": tournament.Match2.player1,
+                            "player2": tournament.Match2.player2,
+                            "player1_score": tournament.Match2.player1_score,
+                            "player2_score": tournament.Match2.player2_score,
+                        },
+                        "bracketFinal": {
+                            "player1": tournament.final.player1,
+                            "player2": tournament.final.player2,
+                            "player1_score": tournament.final.player1_score,
+                            "player2_score": tournament.final.player2_score,
+                        }
+                    }
+            
+                    fetch('api/tournament/events/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(postData)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Success:', data);
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                        });
                     cleanupScene();
                     setTimeout(() => {
                     window.location.hash = '#home';
@@ -493,12 +529,6 @@ function loadLogic(data, mode, tournament) {
     }
 }
 
-function startTournament(data, tournament) {
-    let currentMatch = 1;
-    loadLogic(data, 'tournament', tournament);
-    // console.log('PASSED LOADLOGIC');
-}
-
 function gameStart(data, mode) {
     if (mode === 'single') {
         loadLogic(data, mode);
@@ -543,7 +573,8 @@ function gameStart(data, mode) {
         })
         .then(successData => {
             console.log('Success:', successData);
-            startTournament(data, tournament);
+            const tournamentKey = successData.key;
+            loadLogic(data, 'tournament', tournament, tournamentKey);
             tournamentcontent.classList.add('d-none');
         })
         .catch(error => showAlert('error', error));
