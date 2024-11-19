@@ -505,7 +505,7 @@ function addListenerSettings(){
 function gamesettings() {
 	const optionsContent = document.querySelectorAll('.options-content');
 	let gameData = JSON.parse(localStorage.getItem("gameData"));
-	if (!gameData) gameData = { "camPos": 0, "FOV": 1, "ballSpeed": 1, "tournamentNum": 1 };
+	if (!gameData) gameData = { "camPos": 0, "FOV": 1, "ballSpeed": 1 };
 	const gameElementExplanations = [
 		`
 			<h4 class="mb-3">Camera position</h4>
@@ -529,13 +529,6 @@ function gamesettings() {
 				<b>Slow: </b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos debitis quis enim corporis assumenda pariatur autem numquam unde iste maiores.<br>
 				<b>Medium: </b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, facere dolorem. Quaerat?<br>
 				<b>Fast: </b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, maxime.<br>
-			</p>
-		`,
-		`
-			<h4 class="mb-3">Tournament player number</h4>
-			<p>
-				<b>4 : </b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos debitis quis enim corporis assumenda pariatur autem numquam unde iste maiores.<br>
-				<b>8 : </b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, facere dolorem. Quaerat?<br>
 			</p>
 		`,
 	];

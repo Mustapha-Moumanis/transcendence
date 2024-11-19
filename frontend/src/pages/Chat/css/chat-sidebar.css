@@ -33,7 +33,7 @@
     color: var(--title-color);
 }
 
-.nav-indicator {
+.chat-sidebar .nav-indicator {
     position: absolute;
     bottom: -5%;
     transition: 0.4s;
@@ -43,7 +43,7 @@
     padding: 0 5%;
 }
 
-.nav-indicator > span {
+.chat-sidebar .nav-indicator > span {
     display: block;
     height: 100%;
     width: 100%;
