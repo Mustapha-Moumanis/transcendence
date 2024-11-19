@@ -7,7 +7,7 @@ import {AmbientLight,DirectionalLight} from './lib/three.js-master/build/three.m
 import {RoundedBoxGeometry} from './lib/three.js-master/examples/jsm/geometries/RoundedBoxGeometry.js'
 import lights from './src/Lighting.js'
 import Match from './src/Match.js'
-import { displayFieldError } from '../../utils/js/auth.js'
+import { displayFieldError, showAlert } from '../../utils/js/auth.js'
 
 
 let gameRunning = false;
@@ -506,22 +506,47 @@ function gameStart(data, mode) {
     else if (mode === 'tournament') {
         let names = [data.player1, data.player2, data.player3, data.player4];
         let tournament = new Tournament(names);
+        let player1Tname = document.getElementById('Tplayer1');
+        let player2Tname = document.getElementById('Tplayer2');
+        let player3Tname = document.getElementById('Tplayer3');
+        let player4Tname = document.getElementById('Tplayer4');
+        let tournamentcontent = document.getElementById('tournament-nick');
+        let postData = {
+            player1: player1Tname.value,
+            player2: player2Tname.value,
+            player3: player3Tname.value,
+            player4: player4Tname.value
+        }
+        console.log(postData);
         // create here
-        fetch('api/tournament/create', {
+        fetch('api/tournament/create/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(postData)
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
+        // .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(errorData => {
+                    console.log(errorData);
+                    if (errorData.player1) displayFieldError(player1Tname.parentElement, errorData.player1);
+                    if (errorData.player2) displayFieldError(player2Tname.parentElement, errorData.player2);
+                    if (errorData.player3) displayFieldError(player3Tname.parentElement, errorData.player3);
+                    if (errorData.player4) displayFieldError(player4Tname.parentElement, errorData.player4);
+                    if (errorData.detail) throw new Error(errorData.detail);
+                    throw new Error("Failed to create tournament");
+                });
+            }
+            return response.json();
         })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-        startTournament(data, tournament);
+        .then(successData => {
+            console.log('Success:', successData);
+            startTournament(data, tournament);
+            tournamentcontent.classList.add('d-none');
+        })
+        .catch(error => showAlert('error', error));
     }
 }
 
@@ -552,7 +577,6 @@ export function gameActions(html) {
         let player2Tname = document.getElementById('Tplayer2');
         let player3Tname = document.getElementById('Tplayer3');
         let player4Tname = document.getElementById('Tplayer4');
-        displayFieldError(player1Tname.parentElement, 'This field is required');
         startButton.addEventListener('click', () => {
           startButton.style.display = 'none';
         //   console.log('Game started')
@@ -583,7 +607,6 @@ export function gameActions(html) {
                 player4: player4Tname.value
             }
             // console.log(nameData);
-            tournamentcontent.classList.add('d-none');
             gameStart(nameData, 'tournament');
         });
 
