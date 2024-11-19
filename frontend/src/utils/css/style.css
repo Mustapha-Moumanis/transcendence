@@ -98,6 +98,9 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--title-color);
 }
 
+.form-border input[type="text"]::placeholder {
+    color: rgba(var(--title-color-rgb), 0.5);
+}
 .form-border input[type="text"],
 .form-border textarea,
 .form-border input[type="email"],
