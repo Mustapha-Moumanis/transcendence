@@ -103,7 +103,7 @@ function loadLogic(data, mode, tournament, tournamentKey) {
         height: window.innerHeight,
     }
     /* Camera */
-    const fov = 60
+    const fov = 90
     let camera = new THREE.PerspectiveCamera(fov, sizes.width / sizes.height, 0.1)
     camera.position.set(0, 25, 30)
     camera.lookAt(new THREE.Vector3(0, 2.5, 0))
@@ -517,6 +517,7 @@ function loadLogic(data, mode, tournament, tournamentKey) {
         sizes.height = window.innerHeight
     
         camera.aspect = sizes.width / sizes.height
+        camera.fov = THREE.MathUtils.clamp(fov * (sizes.height / sizes.width), 30, 130)
         camera.updateProjectionMatrix()
     
         renderer.setSize(sizes.width, sizes.height)
