@@ -2,6 +2,7 @@ from rest_framework import serializers
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from .models import User
 from dj_rest_auth.serializers import LoginSerializer, UserDetailsSerializer, PasswordResetSerializer, PasswordResetConfirmSerializer
+from django.contrib.auth.hashers import check_password
 
 # Login
 
@@ -107,8 +108,7 @@ class MyPasswordResetConfirmSerializer(PasswordResetConfirmSerializer):
 			self.user = UserModel._default_manager.get(email=attrs['email'])
 		except (TypeError, ValueError, OverflowError, UserModel.DoesNotExist):
 			raise ValidationError({'email': [_('Invalid value')]})
-
-		if not self.user.reset_password_pin == attrs['token']:
+		if not check_password(attrs['token'], self.user.reset_password_pin):
 			raise ValidationError({'token': [_('Invalid value')]})
 
 		self.set_password_form = self.set_password_form_class(

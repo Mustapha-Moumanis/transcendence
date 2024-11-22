@@ -7,6 +7,7 @@ from allauth.account.utils import user_username
 from allauth.account.adapter import get_adapter
 from rest_framework.exceptions import ValidationError
 from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import make_password
 
 UserModel = get_user_model()
 
@@ -28,7 +29,7 @@ class MyAllAuthPasswordResetForm(DefaultPasswordResetForm):
         email = self.cleaned_data['email']
         for user in self.users:
             key = MyAllAuthPasswordResetForm.generate_password_reset_key()
-            user.reset_password_pin = key
+            user.reset_password_pin = make_password(key)
             user.save()
 
             context = {

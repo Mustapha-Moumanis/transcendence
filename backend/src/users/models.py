@@ -21,7 +21,7 @@ def default_18_years_ago():
 
 class User(AbstractUser):
     avatar = models.ImageField(upload_to=GenerateProfileImagePath, max_length=200, default=GenerateDefaultImagePath)
-    reset_password_pin = models.CharField(max_length=6, null=True, blank=True)
+    reset_password_pin = models.CharField(max_length=256, null=True, blank=True)
     status = models.CharField(max_length=20, default='Offline')
     country_select = CountryField(default="PS")
     date_of_birth = models.DateField(null=True, blank=True, default=default_18_years_ago)
