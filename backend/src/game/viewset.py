@@ -16,16 +16,22 @@ class LocalGameHistoryViewSet(viewsets.ModelViewSet):
 		local_game = serializer.save(user=self.request.user)
 		user_score = local_game.user_score
 		opponent_score = local_game.opponent_score
-		
+		user = self.request.user
 		if user_score > opponent_score:
 			local_game.result = "Win"
-			self.request.user.wins += 1
+			user.wins += 1
+			user.exp += 250
 		else:
 			local_game.result = "Loss"
-			self.request.user.losses += 1
+			user.losses += 1
+			user.exp += 100
+		
+		if user.exp > 1000:
+			user.level += 1
+			user.exp = user.exp - 1000
 
 		local_game.save()
-		self.request.user.save()
+		user.save()
 
 class CreateTournamentPlayersViewSet(viewsets.ModelViewSet):
 	serializer_class = PlayersDataSerializer

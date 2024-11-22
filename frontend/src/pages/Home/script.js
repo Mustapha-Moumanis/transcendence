@@ -14,7 +14,7 @@ export function drawtheLevel(spinner) {
 	let width = spinner.width;
 	let height = spinner.height;
 	let degrees = 0;
-	let new_degrees = (lvl/100)*280;
+	let new_degrees = (lvl/1000)*280;
 	let animation_loop;
 	
 	function drawArc(degrees) {
