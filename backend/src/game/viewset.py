@@ -67,9 +67,7 @@ class EventsTournamentPlayersViewSet(viewsets.ModelViewSet):
 	def create(self, request, *args, **kwargs):
 		serializer = self.get_serializer(data=request.data)
 		if serializer.is_valid():
-			local_tournament = serializer.save()
-			print(">> ", local_tournament, flush=True)
-
+			serializer.save()
 			return Response({"message": "Tournament saved successfully."}, status=status.HTTP_200_OK)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
