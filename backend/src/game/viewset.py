@@ -26,9 +26,9 @@ class LocalGameHistoryViewSet(viewsets.ModelViewSet):
 			user.losses += 1
 			user.exp += 100
 		
-		if user.exp > 1000:
+		if user.exp >= 1000:
 			user.level += 1
-			user.exp = user.exp - 1000
+			user.exp -= 1000
 
 		local_game.save()
 		user.save()
@@ -67,7 +67,9 @@ class EventsTournamentPlayersViewSet(viewsets.ModelViewSet):
 	def create(self, request, *args, **kwargs):
 		serializer = self.get_serializer(data=request.data)
 		if serializer.is_valid():
-			serializer.save()
+			local_tournament = serializer.save()
+			print(">> ", local_tournament, flush=True)
+
 			return Response({"message": "Tournament saved successfully."}, status=status.HTTP_200_OK)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
