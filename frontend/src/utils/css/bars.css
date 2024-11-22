@@ -486,9 +486,9 @@
             -ms-transform: translateX(-50%);
         transform: translateX(-50%);
         width: 100%;
-        height: 50px;
-        padding: 0;
-        background-color: transparent;
+        height: 80px;
+        padding: 15px;
+        background-color: var(--base);
         -webkit-backdrop-filter: none;
         backdrop-filter: none;
         z-index: 999999;
@@ -497,6 +497,7 @@
     .sidebar .sidebar-content {
         border-radius: 0;
         justify-content: center;
+        border-radius: 15px;
     }
 
     .sidebar .sidebar-content .menu {
@@ -518,8 +519,12 @@
     }
 
     .home-content {
-        height: calc(100vh - 130px);
+        height: calc(100vh - 150px);
         padding:0 10px 10px 10px;
+    }
+    
+    .home-content #loading {
+        height: calc(100% - 10px);
     }
 }
 

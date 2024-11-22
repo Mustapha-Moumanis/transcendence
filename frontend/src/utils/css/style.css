@@ -61,8 +61,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .home-content #loading {
     width: calc(100% - 20px);
-    height: calc(100% - 10px);
-    border-radius: 15px;
+    height: calc(100% - 20px);
+    border-radius: 8px;
 }
 
 @media only screen and (min-device-width: 768) {
