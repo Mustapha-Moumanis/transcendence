@@ -111,7 +111,8 @@ class EventsTournamentSerializer(serializers.ModelSerializer):
 		bracket02_data = data.pop('bracket02')
 		bracketFinal_data = data.pop('bracketFinal')
 
-		tournament = LocalTournament.objects.get(key=data['key'], user=self.context['request'].user)
+		user = self.context['request'].user
+		tournament = LocalTournament.objects.get(key=data['key'], user=user)
 		
 		if tournament.matchs.count() != 0:
 			raise serializers.ValidationError({"detail" : "This tournament already has matches and cannot be modified."})
@@ -138,10 +139,28 @@ class EventsTournamentSerializer(serializers.ModelSerializer):
 		bracket02 = create_match(bracket02_data)
 		bracketFinal = create_match(bracketFinal_data)
 
-		tournament.matchs.add(bracket01, bracket02, bracketFinal)
+		mainPlayer = tournament.players.all().first()
 
+		if bracket01.winner == mainPlayer:
+			user.exp += 500 if bracketFinal.winner == mainPlayer else 300
+		else:
+			user.exp += 100
+
+		if bracketFinal.winner == mainPlayer:
+			user.wins += 1
+		else:
+			user.losses += 1
+
+		if user.exp >= 1000:
+			user.level += 1
+			user.exp -= 1000
+
+		tournament.matchs.add(bracket01, bracket02, bracketFinal)
 		tournament.champion = tournament.players.get(name=bracketFinal.winner)
 		tournament.save()
+
+		user.save()
+
 		return data
 
 	class Meta:
