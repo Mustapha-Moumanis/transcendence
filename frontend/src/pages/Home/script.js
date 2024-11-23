@@ -5,6 +5,7 @@ import { countries } from '../Settings/script.js';
 export function drawtheLevel(spinner) {
 
 	const lvl = spinner.attributes.level_data.value;
+	const exp = spinner.attributes.exp_data.value;
 
 	let rootStyles = getComputedStyle(document.documentElement);
 	let color = rootStyles.getPropertyValue('--primary-color').trim();
@@ -14,7 +15,7 @@ export function drawtheLevel(spinner) {
 	let width = spinner.width;
 	let height = spinner.height;
 	let degrees = 0;
-	let new_degrees = (lvl/1000)*280;
+	let new_degrees = (exp/(lvl * 1000))*280;
 	let animation_loop;
 	
 	function drawArc(degrees) {
@@ -141,7 +142,8 @@ function homeData(){
 	profile.querySelector(".total-profits #losses span").innerHTML = `${userData.losses}`;
 
 	const spinner = document.getElementById("spinner");
-	spinner.attributes.level_data.value = userData.exp;
+	spinner.attributes.level_data.value = userData.level;
+	spinner.attributes.exp_data.value = userData.exp;
     drawtheLevel(spinner);
 	
 	// game

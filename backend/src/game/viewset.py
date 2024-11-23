@@ -26,9 +26,10 @@ class LocalGameHistoryViewSet(viewsets.ModelViewSet):
 			user.losses += 1
 			user.exp += 100
 		
-		if user.exp >= 1000:
+		max_exp = user.level * 1000
+		if user.exp >= max_exp:
 			user.level += 1
-			user.exp -= 1000
+			user.exp -= max_exp
 
 		local_game.save()
 		user.save()
