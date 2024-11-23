@@ -124,6 +124,11 @@ export default class Ball extends EventDispatcher{
         this.mesh.position.copy(tPos)
     }
 
+    set_ball_speed(speed) {
+        this.speed = speed;
+        this.velocity.normalize().multiplyScalar(this.speed);
+    }
+
 
 
 

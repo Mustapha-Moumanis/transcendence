@@ -12,8 +12,13 @@ import { displayFieldError, showAlert } from '../../utils/js/auth.js'
 
 let gameRunning = false;
 
-function reset_game(camera, playerPaddle, player2Paddle, ball) {
-    camera.position.set(0, 25, 30);
+function reset_game(camera, playerPaddle, player2Paddle, ball, gameData) {
+    if (gameData.camPos == 2) {
+        camera.position.set(0, 40, 0);
+    }
+    else{
+        camera.position.set(0, 25, 30);
+    }
     camera.lookAt(new THREE.Vector3(0, 2.5, 0));
     playerPaddle.mesh.position.set(0, 0, 15);
     player2Paddle.mesh.position.set(0, 0, -15);
@@ -29,6 +34,12 @@ function reset_game(camera, playerPaddle, player2Paddle, ball) {
 function loadLogic(data, mode, tournament, tournamentKey) {
     // console.log("tournament key: ", tournamentKey);
     gameRunning = true;
+    let gameData = JSON.parse(localStorage.getItem("gameData"));
+    // console.log(gameData);
+    if (!gameData) gameData = { "camPos": 0, "FOV": 1, "ballSpeed": 1};
+    let fovARR = [80, 90, 100];
+    let camPosARR = [20, 25, 30];
+    let ballSpeedARR = [20, 25, 30];
     let countDownStarted = false;
     let gamePaused = false;
     let player1Name = data.player1;
@@ -103,28 +114,77 @@ function loadLogic(data, mode, tournament, tournamentKey) {
         height: window.innerHeight,
     }
     /* Camera */
-    const fov = 90
+    let fov;
+    if (fovARR[gameData.FOV] && (fovARR[gameData.FOV] <= 100 && fovARR[gameData.FOV] >= 80)) {
+        fov = fovARR[gameData.FOV];
+    }
+    else {
+        fov = 90
+    }
+    console.log("FOV set to: ", fov);
     let camera = new THREE.PerspectiveCamera(fov, sizes.width / sizes.height, 0.1)
-    camera.position.set(0, 25, 30)
-    camera.lookAt(new THREE.Vector3(0, 2.5, 0))
-    
+
     /* renderer */
     const renderer = new THREE.WebGLRenderer()
+    
+    /* OrbitControls */
+    const controls = new OrbitControls(camera, renderer.domElement)
+    controls.enableDamping = true
+
+    if (gameData.camPos == 2) {
+        camera.position.set(0, 40, 0)
+        camera.rotation.z += Math.PI/2
+        camera.updateProjectionMatrix();
+        controls.update();
+    
+
+        // camera.lookAt(new THREE.Vector3(0, -2.5, 0))
+        
+    }
+    else{
+        camera.position.set(0, 25, 30)
+        camera.lookAt(new THREE.Vector3(0, 2.5, 0))
+    }
     
     /* Meshes */
     const playerPaddle = new Paddle(scene, new THREE.Vector3(0, 0, 15), boundaries);
     const player2Paddle = new Paddle(scene, new THREE.Vector3(0, 0, -15), boundaries);
     const ball = new Ball(scene, boundaries, [playerPaddle, player2Paddle], data);
+    if (ballSpeedARR[gameData.ballSpeed]  && (ballSpeedARR[gameData.ballSpeed] <= 30 && ballSpeedARR[gameData.ballSpeed] >= 20)) {
+        ball.set_ball_speed(ballSpeedARR[gameData.ballSpeed]);
+        console.log("Ball speed set to: ", ballSpeedARR[gameData.ballSpeed]);
+    }
     
     
     document.querySelector('#root').innerHTML = `<div class="gameInterface">
-                                                 <div id="score-player1" class="score">0</div>
-                                                 <div id="score-player2" class="score">0</div>
-                                                 <a href="#home">
-                                                 <button id="Home-button" class="btn-main">Back to Home</button>
-                                                 </a>
-                                                 <div id="countdown" class="countdown"></div>
-                                                 </div>`;
+                                                    <div id="player1info" class="playerinfo">
+                                                        <div id="player1" class="player">${player1Name}</div>
+                                                        <div id="score-player1" class="score">0</div>
+                                                        <div id="WASD" class="keys">
+                                                            <div class="up arr" id="Wkey">W</div>
+                                                            <br />
+                                                            <div class="left arr">A</div>  
+                                                            <div class="down arr">S</div>
+                                                            <div class="right arr">D</div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="player2info" class="playerinfo">
+                                                        <div id="player2" class="player">${player2Name}</div>
+                                                        <div id="score-player2" class="score">0</div>
+                                                        <div id="ARROWKEYS" class="keys">
+                                                            <div class="up arr"><i class="fa fa-arrow-up"></i></div>
+                                                            <br />
+                                                            <div class="left arr"><i class="fa fa-arrow-left"></i></div>  
+                                                            <div class="down arr"><i class="fa fa-arrow-down"></i></div>
+                                                            <div class="right arr"><i class="fa fa-arrow-right"></i></div>
+                                                        </div>
+                                                    </div>
+                                                    <a href="#home">
+                                                        <button id="Home-button" class="btn-main">Back to Home</button>
+                                                    </a>
+                                                    <div id="countdown" class="countdown"></div>
+                                                 </div>
+                                                 <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">`;
     document.querySelector('#root').appendChild(renderer.domElement);
     handleResize()
     const HomeButton = document.getElementById('Home-button');
@@ -144,7 +204,7 @@ function loadLogic(data, mode, tournament, tournamentKey) {
         } else if (data.player2 === e.message) {
             score['player2'] += 1;
         }
-        if ((score['player1'] >= 2 || score['player2'] >= 2) && mode === 'single') {
+        if ((score['player1'] >= 5 || score['player2'] >= 5) && mode === 'single') {
             let finalResultText;
     
             if (score['player1'] > score['player2']) {
@@ -188,7 +248,7 @@ function loadLogic(data, mode, tournament, tournamentKey) {
                 }, 200);
             });
         }
-        else if ((score['player1'] >= 2 || score['player2'] >= 2) && mode === 'tournament') {
+        else if ((score['player1'] >= 5 || score['player2'] >= 5) && mode === 'tournament') {
             //end tourney
             let finalResultText;
             let buttonText;
@@ -305,7 +365,7 @@ function loadLogic(data, mode, tournament, tournamentKey) {
                     }, 200);
                     return ;
                 }
-                reset_game(camera, playerPaddle, player2Paddle, ball);
+                reset_game(camera, playerPaddle, player2Paddle, ball, gameData);
                 document.querySelector('canvas').classList.remove('blur');
                 document.querySelector('.gameFinalResult').remove();
                 gamePaused = false;
@@ -359,10 +419,7 @@ function loadLogic(data, mode, tournament, tournamentKey) {
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2;
     renderer.shadowMap.type = THREE.VSMShadowMap;
-    
-    /* OrbitControls */
-    const controls = new OrbitControls(camera, renderer.domElement)
-    controls.enableDamping = true
+
     
     /* Lights */
     const ambientLight = new AmbientLight(0xffffff, 1.5)
@@ -385,6 +442,118 @@ function loadLogic(data, mode, tournament, tournamentKey) {
             document.getElementById('score-player2').textContent = score.player2;
         }
     }
+
+    let arrowKeyUp = document.querySelector('#ARROWKEYS .up');
+    let arrowKeyDown = document.querySelector('#ARROWKEYS .down');
+    let arrowKeyLeft = document.querySelector('#ARROWKEYS .left');
+    let arrowKeyRight = document.querySelector('#ARROWKEYS .right');
+    let wasdUp = document.querySelector('#WASD .up');
+    let wasdDown = document.querySelector('#WASD .down');
+    let wasdLeft = document.querySelector('#WASD .left');
+    let wasdRight = document.querySelector('#WASD .right');
+
+    // console.log(arrowkeyUp);
+
+    wasdUp.addEventListener('touchstart', (e) => {
+        console.log("PRESSED");
+        moveLeft = true;
+    });
+    wasdUp.addEventListener('touchend', (e) => {
+        moveLeft = false;
+    });
+
+    wasdDown.addEventListener('touchstart', (e) => {
+        console.log("PRESSED");
+        moveRight = true;
+    });
+    wasdDown.addEventListener('touchend', (e) => {
+        moveRight = false;
+    });
+
+    wasdLeft.addEventListener('touchstart', (e) => {
+        console.log("PRESSED");
+        moveLeft = true;
+    });
+    wasdLeft.addEventListener('touchend', (e) => {
+        moveLeft = false;
+    });
+
+    wasdRight.addEventListener('touchstart', (e) => {
+        console.log("PRESSED");
+        moveRight = true;
+    });
+    wasdRight.addEventListener('touchend', (e) => {
+        moveRight = false;
+    });
+
+     wasdUp.addEventListener('touchstart', (e) => {
+        console.log("PRESSED");
+        moveLeft = true;
+    });
+    wasdUp.addEventListener('touchend', (e) => {
+        moveLeft = false;
+    });
+
+    wasdDown.addEventListener('touchstart', (e) => {
+        console.log("PRESSED");
+        moveRight = true;
+    });
+    wasdDown.addEventListener('touchend', (e) => {
+        moveRight = false;
+    });
+
+    wasdLeft.addEventListener('touchstart', (e) => {
+        console.log("PRESSED");
+        moveLeft = true;
+    });
+    wasdLeft.addEventListener('touchend', (e) => {
+        moveLeft = false;
+    });
+
+    wasdRight.addEventListener('touchstart', (e) => {
+        console.log("PRESSED");
+        moveRight = true;
+    });
+    wasdRight.addEventListener('touchend', (e) => {
+        moveRight = false;
+    });
+
+
+
+
+    arrowKeyUp.addEventListener('touchstart', (e) => {
+        console.log("PRESSED");
+        moveLeft2 = true;
+    });
+    arrowKeyUp.addEventListener('touchend', (e) => {
+        moveLeft2 = false;
+    });
+
+    arrowKeyDown.addEventListener('touchstart', (e) => {
+        console.log("PRESSED");
+        moveRight2 = true;
+    });
+    arrowKeyDown.addEventListener('touchend', (e) => {
+        moveRight2 = false;
+    });
+
+    arrowKeyLeft.addEventListener('touchstart', (e) => {
+        console.log("PRESSED");
+        moveLeft2 = true;
+    });
+    arrowKeyLeft.addEventListener('touchend', (e) => {
+        moveLeft2 = false;
+    });
+
+    arrowKeyRight.addEventListener('touchstart', (e) => {
+        console.log("PRESSED");
+        moveRight2 = true;
+    });
+    arrowKeyRight.addEventListener('touchend', (e) => {
+        moveRight2 = false;
+    });
+
+
     
     function onKeyDown(event) {
         switch (event.key) {
@@ -469,6 +638,7 @@ function loadLogic(data, mode, tournament, tournamentKey) {
     startCountdown();
     
     function tic() {
+        // console.log("x is: ", camera.position.x, "y is: ", camera.position.y, "z is: ", camera.position.z, "looking at: ");
         if (!gameRunning) {
             return;
         }
@@ -586,8 +756,6 @@ export function gameActions(html) {
     
 
     document.getElementById('home-content').innerHTML = html;
-    let gameData = JSON.parse(localStorage.getItem("gameData"));
-    if (!gameData) gameData = { "camPos": 0, "FOV": 1, "ballSpeed": 1, "tournamentNum": 1 };
 
 	try {
         //start animation here
@@ -643,13 +811,32 @@ export function gameActions(html) {
         });
 
         startGame.addEventListener('click', () => {
-          nameData = {
-            player1: player1Name.value,
-            player2: player2Name.value
-          }
-          // console.log(nameData);
-          nickContent.classList.add('d-none');
-          gameStart(nameData, 'single');
+            nameData = {
+                player1: player1Name.value,
+                player2: player2Name.value
+            }
+            
+        const pattern = /^[a-zA-Z][a-zA-Z_-]{0,19}$/;
+        if (nameData.player1 === '') {
+            displayFieldError(player1Name.parentElement, 'Please fill the player 1 field');
+        }
+        else if(nameData.player2 === '') {
+            displayFieldError(player2Name.parentElement, 'Please fill the player 2 field');
+        }
+        else if (nameData.player1 === nameData.player2) {
+          showAlert('error', 'Player names must be different');
+        }
+        else if (!pattern.test(nameData.player1)) {
+            displayFieldError(player1Name.parentElement, 'Player 1 name must start with a letter and can only contain letters, numbers, underscores and hyphens');
+        }
+        else if (!pattern.test(nameData.player2)) {
+            displayFieldError(player2Name.parentElement, 'Player 2 name must start with a letter and can only contain letters, numbers, underscores and hyphens');
+        }
+        else{
+            // console.log(nameData);
+            nickContent.classList.add('d-none');
+            gameStart(nameData, 'single');
+        }
         });
       } catch (error) {} 
     
