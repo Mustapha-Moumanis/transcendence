@@ -128,7 +128,8 @@ function setProfileData(data){
     handlleBtn(data);
 
     const spinner = document.querySelector(".image-content #spinner");
-	spinner.attributes.level_data.value = data.exp;
+	spinner.attributes.level_data.value = data.level;
+	spinner.attributes.exp_data.value = data.exp;
     drawtheLevel(spinner);
 
     matchHistory(data.game_history, data.avatar);

@@ -151,9 +151,10 @@ class EventsTournamentSerializer(serializers.ModelSerializer):
 		else:
 			user.losses += 1
 
-		if user.exp >= 1000:
+		max_exp = user.level * 1000
+		if user.exp >= max_exp:
 			user.level += 1
-			user.exp -= 1000
+			user.exp -= max_exp
 
 		tournament.matchs.add(bracket01, bracket02, bracketFinal)
 		tournament.champion = tournament.players.get(name=bracketFinal.winner)
