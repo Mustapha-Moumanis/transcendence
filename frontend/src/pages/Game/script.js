@@ -12,7 +12,12 @@ import { displayFieldError, showAlert } from '../../utils/js/auth.js'
 
 let gameRunning = false;
 
-function reset_game(camera, playerPaddle, player2Paddle, ball, gameData) {
+function reset_game(camera, playerPaddle, player2Paddle, ball, gameData, player1Name, player2Name) {
+    let player1Element = document.getElementById('player1');
+    let player2Element = document.getElementById('player2');
+
+    player1Element.innerHTML = player1Name;
+    player2Element.innerHTML = player2Name;
     if (gameData.camPos == 2) {
         camera.position.set(0, 40, 0);
     }
@@ -306,7 +311,7 @@ function loadLogic(data, mode, tournament, tournamentKey) {
                     tournament.Match2.winner_name = winner;
                     player1Name = tournament.Match1.winner_name;
                     player2Name = winner;
-                    tournament.final = new Match(tournament.Match1.winner_name, tournament.Match2.winner_name);
+                    tournament.final = new Match(tournament.getPlayerByName(tournament.Match1.winner_name), tournament.getPlayerByName(tournament.Match2.winner_name));
                     // console.log(tournament);
                     round += 1;
                 }
@@ -326,20 +331,20 @@ function loadLogic(data, mode, tournament, tournamentKey) {
                     let postData = {
                         "key": tournamentKey,
                         "bracket01": {
-                            "player1": tournament.Match1.player1,
-                            "player2": tournament.Match1.player2,
+                            "player1": tournament.Match1.player1.nameGetter(),
+                            "player2": tournament.Match1.player2.nameGetter(),
                             "player1_score": tournament.Match1.player1_score,
                             "player2_score": tournament.Match1.player2_score,
                         },
                         "bracket02": {
-                            "player1": tournament.Match2.player1,
-                            "player2": tournament.Match2.player2,
+                            "player1": tournament.Match2.player1.nameGetter(),
+                            "player2": tournament.Match2.player2.nameGetter(),
                             "player1_score": tournament.Match2.player1_score,
                             "player2_score": tournament.Match2.player2_score,
                         },
                         "bracketFinal": {
-                            "player1": tournament.final.player1,
-                            "player2": tournament.final.player2,
+                            "player1": tournament.final.player1.nameGetter(),
+                            "player2": tournament.final.player2.nameGetter(),
                             "player1_score": tournament.final.player1_score,
                             "player2_score": tournament.final.player2_score,
                         }
@@ -355,6 +360,7 @@ function loadLogic(data, mode, tournament, tournamentKey) {
                         .then(response => response.json())
                         .then(data => {
                             console.log('Success:', data);
+                            console.log(tournament)
                         })
                         .catch((error) => {
                             console.error('Error:', error);
@@ -365,7 +371,7 @@ function loadLogic(data, mode, tournament, tournamentKey) {
                     }, 200);
                     return ;
                 }
-                reset_game(camera, playerPaddle, player2Paddle, ball, gameData);
+                reset_game(camera, playerPaddle, player2Paddle, ball, gameData, player1Name, player2Name);
                 document.querySelector('canvas').classList.remove('blur');
                 document.querySelector('.gameFinalResult').remove();
                 gamePaused = false;
@@ -706,7 +712,6 @@ function gameStart(data, mode) {
     }
     else if (mode === 'tournament') {
         let names = [data.player1, data.player2, data.player3, data.player4];
-        let tournament = new Tournament(names);
         let player1Tname = document.getElementById('Tplayer1');
         let player2Tname = document.getElementById('Tplayer2');
         let player3Tname = document.getElementById('Tplayer3');
@@ -745,6 +750,8 @@ function gameStart(data, mode) {
         .then(successData => {
             console.log('Success:', successData);
             const tournamentKey = successData.key;
+            let tournament = new Tournament(successData);
+            console.log(tournament);
             loadLogic(data, 'tournament', tournament, tournamentKey);
             tournamentcontent.classList.add('d-none');
         })
