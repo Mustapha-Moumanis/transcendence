@@ -20,8 +20,8 @@ tournament_events = EventsTournamentPlayersViewSet.as_view({
 })
 
 urlpatterns = [
-    path('game-history/', game_history_list, name='game-history-list'),
-    path('tournament/', tournament_list, name='tournament-list'),
-    path('tournament/create/', tournament_create, name='tournament_create'),
-    path('tournament/events/', tournament_events, name='tournament-events'),
+    path('api/game-history/', game_history_list, name='game-history-list'),
+    path('api/tournament/', tournament_list, name='tournament-list'),
+    path('api/tournament/create/', tournament_create, name='tournament_create'),
+    path('api/tournament/events/', tournament_events, name='tournament-events'),
 ]
