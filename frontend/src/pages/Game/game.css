@@ -1,27 +1,53 @@
 .gameInterface {
     position: fixed;
-    width: 100vw;
+    width: 100%;
 }
 
 .score {
-    position: absolute;
-	font-family: 'Orbitron', sans-serif;
-    font-size: 5em;
-    font-weight: bold;;
-    padding: 50px;
 	padding-top: 10px;
+    font-size: 50px;
+}
+
+.playerinfo {
+    font-family: var(--title-font);
+    background: rgba(0, 0, 0, 0.175);
+    position: fixed;
+    display: flex;
+    padding: 10px;
+    flex-direction: column;
+    align-items: center;
+    font-weight: bold;
+    margin: 8px;
+    border-radius: 10px;
+}
+
+#player1info {
+    top: 0;
+    left: 0;
+}
+
+#player2info {
+    top: 0;
+    right: 0;
 }
 
 #score-player1 {
     font-family: var(--title-font);
-    top: 30px;
-    left: 10px;
 }
 
 #score-player2 {
     font-family: var(--title-font);
-    top: 30px;
-    right: 10px;
+}
+
+#Home-button {
+    position: fixed;
+    margin: 8px;
+    bottom: 0;
+    left: 0;
+}
+
+.player {
+    font-size: 50px;
 }
 
 .btn-game {
@@ -170,4 +196,73 @@
     font-family: var(--title-font);
     font-size: 100px;
 
+}
+
+
+.gameInterface .keys {
+    /* font-family: 'Lato', sans-serif;     */
+    padding: 10px;
+    text-align: center;
+    margin: auto;
+  }
+  
+  .gameInterface .arr {
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    background: grey;
+    color: white;
+    font-size: 22px;
+    border-right: 10px solid darken(grey, 20);
+    border-bottom: 10px solid darken(grey, 20);
+    border-left: 10px solid darken(grey, 15);
+    border-top: 10px solid darken(grey, 10);  
+    display: inline-block;
+    margin: 5px;
+    transition: all .05s linear;
+    user-select: none;
+    font-weight: 900;
+  }
+  .gameInterface .arr:active {
+      border-bottom: 8px solid darken(grey, 20);
+      text-shadow: 0 0 10px white, 0 0 10px white, 0 0 20px white;
+      transform: translate(0, 2px);
+  }
+
+
+@media (max-width: 768px) {
+    .playerinfo {
+        grid-gap: 12px;
+        flex-direction: row;
+        align-items: center;
+    }
+    #player1info {
+        top: auto;
+        left: auto;
+        right: 0;
+        bottom: 0;
+    }
+    #player2info {
+        right: auto;
+        left: 0;
+    }
+    .player, .score {
+        font-size: 28px;
+        padding: 0px;
+    }
+
+    #player2info .player, #player2info .score {
+        transform: rotate(180deg);
+        
+    }
+
+    .keys .up, .keys .down, .keys br{
+        display: none;
+    }
+    .keys {
+        display: flex;
+        gap: 30px;
+    }
 }
