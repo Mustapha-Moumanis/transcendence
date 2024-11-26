@@ -27,4 +27,5 @@ user.save()
 "
 fi
 
+# exec python manage.py runsslserver 0.0.0.0:8000 --certificate $CERTS_ --key $P_KEY
 exec python manage.py runserver 0.0.0.0:8000

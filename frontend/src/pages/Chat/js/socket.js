@@ -34,7 +34,7 @@ function setupWebSocket() {
     let welcome = document.querySelector(".welcome h5");
     welcome.innerHTML = `Welcome ${user}`;
 
-    const protocol = 'ws://';
+    const protocol =  window.location.protocol === 'https:' ? 'wss://' : 'ws://';
     const wsUrl = `${protocol}${window.location.host}/ws/${user}/`;
     return new WebSocket(wsUrl);
 }

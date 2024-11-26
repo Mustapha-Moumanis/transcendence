@@ -9,6 +9,7 @@ class FriendManager(models.Manager):
 
         user_friends = self.filter(user=user, isPending=True)
         followed_friends = self.filter(followedUser=user, isPending=True)
+
         return user_friends | followed_friends
     
     def friends_list(self, user):
@@ -22,10 +23,10 @@ class FriendManager(models.Manager):
     def are_friends(self, user1, user2):
         """ Check if to users are friends """
 
-        friends1 = self.friends(user1).exists()
-        friends2 = self.friends(user2).exists()
+        friends1 = self.filter(user=user1, followedUser=user2, isPending=True).exists()
+        friends2 = self.filter(user=user2, followedUser=user1, isPending=True).exists()
 
-        return friends1 and friends2
+        return friends1 or friends2
     
     def remove_friend(self, user1, user2):
         """ Remove friend """
@@ -92,10 +93,8 @@ class FriendManager(models.Manager):
         return False, "No pending friend request found"
 
 class Friend(models.Model):
-    # is the user that followedUser send u a request.
     user = models.ForeignKey(User, related_name='friends', on_delete=models.CASCADE)
     followedUser = models.ForeignKey(User, related_name='followers', on_delete=models.CASCADE)
-    # isPending boolen if true is still not accecpt/decline if accept is false, decline remove.
     isPending = models.BooleanField()
 
     objects = FriendManager()

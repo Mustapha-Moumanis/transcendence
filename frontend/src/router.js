@@ -48,7 +48,7 @@ function Router() {
       return;
     }
     else {
-      let profileName = window.location.hash.match(/#profiles\/+([a-zA-Z0-9_]+)/);
+      let profileName = window.location.hash.match(/#profiles\/+([a-zA-Z0-9_-]+)/);
       var username = null;
       if (path === "profiles" && profileName) username = profileName[1];
       else path = window.location.hash.slice(1);

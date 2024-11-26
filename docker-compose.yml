@@ -17,7 +17,7 @@ services:
         build : ./frontend/
         image : nginx
         ports:
-            - 8080:80
+            - 443:443
         restart: on-failure
         env_file: .env
         networks:
@@ -25,6 +25,7 @@ services:
         volumes:
             - ./frontend/src/:/var/www/html/
             - media:/var/www/html/static
+            # - ssl:/etc/ssl/
 
     web:
         container_name: backend
@@ -39,6 +40,7 @@ services:
         volumes:
             - ./backend/src/:/code/
             - media:/code/static
+            # - ssl:/etc/ssl/
 
 networks:
     transcendence-network:
@@ -46,3 +48,4 @@ networks:
 
 volumes:
     media:
+    # ssl:
