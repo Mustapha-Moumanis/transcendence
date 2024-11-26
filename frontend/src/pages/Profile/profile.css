@@ -124,6 +124,11 @@
 	.div-profile-info span {
 		font-size: small;
 	}
+
+	.Row1separetor {
+		border-right: 0 !important;
+		border-bottom: 1px solid var(--base-hover);
+	}
 }
 
 @media (max-width: 480px) {
@@ -203,4 +208,13 @@
 
 .profile-history {
 	height: 70%;
+}
+
+.Row1separetor {
+	padding: 5px 5px 0 5px;
+	border-right: 1px solid var(--base-hover);
+}
+
+.Row2separetor {
+	padding: 5px 5px 0 5px;
 }

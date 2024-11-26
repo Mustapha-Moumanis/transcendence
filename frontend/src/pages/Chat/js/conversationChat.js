@@ -21,9 +21,7 @@ function loadingContent(){
     const container = document.querySelector("#id_chat_item_container");
     const div = document.createElement("div");
     div.classList.add("chat-loading");
-    div.innerHTML = `
-            <div class="chat-line"></div>type="file"
-    `;
+    div.innerHTML = `<div class="chat-line"></div>`;
     container.appendChild(div);
     scrollnb++;
     removeScroll();
@@ -33,10 +31,8 @@ function loadingContent(){
 function scrollHandler() {
     const scrollelement = document.querySelector(".chat-box");
     oldScrollHeight = scrollelement.scrollHeight;
-    var scrollPositionY = scrollelement.clientHeight- scrollelement.scrollTop;
-
-    if (scrollPositionY === oldScrollHeight && scrollDisplay === true)
-        loadingContent();
+    var scrollPositionY = (scrollelement.clientHeight - scrollelement.scrollTop) - 1;
+    if (scrollPositionY === oldScrollHeight && scrollDisplay === true) loadingContent();
 }
 
 function focusScroll() {
@@ -272,6 +268,8 @@ function createEndOfConv(data){
 function stopTyping(data){
     var index = dataListUsers.findIndex(name => name.username === data.username);
     const listUserCards = document.querySelectorAll(".chat-list .chat-user-card");
+    if (index === -1 || listUserCards.length === 0) return;
+
     const userContent = listUserCards[index].querySelector(".chat-user-content");
     userContent.querySelector("p").classList.remove("d-none");
     userContent.querySelector(".chat-list-typing").classList.add("d-none");
@@ -282,8 +280,10 @@ function stopTyping(data){
 
 function startTyping(data){
     if (currentSendto !== data.username){
-        var index = dataListUsers.findIndex(name => name.username === data.username);
+        var index = dataListUsers.findIndex(name => name.username === data.username);    
         const listUserCards = document.querySelectorAll(".chat-list .chat-user-card");
+        if (index === -1 || listUserCards.length === 0) return;
+    
         const userContent = listUserCards[index].querySelector(".chat-user-content");
         userContent.querySelector("p").classList.add("d-none");
         userContent.querySelector(".chat-list-typing").classList.remove("d-none");

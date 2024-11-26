@@ -226,6 +226,23 @@
     margin: 10px 15px;
 }
 
+.chat-line {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    box-shadow: rgba(171, 173, 199, 0.6) 0px 0px 4px 2px;
+}
+
+.chat-loading .chat-line:nth-last-child(1) {
+    animation: preloader .4s ease-in-out alternate .0s infinite;
+}
+
+@keyframes preloader {
+    100% { transform: scale(2); }
+}
+/* --------- Loading animation --------- */
+
+
 .loading-chat {
     height: 100%;
     border-radius : 20px;

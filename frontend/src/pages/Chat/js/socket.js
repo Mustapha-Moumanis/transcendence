@@ -104,6 +104,11 @@ function handleMessageFromSocket(event){
     if (data.type === "Error") handleRefrshTocken();
     else lastCmd.splice(0,1);
 
+    if (document.querySelector(".gameInterface")){
+        console.log("gaming")
+        return;
+    }
+
     if (data.type === "Blocked") friendBlockedYou(data);
     else if (data.type === "reqConfirm") reqConfirm(data.listFriends);
     else if (data.type === "reqDelete") reqDelete(data);
