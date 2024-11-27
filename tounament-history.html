@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tournament</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+
+    <style>
+        * {
+            margin: 0;
+        }
+
+        body {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .tounament-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 10px;
+            height: fit-content;
+            background-color: var(--base);
+
+            background-color: #070707;
+        }
+        .tounament-winner {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            padding: 10px;
+            width: 100%;
+            gap: 10px;
+        }
+        
+        .tounament-card .avatar {
+            width: 60px;
+            height: 60px;
+            /* max-width: 100%;
+            margin-right: -15px */
+        }
+
+        .tounament-card .avatar img {
+            max-width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+
+            background-color: blanchedalmond;
+        }
+
+        /* .tounament-users {
+            display: flex;
+            align-items: center;
+        } */
+        .tounament-card .small-avatar {
+            height: 30px;
+            width: 30px;
+        }
+        
+        
+        /* .tounament-winner .winner-avatar {
+            
+        } */
+        
+        /* .tounament-winner .winner-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            
+            background-color: blanchedalmond;
+        } */
+            
+        .tounament-winner span {
+            color: var(--title-color);
+            font-weight: bold;
+            text-align: center;
+            
+            color: white;
+        }
+        
+        .tounament-users {
+            display: flex;
+            padding: 0 10px;
+        }
+
+        .tounament-users .avatar:not(:first-child) {
+            -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M46 50C46 27.8024 32.8425 8.68976 13.9078 0H100V100H13.9078C32.8425 91.3102 46 72.1976 46 50Z"/></svg>');
+            mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M46 50C46 27.8024 32.8425 8.68976 13.9078 0H100V100H13.9078C32.8425 91.3102 46 72.1976 46 50Z"/></svg>');
+            -webkit-mask-size: 100% 100%;
+            mask-size: 100% 100%;
+        }
+
+        .tounament-users .small-avatar + .small-avatar {
+           margin-left: -10px;
+        }
+
+
+        .tournament-detail {
+            padding: 10px;
+        }
+        @media (max-width: 1200px) {
+            .tounament-winner {
+                flex-direction: column;
+                justify-content: center;
+                gap: 5px;
+            }
+
+            .tounament-winner span {
+                font-size: small;
+            }
+        }
+
+
+
+
+        .btn-main, .btn-sec {
+    display: inline-block;
+    font-family: var(--title-font);
+    text-align: center;
+    color: white;
+    outline: 0;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 5px 20px 5px 20px;
+    font-size: 14px;
+    border: none;
+    text-transform: uppercase;
+    border-radius: 8px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    overflow: hidden;
+    background-color: #C4F000;
+    border: 1px solid #070707;
+}
+.btn-main,
+.btn-sec,
+.form-border * {
+    -o-transition: 0.5s;
+    -ms-transition: 0.5s;
+    -moz-transition: 0.5s;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    outline: none;
+}
+
+.btn-main:hover,
+.btn-main:active,
+.activeBtn {
+    -webkit-box-shadow: 2px 2px 20px 0px rgba(196, 240, 0, 0.5);
+    -moz-box-shadow: 2px 2px 20px 0px rgba(196, 240, 0, 0.5);
+    box-shadow: 2px 2px 20px 0px rgba(196, 240, 0, 0.5);
+    color: white;
+    background-color: #070707;
+    border: 1px solid rgba(196, 240, 0, 0.6);
+}
+
+.btn-main:disabled, .btn-sec:disabled {
+    pointer-events: none;
+    opacity: 0.65;
+}
+    </style>
+</head>
+<body>
+    <div class="tounament-card">
+        <div class="tounament-winner">
+            <div class="avatar">
+                <img src="https://png.pngtree.com/png-vector/20241023/ourmid/pngtree-placeholder-default-image-png-image_13534213.png" alt="Avatar">
+            </div>
+            <span>User</span>
+        </div>
+
+        <div class="tounament-users">
+            <div class="avatar small-avatar">
+                <img src="https://png.pngtree.com/png-vector/20241023/ourmid/pngtree-placeholder-default-image-png-image_13534213.png" alt="#">
+            </div>
+
+            <div class="avatar small-avatar">
+                <img src="https://png.pngtree.com/png-vector/20241023/ourmid/pngtree-placeholder-default-image-png-image_13534213.png" alt="#">
+            </div>
+
+            <div class="avatar small-avatar">
+                <img src="https://png.pngtree.com/png-vector/20241023/ourmid/pngtree-placeholder-default-image-png-image_13534213.png" alt="#">
+            </div>
+
+            <div class="avatar small-avatar">
+                <img src="https://png.pngtree.com/png-vector/20241023/ourmid/pngtree-placeholder-default-image-png-image_13534213.png" alt="#">
+            </div>
+        </div>
+
+        <div class="tournament-detail">
+            <span class="btn-main">See Brackets</span>
+        </div>
+    </div>
+</body>
+</html>
