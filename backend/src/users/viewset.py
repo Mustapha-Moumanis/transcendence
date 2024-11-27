@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from .models import User
+from friends.models import BlockedUser
 from .serializers import ProfilesSerializer
 from .permissions import ProfilePermissions
 
@@ -10,10 +11,16 @@ class ProfilesViewSet(viewsets.ReadOnlyModelViewSet):
     lookup_field = 'username'
 
     def get_queryset(self):
-        return User.objects.exclude(username=self.request.user.username)
-    
-    def destroy(self, request, *args, **kwargs):
-        pass
+        current_user = self.request.user
+        # NOTE get list of blocked users and use flat to querying for one field not a list of tuples
+
+        blocked_users = BlockedUser.objects.filter(blocker=current_user).values_list('blocked', flat=True)
+        blocked_me = BlockedUser.objects.filter(blocked=current_user).values_list('blocker', flat=True)
+
+        Removed_users = set(blocked_users).union(blocked_me)
+        Removed_users.add(current_user.id)
+
+        return User.objects.exclude(id__in=Removed_users)
 
 from dj_rest_auth.views import LogoutView
 from django.http import HttpResponseRedirect
