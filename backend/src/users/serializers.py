@@ -136,8 +136,8 @@ from datetime import date
 class MyUserDetailsSerializer(UserDetailsSerializer):
 	class Meta:
 		model = UserModel
-		extra_fields = ['username', 'email', 'first_name', 'last_name', 'avatar', 'status', 'country_select', 'date_of_birth', 'is2faActive', 'otpCheck', 'level', 'exp', 'wins', 'losses']
-		fields = ('pk', *extra_fields)
+		fields = ['username', 'email', 'first_name', 'last_name', 'avatar', 'status', 'country_select', 'date_of_birth', 'is2faActive', 'otpCheck', 'level', 'exp', 'wins', 'losses']
+		# fields = ('pk', *extra_fields)
 		read_only_fields = ('email', 'username', 'status', 'otpCheck', 'level', 'exp', 'wins', 'losses')
 
 	def validate_first_name(self, first_name):
@@ -196,7 +196,7 @@ class ProfilesSerializer(serializers.ModelSerializer):
 	
 	class Meta:
 		model = User
-		fields = ('id', 'username', 'first_name', 'last_name', 'country_select', 'status', 'avatar', 'level', 'exp', 'wins', 'losses', 'is_friend', 'state_request', 'game_history')
+		fields = ('username', 'first_name', 'last_name', 'country_select', 'status', 'avatar', 'level', 'exp', 'wins', 'losses', 'is_friend', 'state_request', 'game_history')
 
 	def to_representation(self, instance):
 		representation = super().to_representation(instance)

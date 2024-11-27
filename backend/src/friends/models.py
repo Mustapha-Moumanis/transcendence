@@ -106,5 +106,5 @@ class BlockedUser(models.Model):
     blocker = models.ForeignKey(User, related_name='blocker', on_delete=models.CASCADE, null=True, blank=True)
     blocked = models.ForeignKey(User, related_name='blocked', on_delete=models.CASCADE, null=True, blank=True)
 
-    # def __str__(self):
-    #     return f'{self.blocker.username} blocked {self.blocked.username}'
+    def __str__(self):
+        return f'{self.blocker.username} blocked {self.blocked.username}'

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from friends.models import Friend
+from friends.models import Friend, BlockedUser 
 from users.serializers import ProfilesSerializer
 from django.core.validators import URLValidator, ValidationError
 
@@ -69,3 +69,17 @@ class FriendSerializer(serializers.ModelSerializer):
         #     except ValidationError:
         #         representation['avatar'] = avatar_url.url
         # return representation
+
+class BlockSerializer(serializers.ModelSerializer):
+    username = serializers.SerializerMethodField()
+    avatar = serializers.SerializerMethodField()
+
+    class Meta:
+        model = BlockedUser
+        fields = ('username', 'avatar')
+
+    def get_username(self, obj):
+        return obj.blocked.username
+
+    def get_avatar(self, obj):
+        return f'{obj.blocked.avatar}'
