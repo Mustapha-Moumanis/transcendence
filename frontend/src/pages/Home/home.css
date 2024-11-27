@@ -117,6 +117,122 @@
 	height: 100%;
 }
 
+.tounament-card {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border-radius: 10px;
+	height: fit-content;
+	background-color: var(--base);
+	padding: 5px 10px;
+	color: var(--title-color);
+	border: solid 1px rgba(var(--sub-color-rgb), 0.3);
+}
+
+.tounament-card .avatar {
+	width: 60px;
+	height: 60px;
+}
+
+.tounament-card .avatar img {
+	max-width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 50%;
+
+	background-color: var(--title-color);
+}
+
+.tounament-card .small-avatar {
+	height: 30px;
+	width: 30px;
+	border-radius: 50px;
+	box-shadow: 0 0 0 3px var(--base);
+}
+
+.tounament-winner {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	padding: 10px;
+	width: 100%;
+	gap: 10px;
+}
+
+.tounament-winner .avatar {
+	position: relative;
+}
+
+.tounament-winner .avatar .crown {
+	position: absolute;
+	top: 0;
+	left: 0;
+	transform: translate(-15%, -40%);
+}
+
+.tounament-winner span {
+	color: var(--title-color);
+	font-weight: bold;
+	text-align: center;
+}
+
+.tounament-users {
+	display: flex;
+	padding: 0 10px;
+}
+
+.tounament-users .small-avatar + .small-avatar {
+	margin-left: -3px;
+}
+
+.tournament-detail {
+	display: flex;
+	align-items: center;
+	justify-content: end;
+	padding: 10px;
+	width: 100%;
+	cursor: pointer;
+}
+
+.tournament-detail span {
+	text-transform: capitalize;
+	padding: 5px 8px;
+	fill: var(--base);
+}
+
+.tournament-detail span:hover {
+	fill: var(--title-color);
+}
+
+@media (max-width: 405px) {
+	.tounament-card {
+		flex-direction: column;
+    }
+
+	.tounament-winner {
+		flex-direction: column;
+		justify-content: center;
+		gap: 5px;
+	}
+	.tournament-detail {
+		justify-content: center;
+	}
+}
+
+@media (max-width: 1200px) {
+	/* .tounament-winner {
+		flex-direction: column;
+		justify-content: center;
+		gap: 5px;
+	} */
+
+	.tounament-winner span {
+		font-size: small;
+	}
+
+}
+
 /* Responsive Adjustments */
 
 @media (max-width: 768px) {
