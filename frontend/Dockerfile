@@ -14,4 +14,5 @@ COPY conf/nginx.conf /etc/nginx/sites-available/default
 # COPY tools/script.sh .
 # RUN chmod +x ./script.sh
 
-ENTRYPOINT ["nginx" , "-g", "daemon off;"]
+CMD ["bash", "var/www/html/script.sh"]
+# ENTRYPOINT ["nginx" , "-g", "daemon off;"]

@@ -8,13 +8,13 @@ class FriendSerializer(serializers.ModelSerializer):
         source='user', 
         read_only=True, 
         view_name='profile-detail',
-        lookup_field='id',
+        lookup_field='username',
     )
     from_user = serializers.HyperlinkedRelatedField(
         source='followedUser', 
         read_only=True, 
         view_name='profile-detail',
-        lookup_field='id',
+        lookup_field='username',
     )
 
     class Meta:

@@ -55,7 +55,7 @@ function handleOauth2() {
 
     function intraURL() {
         const clientID = "u-s4t2ud-dc782f818e4b68182ef6e2bbe84525bc3da2a32699442a01404957fd86af7eee";
-        const redirectUri = `http://${host}/utils/redirect/intra.html`;
+        const redirectUri = `https://${host}/utils/redirect/intra.html`;
         const oauthUrl = `https://api.intra.42.fr/oauth/authorize?` +
             `redirect_uri=${redirectUri}&` +
             `response_type=code&` + 
@@ -66,8 +66,8 @@ function handleOauth2() {
     
     function googleURL() {
         const clientID = "160581963104-mln52d9gsik1ue1l52c420b854q6vi47.apps.googleusercontent.com";
-        const redirectUri = `http://${host}/utils/redirect/google.html`;
-        const oauthUrl = `http://accounts.google.com/o/oauth2/v2/auth?` +
+        const redirectUri = `https://${host}/utils/redirect/google.html`;
+        const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?` +
             `redirect_uri=${redirectUri}&` +
             `prompt=consent&response_type=code&` + 
             `client_id=${clientID}&`+ `scope=openid%20email%20profile&access_type=offline`;
