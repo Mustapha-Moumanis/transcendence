@@ -50,6 +50,9 @@ def update_seen_message(user, sendto):
         message.seen = True
         message.save()
 
+def unblocked(user, sendto):
+    BlockedUser.objects.filter(blocker=user, blocked=sendto).delete()
+
 def loadMoreContent(user, sendto, scrollnb):
     send_room = ChatRoom.objects.get(name="room_{}".format(sendto.username))
     user_room = ChatRoom.objects.get(name="room_{}".format(user.username))
@@ -172,6 +175,7 @@ def parseEvents(data, username):
         elif data["type"] == "showConversation":
             update_seen_message(user, room)
             return get_data(user, room)
+        elif data["type"] == "unblocked": unblocked(user, room)
         else: return loadMoreContent(user, room, int(data["message"]))
 
 # ------------- Check Username if exists -------------

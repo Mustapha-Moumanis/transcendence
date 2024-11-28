@@ -68,12 +68,122 @@
     background-color: var(--base-shade);
     border-radius: 8px !important;
     font-size: 20px;
+    color: var(--title-color);
 }
 
-.setting-header{
+.setting-header {
+    display: flex;
+    justify-content: space-between;
     border-bottom: solid 1px var(--base-hover);
     width: 100%;
     padding: 20px;
+}
+
+.btn-blocklist {
+    background: rgb(217, 63, 63);
+    align-content: center;
+    cursor: pointer;
+}
+
+.btn-blocklist:hover {
+    border: solid 1px rgb(217, 63, 63);
+    box-shadow: 2px 2px 20px 0px rgba(217, 63, 63, 0.5);
+    background: var(--base);
+}
+
+.blocklist-overlay {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100vh;
+    max-height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2001;
+}
+
+.blocklist-div {
+    display: flex;
+    flex-direction: column;
+    width: clamp(300px, 50%, 600px);
+    height: 70%;
+    background: var(--base);
+    border-radius: 10px;
+    padding: 30px;
+    grid-gap: 20px;
+    border:  2px rgba(var(--sub-color-rgb), 0.1);
+}
+
+.blocklist-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow-y: scroll;
+    width: 100%;
+    height: 100%;
+}
+
+.blocklist-header {
+    display: flex;
+    justify-content: start;
+    border-bottom: 1px solid var(--base-hover);
+    padding: 10px;
+    height: fit-content;
+    width: 100%;
+}
+
+.blocklist-header p {
+    color: var(--title-color);
+    margin: 0;
+    font-size: larger;
+    font-weight: bold;
+}
+
+.blocklist-user-card{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: default;
+    grid-gap: 0 15px;
+    width: 100%;
+    height: fit-content;
+}
+
+.blocklist-user-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.blocklist-username {
+    color: var(--title-color);
+    font-size: clamp(0.7rem, 1vw, 2rem);
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+}
+
+.unblocked-btn {
+    text-align: center;
+    padding: 10px;
+    font-size: clamp(10px, 1.2vw, 20px);
+    color: var(--title-color);
+    min-width: fit-content;
+    height: fit-content;
+    background-color: var(--base-shade);
+}
+
+.unblocked-btn:hover {
+    box-shadow: 2px 2px 20px 0px rgba(var(--base-hover-rgb), 0.9);
+    border: 1px solid rgba(var(--base-hover-rgb), 0.9);
 }
 
 .setting-chooses {
@@ -85,7 +195,6 @@
     align-items: flex-end;
     justify-content: center;
     cursor: pointer;
-    /* grid-gap: 20px; */
 }
 
 .btn-account, .btn-securty, .btn-setting-game {
@@ -152,7 +261,6 @@
     z-index: -1;
     top: 0;
     height: 100%;
-    padding: 20px;
 }
 
 .setting-profile {
@@ -308,28 +416,9 @@
         border-right: none;
         border-bottom: 1px solid var(--base-hover);
     }
-
-    /* .setting-game .game-setting-explantation {
-        padding: 20px;
-    } */
-     
-    /* account settings */
-/* 
-    .setting-profile {
-        flex-direction: column;
-    }
-    .setting-profile .user-picture {
-        flex-direction: column;
-    }
-    
-    .setting-profile .upload-pic {
-        flex-direction: column;
-        justify-content: center;
-    } */
-
 }
 
-@media (max-width: 480px){
+@media (max-width: 550px){
 
     .setting-chooses h6{
         display: none;
@@ -354,16 +443,21 @@
         flex-direction: column;
     }
 
+    .setting-profile {
+        flex-direction: column;
+    }
 
-.setting-profile {
-    flex-direction: column;
-}
-.setting-profile .user-picture {
-    flex-direction: column;
-}
+    .setting-profile .user-picture {
+        flex-direction: column;
+    }
 
-.setting-profile .upload-pic {
-    flex-direction: column;
-    justify-content: center;
-}
+    .setting-profile .upload-pic {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .blocklist-user-img {
+        width: 40px;
+        height: 40px;
+    }
 }

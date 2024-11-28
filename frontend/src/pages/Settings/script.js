@@ -1,6 +1,7 @@
 import { attachInputFocusListeners, getUserData, logout, verifyToken } from '../../utils/js/auth.js'
 import { displayFieldError, showAlert} from '../../utils/js/auth.js'
 import { logoutFetch } from '../../utils/js/utils.js';
+import { sendToBackend } from '../Chat/script.js';
 
 export const countries = [
 	{ "text": "Afghanistan", "value": "AF"},
@@ -727,7 +728,49 @@ function postData(userData){
     });
 }
 
+function creatBlockListCard(data){
+
+	const div = document.createElement('div');
+	div.classList.add("blocklist-user-card");
+	div.innerHTML = `<img class="blocklist-user-img" src="static/default/2.svg">
+                        <div class="blocklist-username">hilal_souad</div>
+		<button class="btn unblocked-btn badge d-flex align-items-center">Unblocked</button>`;
+	
+	div.querySelector(".unblocked-btn").addEventListener('click', () => {
+		div.remove();
+		// sendToBackend(data.username,"unblocked","");
+	})
+	return div;
+}
+
+function blockListBtn(){
+    
+	const blocklistButton = document.querySelector(".setting-header .btn-blocklist");
+	const blocklistOverlay = document.querySelector(".blocklist-overlay");
+    const blocklistDiv = document.querySelector(".blocklist-div");
+    // --------------- Search Button ---------------
+
+    blocklistButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        blocklistOverlay.classList.remove("d-none");
+    });
+
+    blocklistDiv.addEventListener('click', (event) => {
+        event.stopPropagation();
+    });
+
+    blocklistOverlay.addEventListener('click', (event) => {
+        event.stopPropagation();
+        blocklistOverlay.classList.add("d-none");
+    });
+
+	blocklistDiv.querySelector(".blocklist-content").append(creatBlockListCard());
+	
+	// Fetch data 
+}
+
 export function settingsActions() {
+	blockListBtn();
     var userData = JSON.parse(localStorage.getItem('userData'));
     setDataSetting(userData);
     postData(userData);
