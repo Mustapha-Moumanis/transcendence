@@ -231,7 +231,7 @@ function loadLogic(data, mode, tournament, tournamentKey) {
                 "opponent_score": score['player2']
             }
     
-            fetch('api/game-history/', {
+            fetch('/api/game-history/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -350,7 +350,7 @@ function loadLogic(data, mode, tournament, tournamentKey) {
                         }
                     }
             
-                    fetch('api/tournament/events/', {
+                    fetch('/api/tournament/events/', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -725,7 +725,7 @@ function gameStart(data, mode) {
         }
         console.log(postData);
         // create here
-        fetch('api/tournament/create/', {
+        fetch('/api/tournament/create/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

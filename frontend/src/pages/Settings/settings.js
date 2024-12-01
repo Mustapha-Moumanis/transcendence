@@ -12,7 +12,7 @@ async function Settings() {
   setTimeout(() => {
     try {
       settingsActions();
-    } catch (error) { console.log(error); }
+    } catch (error) {}
   }, 200);
 }
 

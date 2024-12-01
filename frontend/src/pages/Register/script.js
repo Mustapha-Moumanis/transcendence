@@ -21,7 +21,7 @@ function handleRegisterFormSubmission() {
             password2: rePassword.value,
         };
         var registerPromise = new Promise(function(resolve, reject){
-            fetch('api/register/', {
+            fetch('/api/register/', {
                 method: 'POST',
                 credentials: "omit",
                 headers: {

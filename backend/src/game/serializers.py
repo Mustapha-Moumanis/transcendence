@@ -49,6 +49,9 @@ class PlayerSerializer(serializers.ModelSerializer):
 		fields = ['name', 'avatar']
 	
 class MatchSerializer(serializers.ModelSerializer):
+	player1 = PlayerSerializer()
+	player2 = PlayerSerializer()
+	winner = PlayerSerializer()
 	class Meta:
 		model = Match
 		fields = ['player1', 'player2', 'winner', 'player1_score', 'player2_score']

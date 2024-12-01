@@ -234,7 +234,7 @@ function generateQrCode() {
 	const qrCodeContainer = document.getElementById("qr-code");
 	if (qrCodeContainer.querySelector("img")) return;
 	var qrcodePromise = new Promise(function(resolve, reject){
-		fetch('api/2fa/generate_qr_code/', {
+		fetch('/api/2fa/generate_qr_code/', {
 			method: 'GET',
 		})
 		.then(response => {
@@ -342,7 +342,7 @@ function handle2faAction(inputs, btn) {
 		return new Promise(function(resolve, reject){
 			const data = { key };
 			
-			fetch('api/2fa/', {
+			fetch('/api/2fa/', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -417,7 +417,7 @@ function mode2faDisactive(btn) {
 		return new Promise(function(resolve, reject){
 			const data = { is2faActive: false };
 			
-			fetch('api/user/', {
+			fetch('/api/user/', {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json',
@@ -625,7 +625,7 @@ function changPassword(){
             "new_password2": new_password2.value
         }
 
-        fetch('api/password/change/', {
+        fetch('/api/password/change/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -692,7 +692,7 @@ function postData(userData){
         if (dateOfBirth.value !== userData.date_of_birth) data.append("date_of_birth", dateOfBirth.value);
 
         if ([...data.entries()].length > 0) {
-            fetch('api/user/', {
+            fetch('/api/user/', {
                 method: 'PUT',
                 body: data
             })

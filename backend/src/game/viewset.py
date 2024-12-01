@@ -78,4 +78,4 @@ class LocalTournamentViewSet(viewsets.ReadOnlyModelViewSet):
 	permission_classes = [ IsAuthenticated ]
 
 	def get_queryset(self):
-		return LocalTournament.objects.filter(user = self.request.user)
+		return LocalTournament.objects.filter(user = self.request.user, champion__isnull=False)

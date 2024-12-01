@@ -11,7 +11,6 @@ export async function loadHTML(url) {
 		}
 		return await response.text();
 	} catch (error) {
-		console.error(error);
 		return null;
 	}
 }
@@ -24,24 +23,6 @@ export function loadCSS(urls) {
 		link.rel = 'stylesheet';
 		link.href = url;
 		document.head.appendChild(link);
-	});
-}
-
-export function loadJS({ url, defer = false, type = 'text/javascript' }) {
-	return new Promise((resolve, reject) => {
-		if (document.querySelector(`script[src="${url}"]`)) {
-			console.log("Script already exists:", url);
-			resolve();  // Resolve immediately if the script is already loaded
-			return;
-		}
-
-		const script = document.createElement('script');
-		script.src = url;
-		script.defer = defer;
-		script.type = type;
-		script.onload = () => resolve();
-		script.onerror = () => reject(new Error(`Failed to load script: ${url}`));
-		document.body.appendChild(script);
 	});
 }
 
@@ -118,14 +99,13 @@ export function debounce(func, delay) {
 export function logoutFetch() {
 	return new Promise((resolve, reject) => {
 		logout();
-		fetch('api/logout/', {
+		fetch('/api/logout/', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
 		})
 		.then(response => {
-			// reject('testing logout fetching!!!');
 			if (!response.ok) {
 				return response.json().then(errorData => {
 					if (errorData.non_field_errors)
@@ -136,9 +116,6 @@ export function logoutFetch() {
 			resolve(response.json());
 		})
 	});
-	// .then(() => showAlert('success', 'You have been successfully logged out!'))
-	// .catch(error => showAlert('error', error.message))
-	// .finally(() => logout())
 };
 
 export function handleLogoutBtn() {
