@@ -37,8 +37,8 @@ function handleOauth2() {
     function openNewTab(oauthUrl) {
         const authWindow = window.open(oauthUrl, '_blank', 'width=500,height=600');
         const urls = {
-            'intra': 'api/login/intra/',
-            'google': 'api/login/google/'
+            'intra': '/api/login/intra/',
+            'google': '/api/login/google/'
         };
 
         function handleAuthMessage(event) {
@@ -75,8 +75,38 @@ function handleOauth2() {
         openNewTab(oauthUrl);
     }
 
-    document.getElementById('intraBtn').addEventListener('click', intraURL);
-    document.getElementById('googleBtn').addEventListener('click', googleURL);
+    let intraBtn = document.getElementById('intraBtn');
+    let googleBtn = document.getElementById('googleBtn');
+
+    intraBtn.addEventListener('click', () => {
+        if (intraBtn.getAttribute('disabled') || googleBtn.getAttribute('disabled')) {
+            console.log("la la mabghitch")
+            return;
+        }
+        console.log("oki")
+        intraBtn.setAttribute('disabled', true);
+        googleBtn.setAttribute('disabled', true);
+        intraURL();
+        setTimeout(() => {
+            intraBtn.removeAttribute('disabled');
+            googleBtn.removeAttribute('disabled');
+        }, 3000);
+    });
+
+    googleBtn.addEventListener('click', () => {
+        if (intraBtn.getAttribute('disabled') || googleBtn.getAttribute('disabled')) {
+            console.log("la la mabghitch")
+            return;
+        }
+        console.log("oki")
+        intraBtn.setAttribute('disabled', true);
+        googleBtn.setAttribute('disabled', true);
+        googleURL();
+        setTimeout(() => {
+            intraBtn.removeAttribute('disabled');
+            googleBtn.removeAttribute('disabled');
+        }, 3000);
+    });
 }
 
 export {

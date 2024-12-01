@@ -99,7 +99,7 @@ function handleConfirmResetFormSubmission(email) {
 			new_password2: new_password2.value,
 		};
 		var ResetPasswordConfirmPromise = new Promise(function(resolve, reject){
-			fetch('api/password/reset/confirm/', {
+			fetch('/api/password/reset/confirm/', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'

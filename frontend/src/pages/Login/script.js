@@ -24,7 +24,7 @@ function handleLoginFormSubmission() {
         }
         else {
             var loginPromise = new Promise(function(resolve, reject){
-                fetch('api/login/', {
+                fetch('/api/login/', {
                     method: 'POST',
                     credentials: "omit",
                     headers: { 'Content-Type': 'application/json' },

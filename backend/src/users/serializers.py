@@ -20,7 +20,6 @@ class CustomLoginSerializer(LoginSerializer):
 
 from allauth.account.adapter import get_adapter
 from allauth.account import app_settings as allauth_account_settings
-from django.utils.translation import gettext_lazy as _
 from chat.models import ChatRoom
 import re
 
@@ -32,26 +31,20 @@ class CustomRegisterSerializer(RegisterSerializer):
 	def validate_first_name(self, first_name):
 		pattern = r'^[a-zA-Z][a-zA-Z_-]{0,19}$'
 		if not re.match(pattern, first_name):
-			raise serializers.ValidationError(
-					_('invalid first name'),
-				)
+			raise serializers.ValidationError('invalid first name')
 		return first_name
 
 	def validate_last_name(self, last_name):
 		pattern = r'^[a-zA-Z][a-zA-Z_-]{0,19}$'
 		if not re.match(pattern, last_name):
-			raise serializers.ValidationError(
-					_('invalid last name'),
-				)
+			raise serializers.ValidationError('invalid last name')
 		return last_name
 
 	def validate_email(self, email):
 		email = get_adapter().clean_email(email)
 		if allauth_account_settings.UNIQUE_EMAIL:
 			if User.objects.filter(email=email).exists():
-				raise serializers.ValidationError(
-					_('A user is already registered with this e-mail address.'),
-				)
+				raise serializers.ValidationError('A user is already registered with this e-mail address.')
 		return email
 
 	def generate_unique_username(self, firstname, lastname):
@@ -137,19 +130,18 @@ class MyUserDetailsSerializer(UserDetailsSerializer):
 	class Meta:
 		model = UserModel
 		fields = ['username', 'email', 'first_name', 'last_name', 'avatar', 'status', 'country_select', 'date_of_birth', 'is2faActive', 'otpCheck', 'level', 'exp', 'wins', 'losses']
-		# fields = ('pk', *extra_fields)
 		read_only_fields = ('email', 'username', 'status', 'otpCheck', 'level', 'exp', 'wins', 'losses')
 
 	def validate_first_name(self, first_name):
 		pattern = r'^[a-zA-Z][a-zA-Z_-]{0,19}$'
 		if not re.match(pattern, first_name):
-			raise serializers.ValidationError(_('invalid first name'),)
+			raise serializers.ValidationError('invalid first name')
 		return first_name
 
 	def validate_last_name(self, last_name):
 		pattern = r'^[a-zA-Z][a-zA-Z_-]{0,19}$'
 		if not re.match(pattern, last_name):
-			raise serializers.ValidationError(_('invalid last name'),)
+			raise serializers.ValidationError('invalid last name')
 		return last_name
 
 	def validate_date_of_birth(self, date_of_birth):
@@ -160,14 +152,14 @@ class MyUserDetailsSerializer(UserDetailsSerializer):
 
 		age = calculate_age(date_of_birth)
 		if (age < 16 or age > 80):
-			raise serializers.ValidationError(_('Your age must be between 16 and 80'),)
+			raise serializers.ValidationError('Your age must be between 16 and 80')
 		return date_of_birth
 
 	def validate_is2faActive(self, is2faActive):
 		otpCheck = self.instance.otpCheck
 
 		if not is2faActive and not otpCheck:
-			raise serializers.ValidationError(_('You cannot deactivate 2FA before verifying the key from the authenticator app.'),)
+			raise serializers.ValidationError('You cannot deactivate 2FA before verifying the key from the authenticator app.')
 		return is2faActive
 	
 	def to_representation(self, instance):
@@ -186,17 +178,18 @@ class MyUserDetailsSerializer(UserDetailsSerializer):
 
 from .models import User
 from friends.models import Friend
-from game.models import LocalGame
-from game.serializers import LocalGameSerializer
+from game.models import LocalGame, LocalTournament
+from game.serializers import LocalGameSerializer, LocalTournamentSerializer
 
 class ProfilesSerializer(serializers.ModelSerializer):
 	is_friend = serializers.SerializerMethodField()
 	state_request = serializers.SerializerMethodField()
 	game_history = serializers.SerializerMethodField()
+	tournament_history = serializers.SerializerMethodField()
 	
 	class Meta:
 		model = User
-		fields = ('username', 'first_name', 'last_name', 'country_select', 'status', 'avatar', 'level', 'exp', 'wins', 'losses', 'is_friend', 'state_request', 'game_history')
+		fields = ('username', 'first_name', 'last_name', 'country_select', 'status', 'avatar', 'level', 'exp', 'wins', 'losses', 'is_friend', 'state_request', 'game_history', 'tournament_history')
 
 	def to_representation(self, instance):
 		representation = super().to_representation(instance)
@@ -220,8 +213,12 @@ class ProfilesSerializer(serializers.ModelSerializer):
 		return Friend.objects.friend_state_request(current_user, obj)
 
 	def get_game_history(self, obj):
-		games = LocalGame.objects.filter(user=obj)
+		games = LocalGame.objects.filter(user=obj).order_by('-id')[:5]
 		return LocalGameSerializer(games, many=True).data
+
+	def get_tournament_history(self, obj):
+		tournament = LocalTournament.objects.filter(user=obj, champion__isnull=False).order_by('-id')[:5]
+		return LocalTournamentSerializer(tournament, many=True).data
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 

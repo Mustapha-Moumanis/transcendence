@@ -23,14 +23,17 @@ class Player(models.Model):
         return self.name
 
 class Match(models.Model):
-    player1 = models.CharField(max_length=50)
-    player2 = models.CharField(max_length=50)
-    winner = models.CharField(max_length=50)
+    player1 = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='matches_as_player1')
+    player2 = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='matches_as_player2')
+    winner = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='matches_as_winner')
+    # player1 = models.CharField(max_length=50)
+    # player2 = models.CharField(max_length=50)
+    # winner = models.CharField(max_length=50)
     player1_score = models.IntegerField(default=0)
     player2_score = models.IntegerField(default=0)
 
     def __str__(self):
-        return f"{self.player1} vs {self.player2} - Winner {self.winner}"
+        return f"{self.player1.name} vs {self.player2.name} - Winner {self.winner.name if self.winner else 'TBD'}"
 
 class LocalTournament(models.Model):
     key = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)

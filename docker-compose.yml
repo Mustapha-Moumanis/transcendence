@@ -17,7 +17,7 @@ services:
         build : ./frontend/
         image : nginx
         ports:
-            - 443:443
+            - 8443:443
         restart: on-failure
         env_file: .env
         networks:
