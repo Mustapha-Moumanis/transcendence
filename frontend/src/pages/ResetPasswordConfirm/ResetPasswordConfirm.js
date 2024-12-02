@@ -1,4 +1,4 @@
-import { loadHTML, loadCSS, loadJS, removeAllCSS, removeAllJS } from '../../utils/js/utils.js';
+import { loadHTML } from '../../utils/js/utils.js';
 import { ResetPasswordConfirmActions } from './script.js'
 
 async function ResetPasswordConfirm(email) {

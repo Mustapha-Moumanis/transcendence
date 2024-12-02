@@ -8,6 +8,8 @@ import {RoundedBoxGeometry} from './lib/three.js-master/examples/jsm/geometries/
 import lights from './src/Lighting.js'
 import Match from './src/Match.js'
 import { displayFieldError, showAlert } from '../../utils/js/auth.js'
+import { tournamentBracket, turnOneBracket } from './src/Tournament.js'
+
 
 
 let gameRunning = false;
@@ -231,7 +233,7 @@ function loadLogic(data, mode, tournament, tournamentKey) {
                 "opponent_score": score['player2']
             }
     
-            fetch('api/game-history/', {
+            fetch('/api/game-history/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -253,7 +255,7 @@ function loadLogic(data, mode, tournament, tournamentKey) {
                 }, 200);
             });
         }
-        else if ((score['player1'] >= 5 || score['player2'] >= 5) && mode === 'tournament') {
+        else if ((score['player1'] >= 2 || score['player2'] >= 2) && mode === 'tournament') {
             //end tourney
             let finalResultText;
             let buttonText;
@@ -297,6 +299,13 @@ function loadLogic(data, mode, tournament, tournamentKey) {
                     tournament.Match1.player1_score = player1Score;
                     tournament.Match1.player2_score = player2Score;
                     tournament.Match1.winner_name = winner;
+                    document.querySelector(".gameInterface").appendChild(tournamentBracket(tournament));
+                    document.querySelector("#startRound").addEventListener('click', () => {
+                        document.querySelector(".game-touranment").classList.add("d-none");
+                        reset_game(camera, playerPaddle, player2Paddle, ball, gameData, player1Name, player2Name);
+                        gamePaused = false;
+                        updateScore();
+                    })
                     round += 1;
                 }
                 else if (round === 2) {
@@ -312,7 +321,7 @@ function loadLogic(data, mode, tournament, tournamentKey) {
                     player1Name = tournament.Match1.winner_name;
                     player2Name = winner;
                     tournament.final = new Match(tournament.getPlayerByName(tournament.Match1.winner_name), tournament.getPlayerByName(tournament.Match2.winner_name));
-                    // console.log(tournament);
+                    turnOneBracket(tournament);
                     round += 1;
                 }
                 else if (round === 3) {
@@ -350,7 +359,7 @@ function loadLogic(data, mode, tournament, tournamentKey) {
                         }
                     }
             
-                    fetch('api/tournament/events/', {
+                    fetch('/api/tournament/events/', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -371,11 +380,9 @@ function loadLogic(data, mode, tournament, tournamentKey) {
                     }, 200);
                     return ;
                 }
-                reset_game(camera, playerPaddle, player2Paddle, ball, gameData, player1Name, player2Name);
+              
                 document.querySelector('canvas').classList.remove('blur');
                 document.querySelector('.gameFinalResult').remove();
-                gamePaused = false;
-                updateScore();
                 console.log(tournament);
             });
         }
@@ -725,7 +732,7 @@ function gameStart(data, mode) {
         }
         console.log(postData);
         // create here
-        fetch('api/tournament/create/', {
+        fetch('/api/tournament/create/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -752,8 +759,11 @@ function gameStart(data, mode) {
             const tournamentKey = successData.key;
             let tournament = new Tournament(successData);
             console.log(tournament);
-            loadLogic(data, 'tournament', tournament, tournamentKey);
             tournamentcontent.classList.add('d-none');
+            document.querySelector(".main-menu").append(tournamentBracket(tournament));
+            document.querySelector("#startRound").addEventListener('click', () => {
+                loadLogic(data, 'tournament', tournament, tournamentKey);
+            })
         })
         .catch(error => showAlert('error', error));
     }

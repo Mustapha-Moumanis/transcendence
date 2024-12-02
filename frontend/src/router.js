@@ -28,13 +28,12 @@ const routes = {
 
 function Router() {
   const handleRouteChange = async () => {
-    console.log(window.location.hash.slice(1).split('/')[0]);
+    // console.log(window.location.hash.slice(1).split('/')[0]);
     let path = window.location.hash.slice(1).split('/')[0] || (() => {
       window.location.hash = '#home';
       return 'home';
     })();
-    
-    console.log(">> ", path);
+
     if (!isAuthenticated() && !['login', 'register', 'reset-password'].includes(path)) {
       window.location.hash = '#login';
       return;

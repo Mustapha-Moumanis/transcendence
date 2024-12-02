@@ -28,7 +28,7 @@ function getProfileData(id){
         return ;
     }
 
-    fetch(`api/profiles/${id}/`, {
+    fetch(`/api/profiles/${id}/`, {
         method: 'GET',
     })
     .then(response => {

@@ -81,7 +81,7 @@ function handleConfirmTwoFactorFormSubmission(userData, inputs) {
 		const data = { key: key };
 
 		const accessToken = userData.access;
-		fetch('api/2fa/', {
+		fetch('/api/2fa/', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

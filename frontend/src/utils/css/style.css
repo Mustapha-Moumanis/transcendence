@@ -344,7 +344,7 @@ a.btn-sc svg {
     color: var(--title-color);
     width: 100%;
     max-width: 400px;
-    z-index: 30000;
+    z-index: 999999;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -423,7 +423,7 @@ a.btn-sc svg {
 
 @media only screen and (max-width: 992px) {
     #alert-container {
-        bottom: 65px;
+        bottom: 85px;
     }
 }
 

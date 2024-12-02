@@ -20,7 +20,7 @@ function clearTokenCheckInterval() {
 
 function getUserData() {
     return new Promise(function(resolve, reject){
-        fetch('api/user/', {
+        fetch('/api/user/', {
             method: 'GET',
         })
         .then(response => {
@@ -123,7 +123,6 @@ function verifyToken() {
 }
 
 function checkToken() {
-    console.log("checkToken");
     verifyRefreshToken()
     .then(() => {
         if (!myIntervalID) setmyIntervalID(setInterval(checkToken, 25*60*1000));

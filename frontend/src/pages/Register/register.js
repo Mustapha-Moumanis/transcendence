@@ -1,4 +1,4 @@
-import { loadHTML, loadCSS, showLoading, hideLoading, AuthEffects } from '../../utils/js/utils.js';
+import { loadHTML, showLoading, AuthEffects } from '../../utils/js/utils.js';
 import { registerActions } from './script.js'
 
 async function Register() {

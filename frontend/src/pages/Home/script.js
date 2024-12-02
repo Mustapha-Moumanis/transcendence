@@ -292,7 +292,7 @@ export function TournamentHistory(){
 }
 
 function getGameHistory(avatar){
-	fetch(`/api/game-history/`, {
+    fetch(`/api/game-history/`, {
         method: 'GET',
     })
     .then(response => {

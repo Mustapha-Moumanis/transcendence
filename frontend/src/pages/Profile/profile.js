@@ -1,6 +1,6 @@
 
 import { loadHTML, loadCSS } from '../../utils/js/utils.js';
-import { showLoading, hideLoading, HomeEffects } from '../../utils/js/utils.js';
+import { HomeEffects } from '../../utils/js/utils.js';
 import { profileActions } from './script.js';
 
 async function Profiles(id) {

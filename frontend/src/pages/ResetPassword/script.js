@@ -9,7 +9,7 @@ import ResetPasswordConfirm from '../ResetPasswordConfirm/ResetPasswordConfirm.j
 export function ResetPasswordPromise(email) {
 	return new Promise(function(resolve, reject){
 		const data = { email: email.value };
-		fetch('api/password/reset/', {
+		fetch('/api/password/reset/', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(data)
