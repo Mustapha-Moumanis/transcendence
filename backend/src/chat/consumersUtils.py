@@ -50,9 +50,6 @@ def update_seen_message(user, sendto):
         message.seen = True
         message.save()
 
-def unblocked(user, sendto):
-    BlockedUser.objects.filter(blocker=user, blocked=sendto).delete()
-
 def loadMoreContent(user, sendto, scrollnb):
     send_room = ChatRoom.objects.get(name="room_{}".format(sendto.username))
     user_room = ChatRoom.objects.get(name="room_{}".format(user.username))
@@ -175,7 +172,6 @@ def parseEvents(data, username):
         elif data["type"] == "showConversation":
             update_seen_message(user, room)
             return get_data(user, room)
-        elif data["type"] == "unblocked": unblocked(user, room)
         else: return loadMoreContent(user, room, int(data["message"]))
 
 # ------------- Check Username if exists -------------
@@ -234,9 +230,8 @@ def addBlockUser(user, friend ,eventType):
     from_user = User.objects.get(username=user)
     to_user = User.objects.get(username=friend)
     if eventType == "blockUser":
-        if Friend.objects.are_friends(from_user, to_user):
-            Friend.objects.remove_friend(from_user, to_user)
-        BlockedUser.objects.create(blocker=from_user, blocked=to_user)
+        Friend.objects.remove_friend(from_user, to_user)
+        BlockedUser.objects.get_or_create(blocker=from_user, blocked=to_user)
         return "Blocked", ""
     else :
         Friend.objects.add_friend(from_user, to_user)
@@ -253,4 +248,9 @@ def ConfirmDeletReq(user, friend, eventType):
     else :
         state, msg = Friend.objects.accept_friend(from_user, to_user)
     return {"status": from_user.status, "id": from_user.id, "username": from_user.username, "avatar": str(from_user.avatar)}
-    
+
+@database_sync_to_async
+def unblocked(user, sendto):
+    from_user = User.objects.get(username=user)
+    to_user = User.objects.get(username=sendto)
+    BlockedUser.objects.filter(blocker=from_user, blocked=to_user).delete()

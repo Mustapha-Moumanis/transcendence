@@ -99,15 +99,11 @@ function handleRefrshTocken(){
 
 function handleMessageFromSocket(event){
     const data = JSON.parse(event.data);
-    if (data === null) return;
+    if (data === null || document.querySelector(".gameInterface")) 
+        return;
 
     if (data.type === "Error") handleRefrshTocken();
     else lastCmd.splice(0,1);
-
-    if (document.querySelector(".gameInterface")){
-        console.log("gaming")
-        return;
-    }
 
     if (data.type === "Blocked") friendBlockedYou(data);
     else if (data.type === "reqConfirm") reqConfirm(data.listFriends);

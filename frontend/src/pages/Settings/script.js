@@ -729,16 +729,16 @@ function postData(userData){
 }
 
 function creatBlockListCard(data){
-
+	console.log(data);
 	const div = document.createElement('div');
 	div.classList.add("blocklist-user-card");
-	div.innerHTML = `<img class="blocklist-user-img" src="static/default/2.svg">
-                        <div class="blocklist-username">hilal_souad</div>
-		<button class="btn unblocked-btn badge d-flex align-items-center">Unblocked</button>`;
-	
+	div.innerHTML = `<img class="blocklist-user-img" src="${data.avatar}" alt="${data.username}">
+        <div class="blocklist-username">${data.username}</div>
+		<button class="btn unblocked-btn badge d-flex align-items-center">Unblocked</button>
+	`;
 	div.querySelector(".unblocked-btn").addEventListener('click', () => {
 		div.remove();
-		// sendToBackend(data.username,"unblocked","");
+		sendToBackend(data.username,"unblocked","");
 	})
 	return div;
 }
@@ -764,9 +764,35 @@ function blockListBtn(){
         blocklistOverlay.classList.add("d-none");
     });
 
-	blocklistDiv.querySelector(".blocklist-content").append(creatBlockListCard());
 	
 	// Fetch data 
+	var host = window.location.host;
+	fetch(`https://${host}/api/blocked/`, {
+		method: 'GET',
+    })
+	.then(response => {
+		if (!response.ok) {
+			if (response.status === 401) {
+				logoutFetch()
+				.catch(() => {});
+				throw new Error("User is not authenticated");
+			}
+			throw new Error('blocked not found');
+        }
+        return response.json();
+    })
+    .then(data => {
+		
+		console.log(data);
+		if (data.length !== 0){
+			data.forEach(user => {
+				blocklistDiv.querySelector(".blocklist-content").append(creatBlockListCard(user));
+			});
+		}
+    })
+    .catch((error) => {
+        showAlert('error', error);
+    });
 }
 
 export function settingsActions() {

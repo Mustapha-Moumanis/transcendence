@@ -12,7 +12,10 @@ export function sendToBackend(sendto, type, message){
 			message: message,
 		});
 	}
-
+	if (chatSocket.readyState !== chatSocket.OPEN){
+		console.warn("SOUAD : Closed");
+		return;
+	}
 	chatSocket.send(JSON.stringify({
 		token: myToken,
 		type: type,
