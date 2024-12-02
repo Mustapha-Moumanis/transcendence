@@ -58,8 +58,8 @@ function startSearchAndNotif() {
 // ------------- functions General -------------
 
 function sendValue() {
-    const searchInput = document.querySelector("#search-input");
-    const value = searchInput.value;
+    var searchInput = document.querySelector("#search-input");
+    var value = searchInput.value;
     if (value.trim() != "")
         sendToBackend("", "searchHome", searchInput.value);
 }
@@ -76,6 +76,7 @@ function creatonlineUsers(listuser) {
 function updateHomeUsers(data) {
 
     let userExists = false;
+    console.log("homeUser =====>", data);
     if (data.status === "Online") {
         document.querySelectorAll(".online-users .user").forEach(user => {
             if (user.querySelector("img").getAttribute("user") === data.username) {
@@ -84,6 +85,7 @@ function updateHomeUsers(data) {
             }
         });
         if (!userExists) {
+            console.log("======> ",data.username);
             const onlineList = document.querySelector(".sidebar-content .online");
             onlineList.classList.remove('d-none');
             onlineList.querySelector(".online-users").appendChild(creatonlineUsers(data.listuser));
@@ -91,6 +93,8 @@ function updateHomeUsers(data) {
     }
     else
         removeOnlineFriend(data.username);
+    console.log("=================");
+
 }
 
 function onlineFriendsHome(data) {
@@ -156,7 +160,6 @@ function checkNotif() {
 
     const notification = notificationButton.querySelector("span");
     if (notifications.length === 0) {
-        console.log("hiiiiiii notifaction");
         notification.style.backgroundColor = "";
         const div = document.createElement("div");
         div.classList.add("empty-notifications");
@@ -195,7 +198,6 @@ function creatNotifReqFriend(data) {
         reqConfirm(data);
         document.querySelector(".show-notification").classList.add("d-none");
         div.remove();
-        checkNotif();
     });
 
     div.querySelector(".notification-choices #reqDelete").addEventListener('click', () => {
@@ -281,12 +283,8 @@ function updateHomeNotification(data) {
     document.querySelector(".notification span").style.backgroundColor = "#E51284";
 
     let empty = document.querySelector(".show-notification .empty-notifications");
-    if (empty){
-        console.log("empty should be true => ", empty);
-        empty.remove();
-    }
-    else
-        console.log("empty should be null => ", empty);
+    if (empty) empty.remove();
+
     if (data.type === "CreatNotifChat")
         creatNotification(data, ".notifMessage .notification-user-content", creatNotifMessage)
 

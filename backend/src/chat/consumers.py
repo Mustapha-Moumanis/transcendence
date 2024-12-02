@@ -15,6 +15,7 @@ from .consumersUtils import (
     getUsername,
     addBlockUser,
     ConfirmDeletReq,
+    unblocked,
 )
 
 async def checkToken(self, token):
@@ -110,6 +111,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     'list': notificationlist,
                     'type': data_json["type"],
                 })
+            elif data_json["type"] == "unblocked": 
+                await unblocked(username, data_json["sendto"])
             else :
                 if not await checkFriend(data_json["sendto"]):
                     raise DenyConnection("NO Friend matching")

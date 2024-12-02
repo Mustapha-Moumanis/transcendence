@@ -9,7 +9,6 @@ async function Chat() {
 
   var styleList = [
     'pages/Chat/css/chat.css',
-    'pages/Chat/css/main-chat.css',
     'pages/Chat/css/mobile-chat.css',
     'pages/Chat/css/chat-sidebar.css',
   ]

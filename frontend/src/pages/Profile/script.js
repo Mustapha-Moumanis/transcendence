@@ -2,7 +2,7 @@ import { showAlert } from "../../utils/js/auth.js";
 import { SendMessage, blockClick, removeNotif, reqConfirm } from "../Chat/js/homeSocket.js";
 import { logoutFetch } from "../../utils/js/utils.js";
 import { sendToBackend } from "../Chat/script.js";
-import { drawtheLevel, matchHistory } from "../Home/script.js";
+import { drawtheLevel, matchHistory, TournamentHistory } from "../Home/script.js";
 import { countries } from "../Settings/script.js";
 
 var profileId;
@@ -96,7 +96,6 @@ function handlleBtn(data){
             reqConfirm(data);
             btnFriend.setAttribute("id", "message");
             btnFriend.innerHTML = "Send Message";
-            removeNotif(data.username,".notification-user-card");
         }
         else {
             sendToBackend(data.username, "addFrindship", "");
@@ -123,8 +122,7 @@ function setProfileData(data){
             <span>${data.username}</span>
         </div>`;
     userContent.querySelector("#location-profile span").innerHTML = `${country.text}`;
-    
-    // profile btn
+
     handlleBtn(data);
 
     const spinner = document.querySelector(".image-content #spinner");
@@ -133,6 +131,8 @@ function setProfileData(data){
     drawtheLevel(spinner);
 
     matchHistory(data.game_history, data.avatar);
+    console.log(data);
+    // TournamentHistory();
 }
 
 export function profileActions(id) {
