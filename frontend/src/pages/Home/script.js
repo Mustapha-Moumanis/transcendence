@@ -292,8 +292,7 @@ export function TournamentHistory(){
 }
 
 function getGameHistory(avatar){
-	var host = window.location.host;
-	fetch(`https://${host}/api/game-history/`, {
+	fetch(`/api/game-history/`, {
         method: 'GET',
     })
     .then(response => {
