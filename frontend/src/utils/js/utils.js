@@ -1,6 +1,6 @@
 import { logout, showAlert, attachRouterListeners, checkToken } from './auth.js'
 import { themeAction } from './theme.js'
-import { startSocket } from '../../pages/Chat/js/socket.js'
+import { channelBroadcast, startSocket } from '../../pages/Chat/js/socket.js'
 import { startSearchAndNotif } from '../../pages/Chat/js/homeSocket.js';
 
 export async function loadHTML(url) {
@@ -98,6 +98,7 @@ export function debounce(func, delay) {
 
 export function logoutFetch() {
 	return new Promise((resolve, reject) => {
+		channelBroadcast.postMessage({ type: "logout" });
 		logout();
 		fetch('/api/logout/', {
 			method: 'POST',

@@ -62,15 +62,15 @@ function BarcketsTournament(data){
 				<div class="match-one">
 					<div class="tournament-match-card">
 						<div id="palyerOne" class="match-content left">
-							<img class="avatar" src="${data.players[0].avatar}" alt="${data.players[0].name}">
-							<div class="match-username">${data.players[0].name}</div>
+							<img class="avatar" src="${data.matchs[0].player1.avatar}" alt="${data.matchs[0].player1.name}">
+							<div class="match-username">${data.matchs[0].player1.name}</div>
 						</div>
 						<div class="bracket-match-score bracket-left"><p>${data.matchs[0].player1_score}</p></div>
 					</div>
 					<div class="tournament-match-card">
 						<div id="palyerTwo" class="match-content left">
-							<img class="avatar" src="${data.players[1].avatar}" alt="${data.players[1].name}">
-							<div class="match-username">${data.players[1].name}</div>
+							<img class="avatar" src="${data.matchs[0].player2.avatar}" alt="${data.matchs[0].player2.name}">
+							<div class="match-username">${data.matchs[0].player2.name}</div>
 						</div>
 						<div class="bracket-match-score bracket-left"><p>${data.matchs[0].player2_score}</p></div>
 					</div>
@@ -83,16 +83,16 @@ function BarcketsTournament(data){
 				<div class="match-final">
 					<div class="tournament-match-card">
 						<div id="palyerOne" class="match-content left">
-							<img class="avatar" src="" alt="${data.matchs[2].player1}">
-							<div class="match-username">${data.matchs[2].player1}</div>
+							<img class="avatar" src="${data.matchs[2].player1.avatar}" alt="${data.matchs[2].player1.name}">
+							<div class="match-username">${data.matchs[2].player1.name}</div>
 						</div>
 						<div class="bracket-match-score bracket-left"><p>${data.matchs[2].player1_score}</p></div>
 					</div>
 					<div class="tournament-match-card">
 						<div class="bracket-match-score bracket-right"><p>${data.matchs[2].player2_score}</p></div>
 						<div id="palyerTwo" class="match-content right">
-							<img class="avatar" src="" alt="${data.matchs[2].player2}">
-							<div class="match-username">${data.matchs[2].player2}</div>
+							<img class="avatar" src="${data.matchs[2].player2.avatar}" alt="${data.matchs[2].player2.name}">
+							<div class="match-username">${data.matchs[2].player2.name}</div>
 						</div>
 					</div>
 				</div>
@@ -105,15 +105,15 @@ function BarcketsTournament(data){
 					<div class="tournament-match-card">
 						<div class="bracket-match-score bracket-right"><p>${data.matchs[1].player1_score}</p></div>
 						<div id="palyerOne" class="match-content right">
-							<img class="avatar" src="${data.players[2].avatar}" alt="${data.players[2].name}">
-							<div class="match-username">${data.players[2].name}</div>
+							<img class="avatar" src="${data.matchs[1].player1.avatar}" alt="${data.matchs[1].player1.name}">
+							<div class="match-username">${data.matchs[1].player1.name}</div>
 						</div>
 					</div>
 					<div class="tournament-match-card">
 						<div class="bracket-match-score bracket-right"><p>${data.matchs[1].player2_score}</p></div>
 						<div id="palyerTwo" class="match-content right">
-							<img class="avatar" src="${data.players[3].avatar}" alt="${data.players[3].name}">
-							<div class="match-username">${data.players[3].name}</div>
+							<img class="avatar" src="${data.matchs[1].player2.avatar}" alt="${data.matchs[1].player2.name}">
+							<div class="match-username">${data.matchs[1].player2.name}</div>
 						</div>
 					</div>
 				</div>
@@ -125,24 +125,14 @@ function BarcketsTournament(data){
 			</div>
 		</div>`;
 		
-	if (data.matchs[0].player1_score > data.matchs[0].player2_score){
-		bracket.querySelector(".match-final #palyerOne img").setAttribute("src", data.players[0].avatar);
+	if (data.matchs[0].player1_score > data.matchs[0].player2_score) 
 		addWinner(bracket.querySelector(".match-one #palyerOne"));
-	}
-	else{
-		bracket.querySelector(".match-final #palyerOne img").setAttribute("src", data.players[1].avatar);
-		addWinner(bracket.querySelector(".match-one #palyerTwo"));
-	}
+	else addWinner(bracket.querySelector(".match-one #palyerTwo"));
 
-	if (data.matchs[1].player1_score > data.matchs[1].player2_score){
-		bracket.querySelector(".match-final #palyerTwo img").setAttribute("src", data.players[2].avatar);
+	if (data.matchs[1].player1_score > data.matchs[1].player2_score)
 		addWinner(bracket.querySelector(".match-two #palyerOne"));
+	else addWinner(bracket.querySelector(".match-two #palyerTwo"));
 
-	}
-	else {
-		bracket.querySelector(".match-final #palyerTwo img").setAttribute("src", data.players[3].avatar);
-		addWinner(bracket.querySelector(".match-two #palyerTwo"));
-	}
 	const winner = document.createElement('img');
 	winner.classList.add("avatar");
 	winner.setAttribute("src", "../../images/svg/winner.svg");
@@ -199,7 +189,7 @@ function creatTournamentCard(data) {
 	return div;
 }
 
-function CreatTournamentHistory(game_history){
+export function CreatTournamentHistory(game_history){
 	const history = document.querySelector(".tournament-history");
 	if (game_history.length === 0)
 		return;
