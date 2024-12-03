@@ -67,7 +67,8 @@ function callLastCmds(){
 }
 
 function startSocket(){
-    chatSocket = setupWebSocket();
+    if (chatSocket) return;
+    else chatSocket = setupWebSocket();
     waitForSocketConnection(chatSocket, getData);
 
     chatSocket.onopen = () => {
@@ -75,6 +76,7 @@ function startSocket(){
     }
 
     chatSocket.onclose = (e) => {
+        chatSocket = null;
         console.log("The Websocket was Closed!", e);
     }
 

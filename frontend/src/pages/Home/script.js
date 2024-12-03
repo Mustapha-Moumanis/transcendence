@@ -1,7 +1,7 @@
 import { showAlert } from '../../utils/js/auth.js';
 import { logoutFetch } from '../../utils/js/utils.js';
 import { countries } from '../Settings/script.js';
-import { addWinner } from '../Tournament-s/tournament.js';
+import { addWinner } from '../Game/src/Tournament.js';
 
 export function drawtheLevel(spinner) {
 
