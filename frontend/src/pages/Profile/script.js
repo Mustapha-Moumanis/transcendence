@@ -2,7 +2,7 @@ import { showAlert } from "../../utils/js/auth.js";
 import { SendMessage, blockClick, removeNotif, reqConfirm } from "../Chat/js/homeSocket.js";
 import { logoutFetch } from "../../utils/js/utils.js";
 import { sendToBackend } from "../Chat/script.js";
-import { drawtheLevel, matchHistory, TournamentHistory } from "../Home/script.js";
+import { CreatTournamentHistory, drawtheLevel, matchHistory, TournamentHistory } from "../Home/script.js";
 import { countries } from "../Settings/script.js";
 
 var profileId;
@@ -131,8 +131,8 @@ function setProfileData(data){
     drawtheLevel(spinner);
 
     matchHistory(data.game_history, data.avatar);
-    console.log(data);
-    // TournamentHistory();
+    CreatTournamentHistory(data.tournament_history);
+
 }
 
 export function profileActions(id) {

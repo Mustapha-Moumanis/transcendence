@@ -76,7 +76,6 @@ function creatonlineUsers(listuser) {
 function updateHomeUsers(data) {
 
     let userExists = false;
-    console.log("homeUser =====>", data);
     if (data.status === "Online") {
         document.querySelectorAll(".online-users .user").forEach(user => {
             if (user.querySelector("img").getAttribute("user") === data.username) {
@@ -85,7 +84,6 @@ function updateHomeUsers(data) {
             }
         });
         if (!userExists) {
-            console.log("======> ",data.username);
             const onlineList = document.querySelector(".sidebar-content .online");
             onlineList.classList.remove('d-none');
             onlineList.querySelector(".online-users").appendChild(creatonlineUsers(data.listuser));
@@ -93,8 +91,6 @@ function updateHomeUsers(data) {
     }
     else
         removeOnlineFriend(data.username);
-    console.log("=================");
-
 }
 
 function onlineFriendsHome(data) {

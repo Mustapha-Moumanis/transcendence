@@ -7,14 +7,16 @@ import {friendBlockedYou, updateHomeNotification, homeNotification,
 
 import {showFriends, showUsers, handleChatResise} from "./listchat.js"
 import {lastCmd, sendToBackend} from "../script.js"
-import { showAlert, verifyRefreshToken } from "../../../utils/js/auth.js";
+import { logout, showAlert, verifyRefreshToken } from "../../../utils/js/auth.js";
 import { logoutFetch } from "../../../utils/js/utils.js";
 
 // ------------------ Varaibles Of Chat ------------------
 export var chatSocket;
+export var channelBroadcast;
 export var dataListFriends;
 export var dataListUsers;
 export var user;
+
 
 export var notifUser = null;
 export const setnotifUser = (newnotifUser) => {
@@ -36,6 +38,7 @@ function setupWebSocket() {
 
     const protocol =  window.location.protocol === 'https:' ? 'wss://' : 'ws://';
     const wsUrl = `${protocol}${window.location.host}/ws/${user}/`;
+    channelBroadcast = new BroadcastChannel("auth_channel");
     return new WebSocket(wsUrl);
 }
 
@@ -61,7 +64,6 @@ function callLastCmds(){
     let arrayCmds =  Array.from(lastCmd);
     for (let index = 0; index < arrayCmds.length; index++) {
         const cmd = arrayCmds[index];
-        console.log(cmd);
         sendToBackend(cmd.sendto, cmd.type, cmd.message);
     }
 }
@@ -86,6 +88,13 @@ function startSocket(){
     }
 
     chatSocket.onmessage = handleMessageFromSocket;
+
+    channelBroadcast.onmessage = (event) => {
+        if (event.data.type === "logout") {
+            channelBroadcast.close();
+            logout();
+        }
+    };
 }
 
 function handleRefrshTocken(){

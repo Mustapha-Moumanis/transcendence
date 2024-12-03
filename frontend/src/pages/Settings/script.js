@@ -729,7 +729,7 @@ function postData(userData){
 }
 
 function creatBlockListCard(data){
-	console.log(data);
+
 	const div = document.createElement('div');
 	div.classList.add("blocklist-user-card");
 	div.innerHTML = `<img class="blocklist-user-img" src="${data.avatar}" alt="${data.username}">
@@ -782,8 +782,6 @@ function blockListBtn(){
         return response.json();
     })
     .then(data => {
-		
-		console.log(data);
 		if (data.length !== 0){
 			data.forEach(user => {
 				blocklistDiv.querySelector(".blocklist-content").append(creatBlockListCard(user));
