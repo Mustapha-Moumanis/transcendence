@@ -159,8 +159,8 @@ function creatTournamentCard(data) {
 		<div class="tournament-winner">
 			<div class="avatar">
 				<img src="${data.champion.avatar}" alt="${data.champion.name}">
+				<img class="avatar-winner" src="../../images/svg/winner.png">
 			</div>
-			<img class="avatar-winner" src="../../images/svg/winner.svg">
 			<span>${data.champion.name}</span>
 		</div>
 		<div class="tournament-users">

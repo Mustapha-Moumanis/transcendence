@@ -17,7 +17,7 @@ async function Chat() {
   setTimeout(() => {
       try {
         chatActions();
-      } catch (error) { console.log(error); }
+      } catch (error) { }
   }, 200);
 }
 
