@@ -28,7 +28,6 @@ const routes = {
 
 function Router() {
   const handleRouteChange = async () => {
-    // console.log(window.location.hash.slice(1).split('/')[0]);
     let path = window.location.hash.slice(1).split('/')[0] || (() => {
       window.location.hash = '#home';
       return 'home';

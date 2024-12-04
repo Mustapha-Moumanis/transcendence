@@ -79,11 +79,7 @@ function handleOauth2() {
     let googleBtn = document.getElementById('googleBtn');
 
     intraBtn.addEventListener('click', () => {
-        if (intraBtn.getAttribute('disabled') || googleBtn.getAttribute('disabled')) {
-            console.log("la la mabghitch")
-            return;
-        }
-        console.log("oki")
+        if (intraBtn.getAttribute('disabled') || googleBtn.getAttribute('disabled')) return;
         intraBtn.setAttribute('disabled', true);
         googleBtn.setAttribute('disabled', true);
         intraURL();
@@ -94,11 +90,7 @@ function handleOauth2() {
     });
 
     googleBtn.addEventListener('click', () => {
-        if (intraBtn.getAttribute('disabled') || googleBtn.getAttribute('disabled')) {
-            console.log("la la mabghitch")
-            return;
-        }
-        console.log("oki")
+        if (intraBtn.getAttribute('disabled') || googleBtn.getAttribute('disabled')) return;
         intraBtn.setAttribute('disabled', true);
         googleBtn.setAttribute('disabled', true);
         googleURL();

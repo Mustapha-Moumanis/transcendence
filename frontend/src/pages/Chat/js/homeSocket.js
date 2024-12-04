@@ -69,7 +69,7 @@ function sendValue() {
 function creatonlineUsers(listuser) {
     const div = document.createElement("div");
     div.classList.add("user");
-    div.innerHTML = `<img class="avatar" src="${listuser.avatar}" alt="${listuser.username}" user="${listuser.username}">`;
+    div.innerHTML = `<img class="avatar" src="${listuser.avatar}" alt="${listuser.username}" user="${listuser.username}" title="${listuser.username}">`;
     return div
 }
 
