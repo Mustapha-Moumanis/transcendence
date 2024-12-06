@@ -12,11 +12,12 @@ function passResetActions(email) {
 	const button = document.querySelector(".btn-main");
 	const pass = document.querySelector("#password");
 	const re_pass = document.querySelector("#re-password");
-	const emailElem = document.querySelector("#email");
+	const emailElem = document.querySelector(".email");
 
 	window.addEventListener("load", () => inputs[0].focus());
 	button.setAttribute("disabled", "disabled");
 	emailElem.value = email
+	emailElem.innerHTML = email
 
 	const checkFields = () => {
 		const allFieldsFilled = [...inputs].every(input => input.value !== "") && pass.value !== "" && re_pass.value !== "" && email.value !== "";
@@ -150,7 +151,7 @@ function resetPasswordAgain() {
 
 		if (active) {
 			active = false;
-			const email = document.querySelector("#email");
+			const email = document.querySelector(".email");
 			ResetPasswordPromise(email)
 			.then(data => showAlert('success', data.detail))
 			.catch(error => showAlert('error', error));

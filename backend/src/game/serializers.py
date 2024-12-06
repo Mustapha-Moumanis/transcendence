@@ -1,16 +1,19 @@
 from rest_framework import serializers
 from .models import LocalGame, Player, Match, LocalTournament
-# from users.serializers import ProfilesSerializer
 from django.core.validators import URLValidator, ValidationError
 
 import re
 import uuid
 
 class LocalGameSerializer(serializers.ModelSerializer):
+	dates = serializers.SerializerMethodField()
+
+	def get_dates(self, obj):
+		return obj.dates.strftime('%B %d, %Y, %I:%M %p') if obj.dates else None
 
 	class Meta:
 		model = LocalGame
-		fields = ['nickname', 'opponent', 'user_score', 'opponent_score', 'result']
+		fields = ['nickname', 'opponent', 'user_score', 'opponent_score', 'result', 'dates']
 		read_only_fields = ['user', 'result']
 
 class PlayersDataSerializer(serializers.Serializer):
@@ -61,10 +64,14 @@ class LocalTournamentSerializer(serializers.ModelSerializer):
 	players = PlayerSerializer(many=True)
 	champion = PlayerSerializer()
 	matchs = MatchSerializer(many=True)
+	dates = serializers.SerializerMethodField()
+
+	def get_dates(self, obj):
+		return obj.dates.strftime('%B %d, %Y, %I:%M %p') if obj.dates else None
 
 	class Meta:
 		model = LocalTournament
-		fields = ['champion', 'players', 'matchs'] 
+		fields = ['champion', 'players', 'matchs', 'dates'] 
 
 class bracketSerializer(serializers.Serializer):
 	player1 = serializers.CharField(max_length=100)

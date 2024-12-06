@@ -6,7 +6,7 @@ from django_otp.plugins.otp_totp.models import TOTPDevice
 from django.http import HttpResponse
 from io import BytesIO
 from rest_framework.decorators import action
-from django.contrib.sites.shortcuts import get_current_site
+# from django.contrib.sites.shortcuts import get_current_site
 import qrcode
 from qrcode.image.svg import SvgImage
 
@@ -53,8 +53,6 @@ class TwoFactorAuthViewSet(viewsets.ModelViewSet):
             return Response({"message": "No access to generate 2FA qr"}, status=status.HTTP_400_BAD_REQUEST)
 
         device, created = TOTPDevice.objects.get_or_create(user=user, confirmed=True)
-        # issuer = get_current_site(self.request).name
-        # totp_url = f"{device.config_url}&issuer={issuer}"
 
         stream = BytesIO()
         qrcode.make(device.config_url, image_factory=SvgImage).save(stream)

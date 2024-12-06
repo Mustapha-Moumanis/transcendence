@@ -98,7 +98,6 @@ export function debounce(func, delay) {
 
 export function logoutFetch() {
 	return new Promise((resolve, reject) => {
-		channelBroadcast.postMessage({ type: "logout" });
 		logout();
 		fetch('/api/logout/', {
 			method: 'POST',
@@ -116,6 +115,7 @@ export function logoutFetch() {
 			}
 			resolve(response.json());
 		})
+		channelBroadcast.postMessage({ type: "logout" });
 	});
 };
 
