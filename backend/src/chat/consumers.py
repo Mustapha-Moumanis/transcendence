@@ -28,7 +28,7 @@ async def checkToken(self, token):
     username = await getUsername(decoded_token.get('user_id'))
     expected_username = str(self.scope['url_route']['kwargs']['channel_name'])
     if username != expected_username:
-        raise DenyConnection("Usernames do not match")
+        raise DenyConnection("Username do not match")
     return username
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -61,7 +61,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 })
 
         except Exception as e:
-            print(f"WebSocket error: {e}")
             await self.close()
 
     async def disconnect(self , close_code):
@@ -86,7 +85,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await self.channel_layer.group_discard(username,self.channel_name)
 
         except Exception as e:
-            print(f"WebSocket error: {e}")
             await self.close()
 
     # ------------------ Receive events :
@@ -115,7 +113,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 await unblocked(username, data_json["sendto"])
             else :
                 if not await checkFriend(data_json["sendto"]):
-                    raise DenyConnection("NO Friend matching")
+                    raise Exception("NO Friend matching")
 
                 if data_json["type"] == "message":
                     room = data_json["sendto"]
@@ -146,9 +144,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     })
                 else :
                     await self.send(text_data=json.dumps(await parseEvents(data_json, username)))
-
+        # except DenyConnection as e:
+        #     await self.send(text_data=json.dumps({
+        #         "type" : "DenyConnection",
+        #         "error": str(e),
+        #     }))
         except Exception as e:
-            print(f"WebSocket error: {e}")
             await self.send(text_data=json.dumps({
                 "type" : "Error",
                 "error": str(e),

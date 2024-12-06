@@ -211,7 +211,9 @@ function creatMatchCard(data, avatar){
 	div.classList.add("match-card");
 	if (data.result === "Loss") div.classList.add("match-card", "loss");
 	else div.classList.add("match-card", "win");
-	div.innerHTML = `<div class="match-user">
+	div.innerHTML = `
+		<span class="time-match">10-10-2024 00:00 PM</span>
+		<div class="match-user">
 			<span>${data.nickname}</span>
 			<div class="match-user-avatar">
 				<img src="${avatar}" alt="Avatar">
