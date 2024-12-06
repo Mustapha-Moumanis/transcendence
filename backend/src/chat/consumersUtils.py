@@ -64,7 +64,7 @@ def loadMoreContent(user, sendto, scrollnb):
         scrollDisplay = True
     else:
         scrollDisplay = False
-    messages_data = [{'id': m.user.id,'username': m.user.username,'message': m.content,'time': DateFormat(m.timestamp).format('Y-m-d H:i')} for m in Messages]
+    messages_data = [{'id': m.user.id,'username': m.user.username,'message': m.content,'time': DateFormat(m.timestamp).format('Y-m-d H:i A')} for m in Messages]
 
     return {"type" : "loadMoreContent", "avatar" : str(sendto.avatar), "sendto" : sendto.username,'messages' : messages_data, 'scrollDisplay':scrollDisplay}
 
@@ -84,7 +84,7 @@ def get_data(user, sendto):
     else:
         scrollDisplay = False
 
-    messages_data = [{'username': m.user.username,'message': m.content,'time': DateFormat(m.timestamp).format('Y-m-d H:i')} for m in Messages]
+    messages_data = [{'username': m.user.username,'message': m.content,'time': DateFormat(m.timestamp).format('Y-m-d h:i A')} for m in Messages]
     
     return {"type": "showConversation", 
     "chat_header": {"id" : sendto.id, "sendto" : sendto.username,"status" : sendto.status,"avatar" : str(sendto.avatar)}, 

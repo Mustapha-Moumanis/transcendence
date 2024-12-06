@@ -141,8 +141,9 @@
 .chat-time-message {
     display: none;
     position: absolute;
+    font-weight: bold;
     top: -15px;
-    width: 90px;
+    width: 100px;
     color: var(--sub-color);
     font-size: 10px;
     transition: opacity 0.4s;

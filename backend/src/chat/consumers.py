@@ -119,7 +119,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     room = data_json["sendto"]
                     message = await save_message(username, data_json["message"], room)
 
-                    time = strftime("%Y-%m-%d %H:%M", gmtime())
+                    time = strftime("%Y-%m-%d %H:%M %p", gmtime())
                     await self.channel_layer.group_send(room,{
                         'data' : data_json,
                         'username': username,
@@ -144,11 +144,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     })
                 else :
                     await self.send(text_data=json.dumps(await parseEvents(data_json, username)))
-        # except DenyConnection as e:
-        #     await self.send(text_data=json.dumps({
-        #         "type" : "DenyConnection",
-        #         "error": str(e),
-        #     }))
         except Exception as e:
             await self.send(text_data=json.dumps({
                 "type" : "Error",

@@ -9,7 +9,7 @@ class LocalGameSerializer(serializers.ModelSerializer):
 	dates = serializers.SerializerMethodField()
 
 	def get_dates(self, obj):
-		return obj.dates.strftime('%B %d, %Y, %I:%M %p') if obj.dates else None
+		return obj.dates.strftime('%Y-%m-%d %H:%M %p') if obj.dates else None
 
 	class Meta:
 		model = LocalGame
@@ -67,7 +67,7 @@ class LocalTournamentSerializer(serializers.ModelSerializer):
 	dates = serializers.SerializerMethodField()
 
 	def get_dates(self, obj):
-		return obj.dates.strftime('%B %d, %Y, %I:%M %p') if obj.dates else None
+		return obj.dates.strftime('%Y-%m-%d %H:%M %p') if obj.dates else None
 
 	class Meta:
 		model = LocalTournament

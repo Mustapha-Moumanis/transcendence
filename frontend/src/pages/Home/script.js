@@ -156,6 +156,7 @@ function creatTournamentCard(data) {
 	const div = document.createElement('div');
 	div.classList.add("tournament-card");
 	div.innerHTML =`
+		<span class="time-match">${data.dates}</span>
 		<div class="tournament-winner">
 			<div class="avatar">
 				<img src="${data.champion.avatar}" alt="${data.champion.name}">
@@ -212,7 +213,7 @@ function creatMatchCard(data, avatar){
 	if (data.result === "Loss") div.classList.add("match-card", "loss");
 	else div.classList.add("match-card", "win");
 	div.innerHTML = `
-		<span class="time-match">10-10-2024 00:00 PM</span>
+		<span class="time-match">${data.dates}</span>
 		<div class="match-user">
 			<span>${data.nickname}</span>
 			<div class="match-user-avatar">
