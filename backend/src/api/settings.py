@@ -37,6 +37,8 @@ CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', cast=Csv())
 
 CSRF_TRUSTED_ORIGINS = config('CORS_ALLOWED_ORIGINS', cast=Csv())
 
+PROJECT_NAME = config('PROJECT_NAME')
+
 GOOGLE_CLIENT_ID = config('GOOGLE_CLIENT_ID')
 GOOGLE_SECRET = config('GOOGLE_SECRET')
 GOOGLE_CALL_BACK_URL = config('GOOGLE_CALL_BACK_URL')
@@ -204,7 +206,7 @@ REST_AUTH = {
     'JWT_AUTH_COOKIE': 'my-token',
     'JWT_AUTH_REFRESH_COOKIE': 'my-refresh-token',
      # 'JWT_AUTH_SAMESITE': 'none',
-    # 'JWT_AUTH_SECURE': True,
+    'JWT_AUTH_SECURE': True,
     # 'JWT_SERIALIZER': 'users.serializers.CustomJWTSerializer',
     'JWT_TOKEN_CLAIMS_SERIALIZER': 'users.serializers.MyTokenObtainPairSerializer',
 
@@ -221,7 +223,6 @@ REST_AUTH = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
-    # "TOKEN_OBTAIN_SERIALIZER": "users.serializers.MyTokenObtainPairSerializer",
 }
 
 AUTHENTICATION_BACKENDS = [
@@ -280,5 +281,4 @@ AUTH_USER_MODEL = "users.User"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-OTP_TOTP_IMAGE = config('OTP_TOTP_IMAGE')
 OTP_TOTP_ISSUER = config('OTP_TOTP_ISSUER')

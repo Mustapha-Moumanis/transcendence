@@ -6,6 +6,17 @@ import django.utils.timezone
 import users.models
 from django.db import migrations, models
 
+def update_site(apps, schema_editor):
+    from django.conf import settings
+
+    Site = apps.get_model('sites', 'Site')
+    Site.objects.update_or_create(
+        id=1,
+        defaults={
+            'domain': settings.PROJECT_NAME,
+            'name': settings.PROJECT_NAME,
+        }
+    )
 
 class Migration(migrations.Migration):
 
@@ -13,6 +24,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('auth', '0012_alter_user_first_name_max_length'),
+        ('sites', '0001_initial'),
     ]
 
     operations = [
@@ -44,4 +56,5 @@ class Migration(migrations.Migration):
                 ('objects', django.contrib.auth.models.UserManager()),
             ],
         ),
+        migrations.RunPython(update_site),
     ]
