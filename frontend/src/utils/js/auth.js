@@ -4,14 +4,14 @@ import {setCookie, getCookie, deleteCookie, logoutFetch } from './utils.js';
 import { debounce } from './utils.js';
 
 function isAuthenticated() {
-    const userInfo = localStorage.getItem('userData');
-    const token = getCookie('my-token');
-    const refreshToken = getCookie('my-refresh-token');
+    let userInfo = localStorage.getItem('userData');
+    let token = getCookie('my-token');
+    let refreshToken = getCookie('my-refresh-token');
 
     return !(!userInfo && !token && !refreshToken);
 }
     
-function clearTokenCheckInterval() {
+export function clearTokenCheckInterval() {
     if (myIntervalID) {
         clearInterval(myIntervalID);
         setmyIntervalID(null);
