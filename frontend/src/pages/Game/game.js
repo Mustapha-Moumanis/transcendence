@@ -1,6 +1,5 @@
 import { loadHTML, loadCSS, HomeEffects } from '../../utils/js/utils.js';
 import { gameActions } from './script.js'
-// import { loadAnimation } from './animation.js'
 
 async function Game() {
   const html = await loadHTML('./pages/Game/game.html');

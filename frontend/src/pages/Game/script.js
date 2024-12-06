@@ -29,9 +29,6 @@ function reset_game(camera, playerPaddle, player2Paddle, ball, gameData, player1
     camera.lookAt(new THREE.Vector3(0, 2.5, 0));
     playerPaddle.mesh.position.set(0, 0, 15);
     player2Paddle.mesh.position.set(0, 0, -15);
-    //pause the ball in the middle
-    // ball.mesh.position.set(0, 0, 0);
-    // ball.velocity.set(0, 0, 0);
     ball.isPaused = true;setTimeout(() => {
         ball.isPaused = false;
     }, 1000);
@@ -39,10 +36,8 @@ function reset_game(camera, playerPaddle, player2Paddle, ball, gameData, player1
 }
 
 function loadLogic(data, mode, tournament, tournamentKey) {
-    // console.log("tournament key: ", tournamentKey);
     gameRunning = true;
     let gameData = JSON.parse(localStorage.getItem("gameData"));
-    // console.log(gameData);
     if (!gameData) gameData = { "camPos": 0, "FOV": 1, "ballSpeed": 1};
     let fovARR = [80, 90, 100];
     let camPosARR = [20, 25, 30];
@@ -128,7 +123,6 @@ function loadLogic(data, mode, tournament, tournamentKey) {
     else {
         fov = 90
     }
-    console.log("FOV set to: ", fov);
     let camera = new THREE.PerspectiveCamera(fov, sizes.width / sizes.height, 0.1)
 
     /* renderer */
@@ -143,9 +137,6 @@ function loadLogic(data, mode, tournament, tournamentKey) {
         camera.rotation.z += Math.PI/2
         camera.updateProjectionMatrix();
         controls.update();
-    
-
-        // camera.lookAt(new THREE.Vector3(0, -2.5, 0))
         
     }
     else{
@@ -159,7 +150,6 @@ function loadLogic(data, mode, tournament, tournamentKey) {
     const ball = new Ball(scene, boundaries, [playerPaddle, player2Paddle], data);
     if (ballSpeedARR[gameData.ballSpeed]  && (ballSpeedARR[gameData.ballSpeed] <= 30 && ballSpeedARR[gameData.ballSpeed] >= 20)) {
         ball.set_ball_speed(ballSpeedARR[gameData.ballSpeed]);
-        console.log("Ball speed set to: ", ballSpeedARR[gameData.ballSpeed]);
     }
     
     
@@ -204,7 +194,6 @@ function loadLogic(data, mode, tournament, tournamentKey) {
     });
     
     ball.addEventListener('ongoal', (e) => {
-        // console.log('goal', e.message)
     
         if (data.player1 === e.message) {
             score['player1'] += 1;
@@ -242,7 +231,6 @@ function loadLogic(data, mode, tournament, tournamentKey) {
                 })
                 .then(response => response.json())
                 .then(data => {
-                    console.log('Success:', data);
                 })
                 .catch((error) => {
                     console.error('Error:', error);
@@ -255,7 +243,7 @@ function loadLogic(data, mode, tournament, tournamentKey) {
                 }, 200);
             });
         }
-        else if ((score['player1'] >= 2 || score['player2'] >= 2) && mode === 'tournament') {
+        else if ((score['player1'] >= 5 || score['player2'] >= 5) && mode === 'tournament') {
             //end tourney
             let finalResultText;
             let buttonText;
@@ -287,7 +275,6 @@ function loadLogic(data, mode, tournament, tournamentKey) {
                 let winner;
 
                 if (round === 1) {
-                    console.log('FIRST ROUND');
                     player1Name = data.player3;
                     player2Name = data.player4;
                     if (player1Score > player2Score) {
@@ -309,7 +296,6 @@ function loadLogic(data, mode, tournament, tournamentKey) {
                     round += 1;
                 }
                 else if (round === 2) {
-                    console.log('SECOND ROUND');
                     if (player1Score > player2Score) {
                         winner = data.player3;
                     } else {
@@ -325,7 +311,6 @@ function loadLogic(data, mode, tournament, tournamentKey) {
                     round += 1;
                 }
                 else if (round === 3) {
-                    console.log('FINAL ROUND');
                     if (player1Score > player2Score) {
                         winner = player1Name;
                     } else {
@@ -368,8 +353,6 @@ function loadLogic(data, mode, tournament, tournamentKey) {
                         })
                         .then(response => response.json())
                         .then(data => {
-                            console.log('Success:', data);
-                            console.log(tournament)
                         })
                         .catch((error) => {
                             console.error('Error:', error);
@@ -383,10 +366,8 @@ function loadLogic(data, mode, tournament, tournamentKey) {
               
                 document.querySelector('canvas').classList.remove('blur');
                 document.querySelector('.gameFinalResult').remove();
-                console.log(tournament);
             });
         }
-        // console.log("UPDATING SCORE");
         updateScore();
     });
     
@@ -424,7 +405,6 @@ function loadLogic(data, mode, tournament, tournamentKey) {
             camera = null;
         }
         
-        // Dispose of animation loop
     
     }
     
@@ -465,10 +445,9 @@ function loadLogic(data, mode, tournament, tournamentKey) {
     let wasdLeft = document.querySelector('#WASD .left');
     let wasdRight = document.querySelector('#WASD .right');
 
-    // console.log(arrowkeyUp);
+
 
     wasdUp.addEventListener('touchstart', (e) => {
-        console.log("PRESSED");
         moveLeft = true;
     });
     wasdUp.addEventListener('touchend', (e) => {
@@ -476,7 +455,6 @@ function loadLogic(data, mode, tournament, tournamentKey) {
     });
 
     wasdDown.addEventListener('touchstart', (e) => {
-        console.log("PRESSED");
         moveRight = true;
     });
     wasdDown.addEventListener('touchend', (e) => {
@@ -484,7 +462,6 @@ function loadLogic(data, mode, tournament, tournamentKey) {
     });
 
     wasdLeft.addEventListener('touchstart', (e) => {
-        console.log("PRESSED");
         moveLeft = true;
     });
     wasdLeft.addEventListener('touchend', (e) => {
@@ -492,7 +469,6 @@ function loadLogic(data, mode, tournament, tournamentKey) {
     });
 
     wasdRight.addEventListener('touchstart', (e) => {
-        console.log("PRESSED");
         moveRight = true;
     });
     wasdRight.addEventListener('touchend', (e) => {
@@ -500,7 +476,6 @@ function loadLogic(data, mode, tournament, tournamentKey) {
     });
 
      wasdUp.addEventListener('touchstart', (e) => {
-        console.log("PRESSED");
         moveLeft = true;
     });
     wasdUp.addEventListener('touchend', (e) => {
@@ -508,7 +483,6 @@ function loadLogic(data, mode, tournament, tournamentKey) {
     });
 
     wasdDown.addEventListener('touchstart', (e) => {
-        console.log("PRESSED");
         moveRight = true;
     });
     wasdDown.addEventListener('touchend', (e) => {
@@ -516,7 +490,6 @@ function loadLogic(data, mode, tournament, tournamentKey) {
     });
 
     wasdLeft.addEventListener('touchstart', (e) => {
-        console.log("PRESSED");
         moveLeft = true;
     });
     wasdLeft.addEventListener('touchend', (e) => {
@@ -524,7 +497,6 @@ function loadLogic(data, mode, tournament, tournamentKey) {
     });
 
     wasdRight.addEventListener('touchstart', (e) => {
-        console.log("PRESSED");
         moveRight = true;
     });
     wasdRight.addEventListener('touchend', (e) => {
@@ -535,7 +507,6 @@ function loadLogic(data, mode, tournament, tournamentKey) {
 
 
     arrowKeyUp.addEventListener('touchstart', (e) => {
-        console.log("PRESSED");
         moveLeft2 = true;
     });
     arrowKeyUp.addEventListener('touchend', (e) => {
@@ -543,7 +514,6 @@ function loadLogic(data, mode, tournament, tournamentKey) {
     });
 
     arrowKeyDown.addEventListener('touchstart', (e) => {
-        console.log("PRESSED");
         moveRight2 = true;
     });
     arrowKeyDown.addEventListener('touchend', (e) => {
@@ -551,7 +521,6 @@ function loadLogic(data, mode, tournament, tournamentKey) {
     });
 
     arrowKeyLeft.addEventListener('touchstart', (e) => {
-        console.log("PRESSED");
         moveLeft2 = true;
     });
     arrowKeyLeft.addEventListener('touchend', (e) => {
@@ -559,7 +528,6 @@ function loadLogic(data, mode, tournament, tournamentKey) {
     });
 
     arrowKeyRight.addEventListener('touchstart', (e) => {
-        console.log("PRESSED");
         moveRight2 = true;
     });
     arrowKeyRight.addEventListener('touchend', (e) => {
@@ -640,7 +608,6 @@ function loadLogic(data, mode, tournament, tournamentKey) {
                 countdownElement.style.display = 'none';
                 // Start the game here
                 gamePaused = false;
-                // console.log("IN ELSE STATEMENT");
                 clearInterval(interval);
             }
         }, 1000);
@@ -651,7 +618,6 @@ function loadLogic(data, mode, tournament, tournamentKey) {
     startCountdown();
     
     function tic() {
-        // console.log("x is: ", camera.position.x, "y is: ", camera.position.y, "z is: ", camera.position.z, "looking at: ");
         if (!gameRunning) {
             return;
         }
@@ -709,7 +675,6 @@ function loadLogic(data, mode, tournament, tournamentKey) {
     
     function handleHashChange() {
         window.removeEventListener('resize', handleResize);
-        // console.log("Resize event listener removed on hash change");
     }
 }
 
@@ -730,7 +695,6 @@ function gameStart(data, mode) {
             player3: player3Tname.value,
             player4: player4Tname.value
         }
-        console.log(postData);
         // create here
         fetch('/api/tournament/create/', {
             method: 'POST',
@@ -739,11 +703,9 @@ function gameStart(data, mode) {
             },
             body: JSON.stringify(postData)
         })
-        // .then(response => response.json())
         .then(response => {
             if (!response.ok) {
                 return response.json().then(errorData => {
-                    console.log(errorData);
                     if (errorData.player1) displayFieldError(player1Tname.parentElement, errorData.player1);
                     if (errorData.player2) displayFieldError(player2Tname.parentElement, errorData.player2);
                     if (errorData.player3) displayFieldError(player3Tname.parentElement, errorData.player3);
@@ -755,10 +717,8 @@ function gameStart(data, mode) {
             return response.json();
         })
         .then(successData => {
-            console.log('Success:', successData);
             const tournamentKey = successData.key;
             let tournament = new Tournament(successData);
-            console.log(tournament);
             tournamentcontent.classList.add('d-none');
             document.querySelector(".main-menu").append(tournamentBracket(tournament));
             document.querySelector("#startRound").addEventListener('click', () => {
@@ -775,8 +735,6 @@ export function gameActions(html) {
     document.getElementById('home-content').innerHTML = html;
 
 	try {
-        //start animation here
-        // loadAnimation();
         //add buttons
         let nickContent = document.getElementById('player-nick');
         let startButton = document.getElementById('start');
@@ -796,7 +754,6 @@ export function gameActions(html) {
         let player4Tname = document.getElementById('Tplayer4');
         startButton.addEventListener('click', () => {
           startButton.style.display = 'none';
-        //   console.log('Game started')
           nickContent.classList.remove('d-none');
         });
     
@@ -807,7 +764,6 @@ export function gameActions(html) {
     
         tournamentButton.addEventListener('click', () => {
           tournamentButton.style.display = 'none';
-        //   console.log('Tournament started')
           tournamentcontent.classList.remove('d-none');
         });
     
@@ -823,7 +779,6 @@ export function gameActions(html) {
                 player3: player3Tname.value,
                 player4: player4Tname.value
             }
-            // console.log(nameData);
             gameStart(nameData, 'tournament');
         });
 
@@ -850,7 +805,6 @@ export function gameActions(html) {
             displayFieldError(player2Name.parentElement, 'Player 2 name must start with a letter and can only contain letters, numbers, underscores and hyphens');
         }
         else{
-            // console.log(nameData);
             nickContent.classList.add('d-none');
             gameStart(nameData, 'single');
         }
