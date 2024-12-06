@@ -27,15 +27,6 @@ export default class Ball extends EventDispatcher{
         this.raycaster = new Raycaster();
         this.raycaster.near = 0;
         this.raycaster.far = this.boundaries.y * 2.5;
-
-        // const lineGeometry = new BufferGeometry().setFromPoints([new Vector3(), new Vector3()]);
-        // const lineMaterial = new LineBasicMaterial({ color: 0xff0000 });
-        // this.rayLine = new Line(lineGeometry, lineMaterial);
-        // this.scene.add(this.rayLine);
-
-        // this.collisionPoint = new Mesh(new SphereGeometry(0.1), new MeshBasicMaterial({color: 'red'}));
-        
-        // this.scene.add(this.collisionPoint);
     }
 
     resetBallVelocity () {
@@ -61,7 +52,6 @@ export default class Ball extends EventDispatcher{
         const tPos = this.mesh.position.clone().add(s);
 
         const rayEnd = this.mesh.position.clone().add(direction.multiplyScalar(this.raycaster.far));
-        // this.rayLine.geometry.setFromPoints([this.mesh.position, rayEnd]);
 
         /* check collision */
         const dx =  (this.boundaries.x - this.radius) - Math.abs(this.mesh.position.x);
@@ -92,12 +82,10 @@ export default class Ball extends EventDispatcher{
          const paddle = this.paddles.find((paddle) => {
             return Math.sign(paddle.mesh.position.z) === Math.sign(this.velocity.z);
          })
-        //  console.log(paddle);
 
         const [intersection] = this.raycaster.intersectObjects(paddle.mesh.children)
         
         if (intersection){
-            // this.collisionPoint.position.copy(intersection.point);
             
             if (intersection.distance < s.length()) {
                 console.log('collision with paddle');
@@ -117,10 +105,6 @@ export default class Ball extends EventDispatcher{
                 this.velocity.normalize().multiplyScalar(this.speed);
             }
         }
-        else {
-            // this.collisionPoint.position.set(0, 0, 0);
-        }
-
         this.mesh.position.copy(tPos)
     }
 

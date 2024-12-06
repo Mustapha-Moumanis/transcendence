@@ -9,7 +9,6 @@ export default class Paddle {
         this.scene = scene
         this.boundaries = boundaries
 
-        // this.geometry = new CapsuleGeometry(0.5, 5, 20, 20);
         this.geometry = new CapsuleGeometry(0.5, 5, 20, 20);
         this.helper_geometry = new CapsuleGeometry(0.5 + 0.5, 5, 20, 8);
         this.geometry.rotateZ(Math.PI * 0.5)
