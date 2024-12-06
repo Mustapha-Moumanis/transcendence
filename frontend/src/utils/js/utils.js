@@ -1,7 +1,8 @@
-import { logout, showAlert, attachRouterListeners, checkToken } from './auth.js'
+import { logout, showAlert, attachRouterListeners, checkToken, clearTokenCheckInterval } from './auth.js'
 import { themeAction } from './theme.js'
 import { channelBroadcast, startSocket } from '../../pages/Chat/js/socket.js'
 import { startSearchAndNotif } from '../../pages/Chat/js/homeSocket.js';
+import { myIntervalID, setmyIntervalID } from '../../router.js';
 
 export async function loadHTML(url) {
 	try {
@@ -144,7 +145,8 @@ export async function HomeEffects() {
 	const root = document.getElementById('root');
 	if (root.querySelector('.nav-bar') == null) {
 		showLoading("body");
-		checkToken();
+		clearTokenCheckInterval();
+		setmyIntervalID(setInterval(checkToken, 25*60*1000));
 		const nav = await loadHTML('../components/nav/navBar.html');
 		const sidebar = await loadHTML('../components/sidebar/sidebar.html');
 
