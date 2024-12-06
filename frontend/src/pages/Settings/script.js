@@ -511,25 +511,25 @@ function gamesettings() {
 		`
 			<h4 class="mb-3">Camera position</h4>
 			<p>
-				<b>Default: </b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos debitis quis enim corporis assumenda pariatur autem numquam unde iste maiores.<br>
-				<b>Horizontal: </b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, facere dolorem. Quaerat?<br>
-				<b>Vertical: </b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, maxime.<br>
+				<b>Default: </b>The Default game viewing experience<br>
+				<b>Horizontal: </b>Experience the game from the classic Player 1's perspective, and immerse yourself in the 3d version of the legendary Pong.<br>
+				<b>Vertical: </b>The classic Top Down view, Experience the game from its Nostalgic viewing angle.<br>
 			</p>
 		`,
 		`
 			<h4 class="mb-3">Field of view</h4>
 			<p>
-				<b>Narrow: </b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos debitis quis enim corporis assumenda pariatur autem numquam unde iste maiores.<br>
-				<b>Normal: </b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, facere dolorem. Quaerat?<br>
-				<b>Wide: </b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, maxime.<br>
+				<b>Narrow: </b>Want to concentrate on the game a little better? The narrow FOV option provides a closer look into the game.<br>
+				<b>Normal: </b>The default FOV of the game, not too far, and not so close.<br>
+				<b>Wide: </b>Need a better look of everything happening on the Table? The wide FOV angle will be just for you.<br>
 			</p>
 		`,
 		`
 			<h4 class="mb-3">Ball speed</h4>
 			<p>
-				<b>Slow: </b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos debitis quis enim corporis assumenda pariatur autem numquam unde iste maiores.<br>
-				<b>Medium: </b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, facere dolorem. Quaerat?<br>
-				<b>Fast: </b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, maxime.<br>
+				<b>Slow: </b>Need a break from the fast paced gameplay? this option will make things easier and the Gameplay will be less intense.<br>
+				<b>Medium: </b>The default Speed of the ball, not too fast, and not so slow.<br>
+				<b>Fast: </b>Test your reaction times, and your gaming skills, this option makes the game extremely hard.<br>
 			</p>
 		`,
 	];
