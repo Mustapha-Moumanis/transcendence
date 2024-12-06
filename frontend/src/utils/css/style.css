@@ -718,10 +718,27 @@ p {
 }
 
 .match-card {
+    position: relative;
     display: flex;
     align-items: center;
     border-radius: 10px;
     height: fit-content;
+}
+
+.match-card:hover .time-match , .tournament-card:hover .time-match {
+    display: block;
+}
+
+.time-match {
+    color: var(--title-color);
+    font-weight: bold;
+    text-align: center;
+    display: none;
+    position: absolute;
+    bottom: -10px;
+    right: 9px;
+    font-size: 9px !important;
+    transition: opacity 0.4s;
 }
 
 .match-card span {
@@ -780,6 +797,7 @@ p {
 }
 
 .tournament-card {
+    position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;

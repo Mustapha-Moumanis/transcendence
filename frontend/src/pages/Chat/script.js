@@ -4,7 +4,7 @@ import { startChat, chatSocket, waitForSocketConnection} from "./js/socket.js";
 export var lastCmd = [];
 
 export function sendToBackend(sendto, type, message){
-	const myToken = getCookie('my-token');
+	let myToken = getCookie('my-token');
 	if (!(type === "startTyping" || type === "stopTyping")){
 		lastCmd.push({
 			type: type,
@@ -12,10 +12,9 @@ export function sendToBackend(sendto, type, message){
 			message: message,
 		});
 	}
-	if (chatSocket.readyState !== chatSocket.OPEN){
-		console.warn("SOUAD : Closed");
+	if (chatSocket == null || chatSocket.readyState !== chatSocket.OPEN)
 		return;
-	}
+
 	chatSocket.send(JSON.stringify({
 		token: myToken,
 		type: type,

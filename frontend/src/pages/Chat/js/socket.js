@@ -33,9 +33,6 @@ function setupWebSocket() {
     const userData = JSON.parse(localStorage.getItem('userData'));
     user = userData.username;
 
-    let welcome = document.querySelector(".welcome h5");
-    welcome.innerHTML = `Welcome ${user}`;
-
     const protocol =  window.location.protocol === 'https:' ? 'wss://' : 'ws://';
     const wsUrl = `${protocol}${window.location.host}/ws/${user}/`;
     channelBroadcast = new BroadcastChannel("auth_channel");
@@ -54,7 +51,6 @@ function waitForSocketConnection(socket, callback){
                 callback();
         } 
         else {
-            console.log("wait for connection...");
             waitForSocketConnection(socket, callback);
         } 
     }, 5);
@@ -71,15 +67,16 @@ function callLastCmds(){
 function startSocket(){
     if (chatSocket) return;
     else chatSocket = setupWebSocket();
+
+    let welcome = document.querySelector(".welcome h5");
+    welcome.innerHTML = `Welcome ${user}`;
+
     waitForSocketConnection(chatSocket, getData);
 
-    chatSocket.onopen = () => {
-        console.log("The connection was setup successfully!");
-    }
+    chatSocket.onopen = () => {}
 
     chatSocket.onclose = (e) => {
         chatSocket = null;
-        console.log("The Websocket was Closed!", e);
     }
 
     function getData(){
@@ -113,8 +110,10 @@ function handleMessageFromSocket(event){
     if (data === null || document.querySelector(".gameInterface")) 
         return;
 
-    if (data.type === "Error") handleRefrshTocken();
-    else lastCmd.splice(0,1);
+    if (data.type === "Error")
+        handleRefrshTocken();
+    else 
+        lastCmd.splice(0,1);
 
     if (data.type === "Blocked") friendBlockedYou(data);
     else if (data.type === "reqConfirm") reqConfirm(data.listFriends);
