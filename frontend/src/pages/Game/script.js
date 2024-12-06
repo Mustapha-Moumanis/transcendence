@@ -243,7 +243,7 @@ function loadLogic(data, mode, tournament, tournamentKey) {
                 }, 200);
             });
         }
-        else if ((score['player1'] >= 2 || score['player2'] >= 2) && mode === 'tournament') {
+        else if ((score['player1'] >= 5 || score['player2'] >= 5) && mode === 'tournament') {
             //end tourney
             let finalResultText;
             let buttonText;
