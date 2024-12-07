@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import LocalGame, Player, Match, LocalTournament
 from django.core.validators import URLValidator, ValidationError
+from django.utils.timezone import localtime
 
 import re
 import uuid
@@ -9,7 +10,7 @@ class LocalGameSerializer(serializers.ModelSerializer):
 	dates = serializers.SerializerMethodField()
 
 	def get_dates(self, obj):
-		return obj.dates.strftime('%Y-%m-%d %H:%M %p') if obj.dates else None
+		return localtime(obj.dates).strftime('%Y-%m-%d %H:%M %p') if obj.dates else None
 
 	class Meta:
 		model = LocalGame
@@ -67,7 +68,7 @@ class LocalTournamentSerializer(serializers.ModelSerializer):
 	dates = serializers.SerializerMethodField()
 
 	def get_dates(self, obj):
-		return obj.dates.strftime('%Y-%m-%d %H:%M %p') if obj.dates else None
+		return localtime(obj.dates).strftime('%Y-%m-%d %H:%M %p') if obj.dates else None
 
 	class Meta:
 		model = LocalTournament

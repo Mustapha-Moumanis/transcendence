@@ -38,29 +38,30 @@ function getUserData() {
                     reject('Can\'t get user data');
                 })
             }
-            resolve(response.json());
+            return response.json()
+        })
+        .then(data => {
+            if (data.otpCheck == false) reject('Field to verify 2fa');
+            resolve(data);
         })
     })
 } 
 
 async function checkAuthentication() {
-    return await verifyToken()
-	.then(() => {
-        getUserData()
-        .then(userData => {
-            localStorage.setItem('userData', JSON.stringify(userData));
-        })
-        .catch(error => {
-            showAlert('error', error);
-        })
+    try {
+        await verifyToken();
+
+        const userData = await getUserData();
+
+        localStorage.setItem('userData', JSON.stringify(userData));
+
         return true;
-	})
-	.catch (error => {
-		showAlert('error', error);
+    } catch (error) {
+        showAlert('error', error);
 		logoutFetch()
         .catch(() => {});
         return false;
-	})
+    }
 }
 
 function verifyRefreshToken() {
@@ -140,19 +141,15 @@ window.addEventListener('beforeunload', () => {
 
 function login(data) {
     localStorage.setItem('userData', JSON.stringify(data.user));
-    setCookie('my-token', data.access, 30);
-    setCookie('my-refresh-token', data.refresh, 30);
     setTimeout(() => { window.location.hash = '#home' }, 500);
 }
 
 function logout() {
+    deleteCookie('my-token');
+    deleteCookie('my-refresh-token');
     if (chatSocket)
         chatSocket.close();
     localStorage.removeItem('userData');
-    deleteCookie('my-token');
-    deleteCookie('my-refresh-token');
-    deleteCookie('sessionid');
-    deleteCookie('messages');
     clearTokenCheckInterval();
     window.location.hash = "#login";
 }

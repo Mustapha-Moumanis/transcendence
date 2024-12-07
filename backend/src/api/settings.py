@@ -25,8 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-$!$9%c)nc*9+p288&2s+*63bu(odm&&a8h-36z-#3^m-c7+o34'
-
+# SECRET_KEY = 'django-insecure-$!$9%c)nc*9+p288&2s+*63bu(odm&&a8h-36z-#3^m-c7+o34'
+SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
 DEBUG = config('DEBUG', default=False, cast=bool)
@@ -182,12 +182,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Casablanca'
 
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
@@ -198,18 +197,15 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR,"static")]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
-
 REST_AUTH = {
     'USE_JWT': True,
     'SESSION_LOGIN': False,
     'JWT_AUTH_HTTPONLY': False,
     'JWT_AUTH_COOKIE': 'my-token',
     'JWT_AUTH_REFRESH_COOKIE': 'my-refresh-token',
-     # 'JWT_AUTH_SAMESITE': 'none',
+    'JWT_AUTH_SAMESITE': 'None',
     'JWT_AUTH_SECURE': True,
-    # 'JWT_SERIALIZER': 'users.serializers.CustomJWTSerializer',
     'JWT_TOKEN_CLAIMS_SERIALIZER': 'users.serializers.MyTokenObtainPairSerializer',
-
     'LOGIN_SERIALIZER': 'users.serializers.CustomLoginSerializer',
     'USER_DETAILS_SERIALIZER': 'users.serializers.MyUserDetailsSerializer',
     'REGISTER_SERIALIZER': 'users.serializers.CustomRegisterSerializer',
@@ -217,7 +213,6 @@ REST_AUTH = {
     'PASSWORD_RESET_CONFIRM_SERIALIZER': "users.serializers.MyPasswordResetConfirmSerializer",
     'PASSWORD_RESET_USE_SITES_DOMAIN':True,
     'OLD_PASSWORD_FIELD_ENABLED': True,
-
 }
 
 SIMPLE_JWT = {

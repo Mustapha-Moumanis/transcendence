@@ -28,6 +28,3 @@ class IntraOAuth2Provider(OAuth2Provider):
     
 
 provider_classes = [IntraOAuth2Provider, CustomGoogleProvider]
-
-# from allauth.socialaccount import providers
-# providers.registry.register(CustomGoogleProvider)

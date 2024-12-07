@@ -3,6 +3,8 @@ from channels.exceptions import DenyConnection
 from channels.generic.websocket import AsyncWebsocketConsumer
 from time import gmtime, strftime
 from django.conf import settings
+from django.utils.timezone import now, localtime
+
 import jwt
 import json
 from .consumersUtils import (
@@ -119,7 +121,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     room = data_json["sendto"]
                     message = await save_message(username, data_json["message"], room)
 
-                    time = strftime("%Y-%m-%d %H:%M %p", gmtime())
+                    time = localtime(now()).strftime("%Y-%m-%d %H:%M %p")
                     await self.channel_layer.group_send(room,{
                         'data' : data_json,
                         'username': username,
