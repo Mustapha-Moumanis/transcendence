@@ -3,8 +3,8 @@ from friends.models import Friend, BlockedUser
 from users.models import User
 from channels.db import database_sync_to_async
 from asgiref.sync import sync_to_async
-from django.utils.dateformat import DateFormat
 from django.core.paginator import Paginator
+from django.utils.timezone import localtime
 
 def getTheLastMessage(user, send):
     send_room = ChatRoom.objects.get(name="room_{}".format(send))
@@ -14,7 +14,7 @@ def getTheLastMessage(user, send):
     notifications = Message.objects.filter(user=send, chat_room=user_room, seen=False).count()
 
     if lastMessage:
-        time = DateFormat((lastMessage.timestamp)).format('Y-m-d H:i:s')
+        time = localtime(lastMessage.timestamp).strftime('%Y-%m-%d %H:%M:%S')
     else : time = 0
 
     return lastMessage, time, notifications
@@ -64,7 +64,7 @@ def loadMoreContent(user, sendto, scrollnb):
         scrollDisplay = True
     else:
         scrollDisplay = False
-    messages_data = [{'id': m.user.id,'username': m.user.username,'message': m.content,'time': DateFormat(m.timestamp).format('Y-m-d H:i A')} for m in Messages]
+    messages_data = [{'id': m.user.id,'username': m.user.username,'message': m.content,'time': localtime(m.timestamp).strftime('%Y-%m-%d %H:%M %p')} for m in Messages]
 
     return {"type" : "loadMoreContent", "avatar" : str(sendto.avatar), "sendto" : sendto.username,'messages' : messages_data, 'scrollDisplay':scrollDisplay}
 
@@ -84,7 +84,7 @@ def get_data(user, sendto):
     else:
         scrollDisplay = False
 
-    messages_data = [{'username': m.user.username,'message': m.content,'time': DateFormat(m.timestamp).format('Y-m-d h:i A')} for m in Messages]
+    messages_data = [{'username': m.user.username,'message': m.content,'time': localtime(m.timestamp).strftime('%Y-%m-%d %H:%M %p')} for m in Messages]
     
     return {"type": "showConversation", 
     "chat_header": {"id" : sendto.id, "sendto" : sendto.username,"status" : sendto.status,"avatar" : str(sendto.avatar)}, 

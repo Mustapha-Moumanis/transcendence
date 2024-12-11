@@ -230,11 +230,8 @@ function loadLogic(data, mode, tournament, tournamentKey) {
                     body: JSON.stringify(postData)
                 })
                 .then(response => response.json())
-                .then(data => {
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
+                .then(data => {})
+                .catch((error) => { });
             let endGameButton = document.getElementById('end-game');
             endGameButton.addEventListener('click', () => {
                 cleanupScene();
@@ -352,11 +349,8 @@ function loadLogic(data, mode, tournament, tournamentKey) {
                             body: JSON.stringify(postData)
                         })
                         .then(response => response.json())
-                        .then(data => {
-                        })
-                        .catch((error) => {
-                            console.error('Error:', error);
-                        });
+                        .then(data => {})
+                        .catch((error) => {});
                     cleanupScene();
                     setTimeout(() => {
                     window.location.hash = '#home';

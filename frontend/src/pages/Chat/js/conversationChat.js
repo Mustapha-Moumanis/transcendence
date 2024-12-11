@@ -31,8 +31,9 @@ function loadingContent(){
 function scrollHandler() {
     const scrollelement = document.querySelector(".chat-box");
     oldScrollHeight = scrollelement.scrollHeight;
-    var scrollPositionY = (scrollelement.clientHeight - scrollelement.scrollTop) - 1;
-    if (scrollPositionY === oldScrollHeight && scrollDisplay === true) loadingContent();
+    var scrollPositionY = (scrollelement.clientHeight - scrollelement.scrollTop);
+    if (scrollPositionY >= (oldScrollHeight - 1) && scrollDisplay === true)
+        loadingContent();
 }
 
 function focusScroll() {

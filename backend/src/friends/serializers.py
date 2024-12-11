@@ -56,19 +56,6 @@ class FriendSerializer(serializers.ModelSerializer):
                 }
         
         return representation
-    
-    # def to_representation(self, instance):
-        # representation = super().to_representation(instance)
-        # avatar_url = instance.avatar
-
-        # if avatar_url:
-        #     try:
-        #         url_value = str(avatar_url)
-        #         URLValidator()(url_value)
-        #         representation['avatar'] = url_value
-        #     except ValidationError:
-        #         representation['avatar'] = avatar_url.url
-        # return representation
 
 class BlockSerializer(serializers.ModelSerializer):
     username = serializers.SerializerMethodField()

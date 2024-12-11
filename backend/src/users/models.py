@@ -8,7 +8,7 @@ from datetime import date, timedelta
 
 def GenerateProfileImagePath(instance, filename):
     ext = filename.split('.')[-1]
-    path = f'/static/accounts/{instance.id}/images/'
+    path = f'static/accounts/{instance.id}/images/'
     name = f'profile_image.{ext}'
     return os.path.join(path, name)
 

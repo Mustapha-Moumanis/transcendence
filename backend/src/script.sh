@@ -19,7 +19,6 @@ if [ "$EXISTS" = "False" ]; then
 
 	python ./manage.py shell -c "
 from users.models import User
-from chat.models import ChatRoom
 user = User.objects.get(username='$DJANGO_SUPERUSER_USERNAME')
 user.first_name = '$DJANGO_SUPERUSER_FIRSTNAME'
 user.last_name = '$DJANGO_SUPERUSER_LASTNAME'
@@ -27,5 +26,4 @@ user.save()
 "
 fi
 
-# exec python manage.py runsslserver 0.0.0.0:8000 --certificate $CERTS_ --key $P_KEY
 exec python manage.py runserver 0.0.0.0:8000

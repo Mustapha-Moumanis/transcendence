@@ -6,7 +6,6 @@ function ouathAction(url, authCode) {
     var oauthPromise = new Promise(function(resolve, reject){
         fetch(url, {
             method: 'POST',
-            credentials: "omit",
             headers: { 'Content-Type': 'application/json', },
             body: JSON.stringify({ 'code' : authCode })
         })

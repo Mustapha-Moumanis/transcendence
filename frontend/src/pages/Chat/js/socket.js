@@ -65,11 +65,11 @@ function callLastCmds(){
 }
 
 function startSocket(){
-    if (chatSocket) return;
-    else chatSocket = setupWebSocket();
-
     let welcome = document.querySelector(".welcome h5");
     welcome.innerHTML = `Welcome ${user}`;
+
+    if (chatSocket) return;
+    else chatSocket = setupWebSocket();
 
     waitForSocketConnection(chatSocket, getData);
 

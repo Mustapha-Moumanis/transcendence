@@ -6,7 +6,6 @@ from django_otp.plugins.otp_totp.models import TOTPDevice
 from django.http import HttpResponse
 from io import BytesIO
 from rest_framework.decorators import action
-# from django.contrib.sites.shortcuts import get_current_site
 import qrcode
 from qrcode.image.svg import SvgImage
 

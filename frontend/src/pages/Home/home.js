@@ -11,7 +11,9 @@ async function Home() {
   loadCSS(['./pages/Home/home.css']);
 
   setTimeout(() => {
-    homeActions();
+    try {
+      homeActions();
+    } catch (error) { }
   }, 200);
 }
 
