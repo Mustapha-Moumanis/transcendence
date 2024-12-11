@@ -88,8 +88,6 @@ export default class Ball extends EventDispatcher{
         if (intersection){
             
             if (intersection.distance < s.length()) {
-                console.log('collision with paddle');
-
                 const normal = intersection.normal;
                 normal.y = 0;
                 normal.normalize();

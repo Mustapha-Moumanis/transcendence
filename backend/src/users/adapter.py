@@ -1,15 +1,4 @@
-# from allauth.account.adapter import DefaultAccountAdapter
-# from django.conf import settings
-
-# class AccountAdapter(DefaultAccountAdapter):
-#     def send_mail(self, template_prefix, email, context):
-#         if 'key' in context:
-#             context['activate_url'] = f"{settings.ACTIVATION_URL_BASE}{context['key']}"
-
-#         super().send_mail(template_prefix, email, context)
-
 from allauth.account.adapter import DefaultAccountAdapter
-# from django.conf import settings
 import random
 
 class AccountAdapter(DefaultAccountAdapter):

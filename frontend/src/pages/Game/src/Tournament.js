@@ -134,14 +134,12 @@ function startTournamentBracket(bracket, match, classRound, classWinner) {
         palyerOne.parentElement.querySelector(".bracket-match-score p").innerHTML = match.player1_score;
         palyerTwo.parentElement.querySelector(".bracket-match-score p").innerHTML = match.player2_score;
         if (match.player1_score > match.player2_score){
-            console.log("palyer one winning");
             addWinner(palyerOne);
             bracket.querySelector(classWinner).innerHTML = `
             <img class="avatar"src="${match.player1.avatar}" alt="${match.player1.name}"></img>
             <div class="match-username">${match.player1.name}</div>`;
         }
         else {
-            console.log("palyer two winning");
             addWinner(palyerTwo);
             bracket.querySelector(classWinner).innerHTML = `
                 <img class="avatar"src="${match.player2.avatar}" alt="${match.player2.name}"></img>

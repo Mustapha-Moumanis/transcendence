@@ -2,6 +2,7 @@ import uuid
 from django.db import models
 from django.utils import timezone
 from users.models import User, GenerateDefaultImagePath
+from django.utils.timezone import now
 
 class LocalGame(models.Model):
     user = models.ForeignKey(User, related_name='local_games', on_delete=models.CASCADE)
@@ -10,7 +11,7 @@ class LocalGame(models.Model):
     user_score = models.IntegerField()
     opponent_score = models.IntegerField()
     result = models.CharField(max_length=10, choices=[('Win', 'Win'), ('Loss', 'Loss')], default='Win')
-    dates = models.DateTimeField(default=timezone.now)
+    dates = models.DateTimeField(default=now)
 
     def __str__(self):
         return f"Game: {self.user.username} vs {self.opponent}"
@@ -40,7 +41,7 @@ class LocalTournament(models.Model):
     players = models.ManyToManyField(Player)
     champion = models.ForeignKey(Player, on_delete=models.SET_NULL, null=True, blank=True, related_name='tournament_champion')
     matchs = models.ManyToManyField(Match)
-    dates = models.DateTimeField(default=timezone.now)
+    dates = models.DateTimeField(default=now)
 
     def __str__(self):
         return f"Tournament key : {self.key}"

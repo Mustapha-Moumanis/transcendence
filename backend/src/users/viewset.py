@@ -12,7 +12,6 @@ class ProfilesViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         current_user = self.request.user
-        # NOTE get list of blocked users and use flat to querying for one field not a list of tuples
 
         blocked_users = BlockedUser.objects.filter(blocker=current_user).values_list('blocked', flat=True)
         blocked_me = BlockedUser.objects.filter(blocked=current_user).values_list('blocker', flat=True)
