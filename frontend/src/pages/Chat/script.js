@@ -5,7 +5,7 @@ export var lastCmd = [];
 
 export function sendToBackend(sendto, type, message){
 	let myToken = getCookie('my-token');
-	if (!(type === "startTyping" || type === "stopTyping")){
+	if (!(type === "startTyping" || type === "stopTyping" || type === "addFrindship")){
 		lastCmd.push({
 			type: type,
 			sendto: sendto,

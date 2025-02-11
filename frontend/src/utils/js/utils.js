@@ -132,6 +132,10 @@ function updateSidebar() {
 	const currentHash = window.location.hash.slice(1);
 	const buttons = document.querySelectorAll('.side-btns div');
 
+	const userData = JSON.parse(localStorage.getItem('userData'));
+    let welcome = document.querySelector(".welcome h5");
+    welcome.innerHTML = `Welcome ${userData.username}`;
+
 	if (buttons) {
 		buttons.forEach(button => {
 			const dataRouter = button.getAttribute("data-router");
