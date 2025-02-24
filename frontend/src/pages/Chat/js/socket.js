@@ -65,8 +65,6 @@ function callLastCmds(){
 }
 
 function startSocket(){
-    let welcome = document.querySelector(".welcome h5");
-    welcome.innerHTML = `Welcome ${user}`;
 
     if (chatSocket) return;
     else chatSocket = setupWebSocket();
